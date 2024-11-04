@@ -1,8 +1,0 @@
-"0","load(""../input/data/proc/ola2.RData"")
-"
-"2","Error in exists(cacheKey, where = .rs.WorkingDataEnv, inherits = FALSE) : 
-  invalid first argument
-"
-"2","Error in assign(cacheKey, frame, .rs.CachedDataEnv) : 
-  attempt to use zero-length variable name
-"

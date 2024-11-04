@@ -27,7 +27,7 @@ load("../input/data/proc/ola2.RData")
 print(summarytools::dfSummary(datos_exp), method="render")
 ```
 
-# Caso 1: distribución sin ninguna característica asociada  
+# Caso 1: distribución sin ninguna característica asociada
 
 ```{r, echo=FALSE}
 plot_caso1 <- datos_exp %>% select(c1_A, c1_B) %>% 
@@ -73,7 +73,70 @@ hombre_caso1 <- datos_exp %>% dplyr::filter(genero=="Hombre") %>%
 hombre_caso1
 ```
 
-# Caso 2: distribución de décimas solo considerando el esfuerzo 
+```{r, echo=FALSE}
+
+datos_long <- datos_exp %>% 
+  filter(curso %in% c("Básica", "Media")) %>%  
+  pivot_longer(cols = c(c1_A, c1_B), names_to = "variable", values_to = "value")
+
+curso_caso1 <- ggplot(datos_long, aes(x = variable, y = value, fill = as.factor(value))) +
+  geom_bar(stat = "identity", position = "fill") +
+  facet_wrap(~ curso) +  
+  scale_y_continuous(labels = scales::percent) +
+  theme_minimal() +
+  theme(legend.position = "right") +
+  labs(
+    x = NULL,  # Elimina el título del eje x
+    y = "Porcentaje",  # Cambia el título del eje y
+    fill = "Décimas",
+    title = "Curso"
+  )
+curso_caso1
+```
+
+```{r, echo=FALSE}
+
+datos_long <- datos_exp %>% 
+  filter(libros_hogar %in% c("Más de 25 libros", "Menos de 25 libros")) %>%  
+  pivot_longer(cols = c(c1_A, c1_B), names_to = "variable", values_to = "value")
+
+libros_hogar_caso1 <- ggplot(datos_long, aes(x = variable, y = value, fill = as.factor(value))) +
+  geom_bar(stat = "identity", position = "fill") +
+  facet_wrap(~ libros_hogar) +  
+  scale_y_continuous(labels = scales::percent) +
+  theme_minimal() +
+  theme(legend.position = "right") +
+  labs(
+    x = NULL,  # Elimina el título del eje x
+    y = "Porcentaje",  # Cambia el título del eje y
+    fill = "Décimas",
+    title = "Libros en el Hogar"
+  )
+libros_hogar_caso1
+```
+
+```{r, echo=FALSE}
+
+datos_long <- datos_exp %>% 
+  filter(educ_max %in% c("Enseñanza media o menos", "Estudios superiores")) %>%  
+  pivot_longer(cols = c(c1_A, c1_B), names_to = "variable", values_to = "value")
+
+educ_max_caso1 <- ggplot(datos_long, aes(x = variable, y = value, fill = as.factor(value))) +
+  geom_bar(stat = "identity", position = "fill") +
+  facet_wrap(~ educ_max) +  
+  scale_y_continuous(labels = scales::percent) +
+  theme_minimal() +
+  theme(legend.position = "right") +
+  labs(
+    x = NULL,  # Elimina el título del eje x
+    y = "Porcentaje",  # Cambia el título del eje y
+    fill = "Décimas",
+    title = "Nivel educacional de los padres"
+  )
+educ_max_caso1
+```
+
+# Caso 2: distribución de décimas solo considerando el esfuerzo
 
 **Estudiante A**: se esfuerza
 
@@ -94,7 +157,7 @@ plot_caso2
 
 ```{r, echo=FALSE}
 mujer_caso2 <- datos_exp %>% dplyr::filter(genero=="Mujer") %>% 
-  dplyr::select(c1_A, c1_B) %>% 
+  dplyr::select(c2_A, c2_B) %>% 
   plot_stackfrq() + theme(legend.position="right")+
   labs(
     x = NULL, # Elimina el título del eje x
@@ -108,7 +171,7 @@ mujer_caso2
 
 ```{r, echo=FALSE}
 hombre_caso2 <- datos_exp %>% dplyr::filter(genero=="Hombre") %>% 
-  dplyr::select(c1_A, c1_B) %>% 
+  dplyr::select(c2_A, c2_B) %>% 
   plot_stackfrq() + theme(legend.position="right")+
   labs(
     x = NULL, # Elimina el título del eje x
@@ -118,6 +181,99 @@ hombre_caso2 <- datos_exp %>% dplyr::filter(genero=="Hombre") %>%
   )
 
 hombre_caso2
+```
+
+```{r, echo=FALSE}
+
+Mas_25_libros_caso2 <- datos_exp %>% dplyr::filter(libros_hogar=="Más de 25 libros") %>% 
+  dplyr::select(c2_A, c2_B) %>% 
+  plot_stackfrq() + theme(legend.position="right")+
+  labs(
+    x = NULL, # Elimina el título del eje x
+    y = NULL, # Elimina el título del eje y
+    fill = "Décimas",
+    title = "Más de 25 libros en el hogar"
+  )
+Mas_25_libros_caso2
+```
+
+```{r, echo=FALSE}
+
+Menos_25_libros_caso2 <- datos_exp %>% dplyr::filter(libros_hogar=="Menos de 25 libros") %>% 
+  dplyr::select(c2_A, c2_B) %>% 
+  plot_stackfrq() + theme(legend.position="right")+
+  labs(
+    x = NULL, # Elimina el título del eje x
+    y = NULL, # Elimina el título del eje y
+    fill = "Décimas",
+    title = "Menos de 25 libros en el hogar"
+  )
+
+Menos_25_libros_caso2
+
+```
+
+```{r, echo=FALSE}
+
+basica_caso2 <- datos_exp %>% dplyr::filter(curso=="Básica") %>% 
+  dplyr::select(c2_A, c2_B) %>% 
+  plot_stackfrq() + theme(legend.position="right")+
+  labs(
+    x = NULL, # Elimina el título del eje x
+    y = NULL, # Elimina el título del eje y
+    fill = "Décimas",
+    title = "Básica"
+  )
+
+basica_caso2
+
+```
+
+```{r, echo=FALSE}
+
+media_caso2 <- datos_exp %>% dplyr::filter(curso=="Media") %>% 
+  dplyr::select(c2_A, c2_B) %>% 
+  plot_stackfrq() + theme(legend.position="right")+
+  labs(
+    x = NULL, # Elimina el título del eje x
+    y = NULL, # Elimina el título del eje y
+    fill = "Décimas",
+    title = "Media"
+  )
+
+media_caso2
+
+```
+
+```{r, echo=FALSE}
+
+max_nivel_ed_superior_caso2 <- datos_exp %>% dplyr::filter(educ_max=="Estudios superiores") %>% 
+  dplyr::select(c2_A, c2_B) %>% 
+  plot_stackfrq() + theme(legend.position="right")+
+  labs(
+    x = NULL, # Elimina el título del eje x
+    y = NULL, # Elimina el título del eje y
+    fill = "Décimas",
+    title = "Máximo nivel alcanzado por sus padres: Educación superior"
+  )
+
+max_nivel_ed_superior_caso2
+
+```
+
+```{r, echo=FALSE}
+
+max_nivel_ed_media_caso2 <- datos_exp %>% dplyr::filter(educ_max=="Enseñanza media o menos") %>% 
+  dplyr::select(c2_A, c2_B) %>% 
+  plot_stackfrq() + theme(legend.position="right")+
+  labs(
+    x = NULL, # Elimina el título del eje x
+    y = NULL, # Elimina el título del eje y
+    fill = "Décimas",
+    title = "Máximo nivel alcanzado por sus padres: Enseñanza media o menos")
+
+max_nivel_ed_media_caso2
+
 ```
 
 # Caso 3: distribución de décimas considerando esfuerzo y condiciones de estudio (solo dos casos)
@@ -136,6 +292,130 @@ plot_caso3 <- datos_exp %>% select(c3_A, c3_B) %>%
     title = "Caso 3 (esfuerzo y condiciones hogar)"
   ) # esfuerzo y casa pequeña
 plot_caso3
+```
+
+```{r, echo=FALSE}
+mujer_caso3 <- datos_exp %>% dplyr::filter(genero=="Mujer") %>% 
+  dplyr::select(c3_A, c3_B) %>% 
+  plot_stackfrq() + theme(legend.position="right")+
+  labs(
+    x = NULL, # Elimina el título del eje x
+    y = NULL, # Elimina el título del eje y
+    fill = "Décimas",
+    title = "Mujer"
+  )
+
+mujer_caso3
+
+```
+
+```{r, echo=FALSE}
+hombre_caso3 <- datos_exp %>% dplyr::filter(genero=="Hombre") %>% 
+  dplyr::select(c3_A, c3_B) %>% 
+  plot_stackfrq() + theme(legend.position="right")+
+  labs(
+    x = NULL, # Elimina el título del eje x
+    y = NULL, # Elimina el título del eje y
+    fill = "Décimas",
+    title = "Hombre"
+  )
+
+hombre_caso3
+
+```
+
+```{r, echo=FALSE}
+
+Mas_25_libros_caso3 <- datos_exp %>% dplyr::filter(libros_hogar=="Más de 25 libros") %>% 
+  dplyr::select(c3_A, c3_B) %>% 
+  plot_stackfrq() + theme(legend.position="right")+
+  labs(
+    x = NULL, # Elimina el título del eje x
+    y = NULL, # Elimina el título del eje y
+    fill = "Décimas",
+    title = "Más de 25 libros en el hogar"
+  )
+
+Mas_25_libros_caso3
+
+```
+
+```{r, echo=FALSE}
+
+Menos_25_libros_caso3 <- datos_exp %>% dplyr::filter(libros_hogar=="Menos de 25 libros") %>% 
+  dplyr::select(c3_A, c3_B) %>% 
+  plot_stackfrq() + theme(legend.position="right")+
+  labs(
+    x = NULL, # Elimina el título del eje x
+    y = NULL, # Elimina el título del eje y
+    fill = "Décimas",
+    title = "Menos de 25 libros en el hogar"
+  )
+
+Menos_25_libros_caso3
+
+```
+
+```{r, echo=FALSE}
+
+basica_caso3 <- datos_exp %>% dplyr::filter(curso=="Básica") %>% 
+  dplyr::select(c3_A, c3_B) %>% 
+  plot_stackfrq() + theme(legend.position="right")+
+  labs(
+    x = NULL, # Elimina el título del eje x
+    y = NULL, # Elimina el título del eje y
+    fill = "Décimas",
+    title = "Básica"
+  )
+
+basica_caso3
+```
+
+```{r, echo=FALSE}
+
+media_caso3 <- datos_exp %>% dplyr::filter(curso=="Media") %>% 
+  dplyr::select(c3_A, c3_B) %>% 
+  plot_stackfrq() + theme(legend.position="right")+
+  labs(
+    x = NULL, # Elimina el título del eje x
+    y = NULL, # Elimina el título del eje y
+    fill = "Décimas",
+    title = "Media"
+  )
+
+media_caso3
+
+```
+
+```{r, echo=FALSE}
+
+max_nivel_ed_superior_caso3 <- datos_exp %>% dplyr::filter(educ_max=="Estudios superiores") %>% 
+  dplyr::select(c3_A, c3_B) %>% 
+  plot_stackfrq() + theme(legend.position="right")+
+  labs(
+    x = NULL, # Elimina el título del eje x
+    y = NULL, # Elimina el título del eje y
+    fill = "Décimas",
+    title = "Máximo nivel alcanzado por sus padres: Educación superior"
+  )
+
+max_nivel_ed_superior_caso3
+
+```
+
+```{r, echo=FALSE}
+
+max_nivel_ed_media_caso3 <- datos_exp %>% dplyr::filter(educ_max=="Enseñanza media o menos") %>% 
+  dplyr::select(c3_A, c3_B) %>% 
+  plot_stackfrq() + theme(legend.position="right")+
+  labs(
+    x = NULL, # Elimina el título del eje x
+    y = NULL, # Elimina el título del eje y
+    fill = "Décimas",
+    title = "Máximo nivel alcanzado por sus padres: Enseñanza media o menos")
+
+max_nivel_ed_media_caso3
+
 ```
 
 # Caso 4: distribución de décimas considerando esfuerzo y condiciones de estudio (los cuatro casos)
@@ -159,4 +439,95 @@ plot_caso4 <- datos_exp %>% select(c4_A:c4_D) %>%
   )
 
 plot_caso4
+```
+
+```{r, echo=FALSE}
+
+mujer_caso4 <- datos_exp %>% dplyr::filter(genero=="Mujer") %>%
+  dplyr::select(c4_A, c4_B, c4_C, c4_D) %>%
+  plot_stackfrq() + theme(legend.position="right") +
+  labs(
+    x = NULL, # Elimina el título del eje x
+    y = NULL, # Elimina el título del eje y
+    fill = "Décimas",
+    title = "Distribución de Décimas en Mujeres"
+  )
+mujer_caso4
+```
+
+```{r, echo=FALSE}
+
+hombre_caso4 <- datos_exp %>% dplyr::filter(genero=="Hombre") %>%
+  dplyr::select(c4_A, c4_B, c4_C, c4_D) %>%
+  plot_stackfrq() + theme(legend.position="right") +
+  labs(
+    x = NULL, # Elimina el título del eje x
+    y = NULL, # Elimina el título del eje y
+    fill = "Décimas",
+    title = "Distribución de Décimas en Hombres"
+  )
+hombre_caso4
+```
+
+```{r, echo=FALSE}
+datos_long <- datos_exp %>% 
+  filter(curso %in% c("Básica", "Media")) %>%  
+  pivot_longer(cols = c(c4_A, c4_B, c4_C, c4_D), names_to = "variable", values_to = "value")
+
+curso_caso4 <- ggplot(datos_long, aes(x = variable, y = value, fill = as.factor(value))) +
+  geom_bar(stat = "identity", position = "fill") +
+  facet_wrap(~ curso) +  
+  scale_y_continuous(labels = scales::percent) +
+  theme_minimal() +
+  theme(legend.position = "right") +
+  labs(
+    x = NULL,  # Elimina el título del eje x
+    y = "Porcentaje",  # Cambia el título del eje y
+    fill = "Décimas",
+    title = "Distribución de Décimas por Curso"
+  )
+curso_caso4
+
+```
+
+```{r, echo=FALSE}
+
+datos_long <- datos_exp %>% 
+  filter(libros_hogar %in% c("Más de 25 libros", "Menos de 25 libros")) %>%  
+  pivot_longer(cols = c(c4_A, c4_B, c4_C, c4_D), names_to = "variable", values_to = "value")
+
+libros_hogar_caso4 <- ggplot(datos_long, aes(x = variable, y = value, fill = as.factor(value))) +
+  geom_bar(stat = "identity", position = "fill") +
+  facet_wrap(~ libros_hogar) +  
+  scale_y_continuous(labels = scales::percent) +
+  theme_minimal() +
+  theme(legend.position = "right") +
+  labs(
+    x = NULL,  # Elimina el título del eje x
+    y = "Porcentaje",  # Cambia el título del eje y
+    fill = "Décimas",
+    title = "Distribución de Décimas según Libros en el Hogar"
+  )
+libros_hogar_caso4
+```
+
+```{r, echo=FALSE}
+
+datos_long <- datos_exp %>% 
+  filter(educ_max %in% c("Enseñanza media o menos", "Estudios superiores")) %>%  
+  pivot_longer(cols = c(c4_A, c4_B, c4_C, c4_D), names_to = "variable", values_to = "value")
+
+educ_max_caso4 <- ggplot(datos_long, aes(x = variable, y = value, fill = as.factor(value))) +
+  geom_bar(stat = "identity", position = "fill") +
+  facet_wrap(~ educ_max) +  
+  scale_y_continuous(labels = scales::percent) +
+  theme_minimal() +
+  theme(legend.position = "right") +
+  labs(
+    x = NULL,  # Elimina el título del eje x
+    y = "Porcentaje",  # Cambia el título del eje y
+    fill = "Décimas",
+    title = "Distribución de Décimas según Nivel Educacional de los Padres"
+  )
+educ_max_caso4
 ```

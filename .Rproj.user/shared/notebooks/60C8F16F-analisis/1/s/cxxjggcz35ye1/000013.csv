@@ -1,7 +1,0 @@
-"0","tabla_cruzada_g <- sjt.xtab(datos$justicia_nota_ch, "
-"0","                        datos$genero_ES, "
-"0","                        show.summary = F, "
-"0","                        emph.total = T, "
-"0","                         show.col.prc = T, # porcentaje columna"
-"0","                         encoding= ""UTF-8"")"
-"0","tabla_cruzada_g"

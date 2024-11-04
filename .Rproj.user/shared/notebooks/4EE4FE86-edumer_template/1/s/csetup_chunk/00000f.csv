@@ -1,7 +1,0 @@
-"0","#| label: setup"
-"0","#| include: false"
-"0","library(knitr)"
-"0","knitr::opts_chunk$set(echo = F,"
-"0","                      warning = F,"
-"0","                      error = F, "
-"0","                      message = F) "

@@ -1,5 +1,0 @@
-"0","modelo7 <- lm(justicia_nota ~ genero_ES + curso_estudiante + educ_max + libros_hogar + rendimiento + notas_esfuerzo + social_merito_percep_ES, data = datos)
-"
-"2","Error in lm.fit(x, y, offset = offset, singular.ok = singular.ok, ...) : 
-  0 (non-NA) cases
-"
