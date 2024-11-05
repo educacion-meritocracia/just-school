@@ -16,7 +16,8 @@ frq(datos$p1_o2)
 datos_exp <- datos %>% select(T_pex_1_1_o2, T_pex_1_2_o2,  T_pex_2_1_o2, T_pex_2_2_o2, 
                               T_pex_3_1_o2, T_pex_3_2_o2, T_pex_4_1_o2, T_pex_4_2_o2, 
                               T_pex_4_3_o2, T_pex_4_4_o2, p14_o2, d3_def_o1, p3_o2,
-                              p4_o2, p5_o2,p6_o2, p7_o2, p17_o2, p18_o2, p19_o2) %>% na.omit()
+                              p4_o2, p5_o2,p6_o2, p7_o2, p17_o2, p18_o2, p19_o2, p1_1_o2,
+                              p1_2_o2, p1_9_o2, p1_10_o2, p2_1_o2, p2_2_o2, p2_3_o2) %>% na.omit()
 
 #renombrar 
 datos_exp <- datos_exp %>% rename(c1_A = T_pex_1_1_o2,
@@ -38,7 +39,16 @@ datos_exp <- datos_exp %>% rename(c1_A = T_pex_1_1_o2,
                                     nota_merit_esf = p7_o2,
                                     ne_madre = p17_o2,
                                     ne_padre = p18_o2, 
-                                    libros_hogar = p19_o2 
+                                    libros_hogar = p19_o2,
+                                  social_esfuerzo = p1_1_o2 ,
+                                  social_talento = p1_2_o2, 
+                                  igual_oportunidades = p1_9_o2, 
+                                  social_merito = p1_10_o2,
+                                  school_esfuerzo = p2_1_o2,
+                                  school_talento = p2_2_o2, 
+                                  school_merito = p2_3_o2
+                                    
+                                  
                                     )
 
 
@@ -87,7 +97,7 @@ datos_exp$ne_madre <- recode(datos_exp$ne_madre, "c(88,99)=NA")
 datos_exp$ne_padre <- recode(datos_exp$ne_padre, "c(88,99)=NA")
 
 datos_exp <- datos_exp %>%
-  mutate(educ_max = case_when(
+  dplyr::mutate(educ_max = case_when(
     !is.na(ne_madre) & is.na(ne_padre) ~ ne_madre,
     is.na(ne_madre) & !is.na(ne_padre) ~ ne_padre,
     !is.na(ne_madre) & !is.na(ne_padre) ~ pmax(ne_madre, ne_padre, na.rm = TRUE),
@@ -191,6 +201,14 @@ frq(datos_exp$justicia_nota_ch)
 
 # EXPERIMENTO -----------------------------------------------------------------
 
+# MERITOCRACIA ----------------------------------------------------------------
+datos_exp$social_esfuerzo <- recode(datos_exp$social_esfuerzo, "c(88,99)=NA")
+datos_exp$social_talento <- recode(datos_exp$social_talento, "c(88,99)=NA")
+datos_exp$social_merito <- recode(datos_exp$social_merito, "c(88,99)=NA")
+datos_exp$school_esfuerzo <- recode(datos_exp$school_esfuerzo, "c(88,99)=NA")
+datos_exp$school_talento <- recode(datos_exp$school_talento, "c(88,99)=NA")
+datos_exp$school_merito <- recode(datos_exp$school_merito, "c(88,99)=NA")
+datos_exp$igual_oportunidades <- recode(datos_exp$igual_oportunidades, "c(88,99)=NA")
 
 # 5. base procesada -----------------------------------------------------------
 datos_exp <-as.data.frame(datos_exp)

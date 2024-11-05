@@ -463,7 +463,7 @@ sjPlot::tab_corr(proc_datos,
                  triangle = "lower")
 ```
 
-#### Diferencias por género 
+#### Diferencias por género
 
 ```{r, echo=FALSE, warning=FALSE}
 test_just_g <- t.test(proc_datos$justicia_nota ~ proc_datos$genero_ES, 
@@ -474,7 +474,7 @@ test_just_g
 gginference::ggttest(test_just_g)
 ```
 
-#### Diferencias por curso 
+#### Diferencias por curso
 
 ```{r, echo=FALSE, warning=FALSE}
 test_just_c <- t.test(proc_datos$justicia_nota ~ proc_datos$curso_estudiante, 
