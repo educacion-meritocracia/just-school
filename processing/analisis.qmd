@@ -463,6 +463,50 @@ sjPlot::tab_corr(proc_datos,
                  triangle = "lower")
 ```
 
+#### Diferencias por género 
+
+```{r, echo=FALSE, warning=FALSE}
+test_just_g <- t.test(proc_datos$justicia_nota ~ proc_datos$genero_ES, 
+                   alternative = "greater",
+                   conf.level = 0.95)
+
+test_just_g
+gginference::ggttest(test_just_g)
+```
+
+#### Diferencias por curso 
+
+```{r, echo=FALSE, warning=FALSE}
+test_just_c <- t.test(proc_datos$justicia_nota ~ proc_datos$curso_estudiante, 
+                   alternative = "greater",
+                   conf.level = 0.95)
+
+test_just_c
+gginference::ggttest(test_just_c)
+```
+
+#### Diferencias por cantidad de libros en el hogar
+
+```{r, echo=FALSE, warning=FALSE}
+test_just_l <- t.test(proc_datos$justicia_nota ~ proc_datos$libros_hogar, 
+                   alternative = "greater",
+                   conf.level = 0.95)
+
+test_just_l
+gginference::ggttest(test_just_l)
+```
+
+#### Diferencias por educación máxima de los padres
+
+```{r, echo=FALSE, warning=FALSE}
+test_just_e <- t.test(proc_datos$justicia_nota ~ proc_datos$educ_max, 
+                   alternative = "greater",
+                   conf.level = 0.95)
+
+test_just_e
+gginference::ggttest(test_just_e)
+```
+
 ## Modelos
 
 ### Modelo regresión lineal múltiple
@@ -475,12 +519,18 @@ modelo4 <- lm(justicia_nota ~ genero_ES + curso_estudiante + educ_max + libros_h
 modelo5 <- lm(justicia_nota ~ genero_ES + curso_estudiante + educ_max + libros_hogar + rendimiento, data = proc_datos)
 modelo6 <- lm(justicia_nota ~ genero_ES + curso_estudiante + educ_max + libros_hogar + rendimiento + notas_esfuerzo, data = proc_datos)
 modelo7 <- lm(justicia_nota ~ genero_ES + curso_estudiante + educ_max + libros_hogar + rendimiento + notas_esfuerzo + social_merito_percep_ES, data = proc_datos)
+modelo8 <- lm(justicia_nota ~ genero_ES + curso_estudiante + educ_max + libros_hogar + rendimiento + notas_esfuerzo + social_merito_percep_ES + merit_esfuerzo_percep_ES, data = proc_datos)
+modelo9 <- lm(justicia_nota ~ genero_ES + curso_estudiante + educ_max + libros_hogar + rendimiento + notas_esfuerzo + social_merito_percep_ES + merit_esfuerzo_percep_ES + merit_talento_percep_ES, data = proc_datos)
+modelo10 <- lm(justicia_nota ~ genero_ES + curso_estudiante + educ_max + libros_hogar + rendimiento + notas_esfuerzo + social_merito_percep_ES + merit_esfuerzo_percep_ES + merit_talento_percep_ES + school_merito_ES, data = proc_datos)
+modelo11 <- lm(justicia_nota ~ genero_ES + curso_estudiante + educ_max + libros_hogar + rendimiento + notas_esfuerzo + social_merito_percep_ES + merit_esfuerzo_percep_ES + merit_talento_percep_ES + school_merito_ES + school_esfuerzo_ES, data = proc_datos)
+modelo12 <- lm(justicia_nota ~ genero_ES + curso_estudiante + educ_max + libros_hogar + rendimiento + notas_esfuerzo + social_merito_percep_ES + merit_esfuerzo_percep_ES + merit_talento_percep_ES + school_merito_ES + school_esfuerzo_ES + school_talento_ES, data = proc_datos)
 
-sjPlot::tab_model(list(modelo1, modelo2,modelo3, modelo4,modelo5, modelo6, modelo7), show.ci=FALSE, p.style = "stars", dv.labels = c("Modelo 1", "Modelo 2", "Modelo 3", "Modelo 4", "Modelo 5", "Modelo 6", "Modelo 7" ),string.pred = "Predictores", string.est = "β")
+
+sjPlot::tab_model(list(modelo1, modelo2,modelo3, modelo4,modelo5, modelo6, modelo7, modelo8, modelo9, modelo10, modelo11, modelo12), show.ci=FALSE, p.style = "stars", dv.labels = c("Modelo 1", "Modelo 2", "Modelo 3", "Modelo 4", "Modelo 5", "Modelo 6", "Modelo 7", "Modelo 8", "Modelo 9", "Modelo 10", "Modelo 11", "Modelo 12" ),string.pred = "Predictores", string.est = "β")
 
 #plot(modelo5, which = 1)  # Residuals vs Fitted plot
 
-plot_model(modelo7, show.values = TRUE)+ theme_sjplot()
+plot_model(modelo12, show.values = TRUE)+ theme_sjplot()
 
 ```
 
