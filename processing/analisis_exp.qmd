@@ -843,7 +843,7 @@ merit_socialpercep4 <- ggarrange(
   plot_caso4_talento,
   common.legend = TRUE, 
   ncol = 2, 
-  legend = "bottom")
+  legend = "right")
 
 # Agregar una etiqueta global centrada
 plot_merit_percep4 <- annotate_figure(
