@@ -252,6 +252,7 @@ Aquí mis notas
 
 
 :::
+
 ## [**Caso 2**]{.gray} 
 
 ![](https://educacion-meritocracia.github.io/just-school/processing/analisis_exp_files/figure-html/unnamed-chunk-21-1.png)
@@ -262,7 +263,10 @@ Aquí mis notas
 
 ## [**Caso 4**]{.gray} 
 ![](https://educacion-meritocracia.github.io/just-school/processing/analisis_exp_files/figure-html/unnamed-chunk-35-1.png)
-## Caso 4 
+
+
+
+## [**Caso 4**]{.gray} 
 ![](https://educacion-meritocracia.github.io/just-school/processing/analisis_exp_files/figure-html/unnamed-chunk-42-1.png)
 
 # Discusión y conclusiones {data-background-color="#5f5758"}
