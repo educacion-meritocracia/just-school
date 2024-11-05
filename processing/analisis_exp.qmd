@@ -1,5 +1,5 @@
 ---
-title: "Análisis experimento ola 2"
+title: "Análisis experimento Ola 2"
 fontsize: 14pt
 format:
   html:
@@ -18,7 +18,7 @@ editor: visual
 ---
 
 ```{r, data, echo=FALSE}
-pacman::p_load(dplyr, sjmisc, car, sjlabelled, stargazer, haven, sjPlot, ggplot2, tidyr, stringr, corrplot, summarytools)
+pacman::p_load(tidyverse, dplyr, sjmisc, car, sjlabelled, stargazer, haven, sjPlot, ggplot2, tidyr, stringr, corrplot, summarytools, ggdist)
 
 load("../input/data/proc/ola2.RData")
 ```
@@ -41,6 +41,8 @@ plot_caso1 <- datos_exp %>% select(c1_A, c1_B) %>%
   
 plot_caso1
 ```
+
+## Género
 
 ```{r, echo=FALSE}
 
@@ -75,6 +77,19 @@ hombre_caso1
 
 ```{r, echo=FALSE}
 
+test_ej1 <- t.test(datos_exp$c1_B ~ datos_exp$genero, 
+                   alternative = "greater",
+                   conf.level = 0.95)
+
+test_ej1
+
+gginference::ggttest(test_ej1)
+```
+
+## Curso
+
+```{r, echo=FALSE}
+
 datos_long <- datos_exp %>% 
   filter(curso %in% c("Básica", "Media")) %>%  
   pivot_longer(cols = c(c1_A, c1_B), names_to = "variable", values_to = "value")
@@ -92,7 +107,19 @@ curso_caso1 <- ggplot(datos_long, aes(x = variable, y = value, fill = as.factor(
     title = "Curso"
   )
 curso_caso1
+
 ```
+
+```{r, echo=FALSE}
+test_ej2 <- t.test(datos_exp$c1_A ~ datos_exp$curso, 
+                   alternative = "greater",
+                   conf.level = 0.95)
+
+test_ej2
+gginference::ggttest(test_ej2)
+```
+
+## Composición socioeconómica del hogar
 
 ```{r, echo=FALSE}
 
@@ -116,6 +143,15 @@ libros_hogar_caso1
 ```
 
 ```{r, echo=FALSE}
+test_ej3 <- t.test(datos_exp$c1_A ~ datos_exp$libros_hogar, 
+                   alternative = "greater",
+                   conf.level = 0.95)
+
+test_ej3
+gginference::ggttest(test_ej3)
+```
+
+```{r, echo=FALSE}
 
 datos_long <- datos_exp %>% 
   filter(educ_max %in% c("Enseñanza media o menos", "Estudios superiores")) %>%  
@@ -136,6 +172,15 @@ educ_max_caso1 <- ggplot(datos_long, aes(x = variable, y = value, fill = as.fact
 educ_max_caso1
 ```
 
+```{r, echo=FALSE}
+test_ej2 <- t.test(datos_exp$c1_A ~ datos_exp$curso, 
+                   alternative = "greater",
+                   conf.level = 0.95)
+
+test_ej2
+gginference::ggttest(test_ej2)
+```
+
 # Caso 2: distribución de décimas solo considerando el esfuerzo
 
 **Estudiante A**: se esfuerza
@@ -154,6 +199,8 @@ plot_caso2 <- datos_exp %>% select(c2_A, c2_B) %>%
 
 plot_caso2
 ```
+
+## Género
 
 ```{r, echo=FALSE}
 mujer_caso2 <- datos_exp %>% dplyr::filter(genero=="Mujer") %>% 
@@ -183,6 +230,40 @@ hombre_caso2 <- datos_exp %>% dplyr::filter(genero=="Hombre") %>%
 hombre_caso2
 ```
 
+## Curso
+
+```{r, echo=FALSE}
+
+basica_caso2 <- datos_exp %>% dplyr::filter(curso=="Básica") %>% 
+  dplyr::select(c2_A, c2_B) %>% 
+  plot_stackfrq() + theme(legend.position="right")+
+  labs(
+    x = NULL, # Elimina el título del eje x
+    y = NULL, # Elimina el título del eje y
+    fill = "Décimas",
+    title = "Básica"
+  )
+
+basica_caso2
+```
+
+```{r, echo=FALSE}
+
+media_caso2 <- datos_exp %>% dplyr::filter(curso=="Media") %>% 
+  dplyr::select(c2_A, c2_B) %>% 
+  plot_stackfrq() + theme(legend.position="right")+
+  labs(
+    x = NULL, # Elimina el título del eje x
+    y = NULL, # Elimina el título del eje y
+    fill = "Décimas",
+    title = "Media"
+  )
+
+media_caso2
+```
+
+## Composición socioeconómica del hogar
+
 ```{r, echo=FALSE}
 
 Mas_25_libros_caso2 <- datos_exp %>% dplyr::filter(libros_hogar=="Más de 25 libros") %>% 
@@ -210,38 +291,6 @@ Menos_25_libros_caso2 <- datos_exp %>% dplyr::filter(libros_hogar=="Menos de 25 
   )
 
 Menos_25_libros_caso2
-
-```
-
-```{r, echo=FALSE}
-
-basica_caso2 <- datos_exp %>% dplyr::filter(curso=="Básica") %>% 
-  dplyr::select(c2_A, c2_B) %>% 
-  plot_stackfrq() + theme(legend.position="right")+
-  labs(
-    x = NULL, # Elimina el título del eje x
-    y = NULL, # Elimina el título del eje y
-    fill = "Décimas",
-    title = "Básica"
-  )
-
-basica_caso2
-
-```
-
-```{r, echo=FALSE}
-
-media_caso2 <- datos_exp %>% dplyr::filter(curso=="Media") %>% 
-  dplyr::select(c2_A, c2_B) %>% 
-  plot_stackfrq() + theme(legend.position="right")+
-  labs(
-    x = NULL, # Elimina el título del eje x
-    y = NULL, # Elimina el título del eje y
-    fill = "Décimas",
-    title = "Media"
-  )
-
-media_caso2
 
 ```
 
@@ -276,6 +325,101 @@ max_nivel_ed_media_caso2
 
 ```
 
+## Meritocracia
+
+```{r, echo=FALSE}
+datos_exp$social_esfuerzo <- set_label(x = datos_exp$social_esfuerzo,label =  "Esfuerzo")
+
+datos_exp$social_talento <- set_label(x = datos_exp$social_talento,label =  "Talento")
+datos_exp$social_merito <- set_label(x = datos_exp$social_merito,label =  "Merecimiento")
+datos_exp$social_esfuerzo <- recode(datos_exp$social_esfuerzo, "c(88,99)=NA")
+datos_exp$social_talento <- recode(datos_exp$social_talento, "c(88,99)=NA")
+datos_exp$social_merito <- recode(datos_exp$social_merito, "c(88,99)=NA")
+
+datos_exp <- datos_exp %>% na.omit() %>% na.omit()
+mujer_caso2 <- datos_exp %>% dplyr::filter(c2_A=="3") %>% 
+  dplyr::select(social_esfuerzo, social_talento, social_merito) %>% 
+  plot_stackfrq(geom.size = 0.3) + theme(legend.position="right")+
+  labs(
+    x = NULL, # Elimina el título del eje x
+    y = NULL, # Elimina el título del eje y
+    fill = "Grado de acuerdo",
+    title = "Caso: Estudiante A 3 décimas y Estudiante B 2 décimas",
+    axis.labels = c("Esfuerzo", "Talento", "Merecimiento")
+  ) + theme_bw()
+
+mujer_caso2
+
+datos_exp <- datos_exp %>% na.omit()
+
+theme_set(theme_ggdist())
+colors <- RColorBrewer::brewer.pal(n = 4, name = "RdBu")
+
+merit_caso2 <- datos_exp %>% dplyr::filter(c2_A=="3") %>% 
+  dplyr::select(social_esfuerzo, social_talento, social_merito) %>% 
+  # Contar las frecuencias para cada categoría
+  plot_likert(geom.colors = colors,
+                      
+                      geom.size = 0.3,
+                      axis.labels = c("Esfuerzo", "Talento", "Merecimiento"),
+                      catcount = 4) + 
+  theme(legend.position="right")+
+  labs(
+    x = NULL, # Elimina el título del eje x
+    y = NULL, # Elimina el título del eje y
+    fill = "Grado de acuerdo",
+    title = "Caso 2: Estudiante A 3 décimas y Estudiante B 2 décimas"
+  ) 
+
+merit_caso2
+```
+
+```{r, echo=FALSE}
+datos_exp$school_esfuerzo <- set_label(x = datos_exp$school_esfuerzo,label =  "Esfuerzo")
+
+datos_exp$school_talento <- set_label(x = datos_exp$school_talento,label =  "Talento")
+datos_exp$school_merito <- set_label(x = datos_exp$school_merito,label =  "Merecimiento")
+
+datos_exp <- datos_exp %>% na.omit() %>% na.omit()
+mujer_caso2 <- datos_exp %>% dplyr::filter(c2_A=="3") %>% 
+  dplyr::select(school_esfuerzo, school_talento, school_merito) %>% 
+  plot_stackfrq(geom.size = 0.3) + theme(legend.position="right")+
+  labs(
+    x = NULL, # Elimina el título del eje x
+    y = NULL, # Elimina el título del eje y
+    fill = "Grado de acuerdo",
+    title = "Caso 2: Estudiante A 3 décimas y Estudiante B 2 décimas",
+    axis.labels = c("Esfuerzo", "Talento", "Merecimiento")
+  ) + theme_bw()
+
+mujer_caso2
+```
+
+## Justicia en las notas 
+
+```{r, echo=FALSE}
+datos_exp <- datos_exp %>% na.omit()
+
+datos_exp$justicia_nota_ch <- set_label(x = datos_exp$justicia_nota_ch,label =  "Juasticia en la nota")
+
+
+just_caso2 <- datos_exp %>% dplyr::filter(c2_A=="3") %>% 
+  dplyr::select(justicia_nota_ch) %>% 
+  plot_stackfrq(geom.size = 0.2) + theme(legend.position="right")+
+  labs(
+    x = NULL, # Elimina el título del eje x
+    y = NULL, # Elimina el título del eje y
+    fill = "Sensación de (in)justicia",
+    title = 
+    "Caso 2: Estudiante A 3 décimas y Estudiante B 2 décimas",
+    #axis.labels = c("Esfuerzo", "Talento", "Merecimiento")
+  ) + theme_bw() 
+
+just_caso2
+
+
+```
+
 # Caso 3: distribución de décimas considerando esfuerzo y condiciones de estudio (solo dos casos)
 
 **Estudiante A**: se esfuerza y tiene casa pequeña
@@ -293,6 +437,8 @@ plot_caso3 <- datos_exp %>% select(c3_A, c3_B) %>%
   ) # esfuerzo y casa pequeña
 plot_caso3
 ```
+
+## Género
 
 ```{r, echo=FALSE}
 mujer_caso3 <- datos_exp %>% dplyr::filter(genero=="Mujer") %>% 
@@ -323,6 +469,41 @@ hombre_caso3 <- datos_exp %>% dplyr::filter(genero=="Hombre") %>%
 hombre_caso3
 
 ```
+
+## Curso
+
+```{r, echo=FALSE}
+
+media_caso3 <- datos_exp %>% dplyr::filter(curso=="Media") %>% 
+  dplyr::select(c3_A, c3_B) %>% 
+  plot_stackfrq() + theme(legend.position="right")+
+  labs(
+    x = NULL, # Elimina el título del eje x
+    y = NULL, # Elimina el título del eje y
+    fill = "Décimas",
+    title = "Media"
+  )
+
+media_caso3
+
+```
+
+```{r, echo=FALSE}
+
+basica_caso3 <- datos_exp %>% dplyr::filter(curso=="Básica") %>% 
+  dplyr::select(c3_A, c3_B) %>% 
+  plot_stackfrq() + theme(legend.position="right")+
+  labs(
+    x = NULL, # Elimina el título del eje x
+    y = NULL, # Elimina el título del eje y
+    fill = "Décimas",
+    title = "Básica"
+  )
+
+basica_caso3
+```
+
+## Composición socioeconómica del hogar
 
 ```{r, echo=FALSE}
 
@@ -358,37 +539,6 @@ Menos_25_libros_caso3
 
 ```{r, echo=FALSE}
 
-basica_caso3 <- datos_exp %>% dplyr::filter(curso=="Básica") %>% 
-  dplyr::select(c3_A, c3_B) %>% 
-  plot_stackfrq() + theme(legend.position="right")+
-  labs(
-    x = NULL, # Elimina el título del eje x
-    y = NULL, # Elimina el título del eje y
-    fill = "Décimas",
-    title = "Básica"
-  )
-
-basica_caso3
-```
-
-```{r, echo=FALSE}
-
-media_caso3 <- datos_exp %>% dplyr::filter(curso=="Media") %>% 
-  dplyr::select(c3_A, c3_B) %>% 
-  plot_stackfrq() + theme(legend.position="right")+
-  labs(
-    x = NULL, # Elimina el título del eje x
-    y = NULL, # Elimina el título del eje y
-    fill = "Décimas",
-    title = "Media"
-  )
-
-media_caso3
-
-```
-
-```{r, echo=FALSE}
-
 max_nivel_ed_superior_caso3 <- datos_exp %>% dplyr::filter(educ_max=="Estudios superiores") %>% 
   dplyr::select(c3_A, c3_B) %>% 
   plot_stackfrq() + theme(legend.position="right")+
@@ -418,6 +568,18 @@ max_nivel_ed_media_caso3
 
 ```
 
+## Meritocracia
+
+```{r, echo=FALSE}
+
+```
+
+## Justicia en las notas
+
+```{r, echo=FALSE}
+
+```
+
 # Caso 4: distribución de décimas considerando esfuerzo y condiciones de estudio (los cuatro casos)
 
 **Estudiante A**: se esfuerza y tiene casa pequeña
@@ -440,6 +602,8 @@ plot_caso4 <- datos_exp %>% select(c4_A:c4_D) %>%
 
 plot_caso4
 ```
+
+## Género
 
 ```{r, echo=FALSE}
 
@@ -469,6 +633,8 @@ hombre_caso4 <- datos_exp %>% dplyr::filter(genero=="Hombre") %>%
 hombre_caso4
 ```
 
+## Curso
+
 ```{r, echo=FALSE}
 datos_long <- datos_exp %>% 
   filter(curso %in% c("Básica", "Media")) %>%  
@@ -489,6 +655,8 @@ curso_caso4 <- ggplot(datos_long, aes(x = variable, y = value, fill = as.factor(
 curso_caso4
 
 ```
+
+## Composición socioeconómica del hogar
 
 ```{r, echo=FALSE}
 
@@ -530,4 +698,233 @@ educ_max_caso4 <- ggplot(datos_long, aes(x = variable, y = value, fill = as.fact
     title = "Distribución de Décimas según Nivel Educacional de los Padres"
   )
 educ_max_caso4
+```
+
+## Meritocracia
+
+Sociedad
+
+```{r, echo=FALSE}
+datos_exp$social_esfuerzo <- set_label(x = datos_exp$social_esfuerzo,label =  "Esfuerzo")
+
+datos_exp$social_talento <- set_label(x = datos_exp$social_talento,label =  "Talento")
+datos_exp$social_merito <- set_label(x = datos_exp$social_merito,label =  "Merecimiento")
+datos_exp$social_esfuerzo <- recode(datos_exp$social_esfuerzo, "c(88,99)=NA")
+datos_exp$social_talento <- recode(datos_exp$social_talento, "c(88,99)=NA")
+datos_exp$social_merito <- recode(datos_exp$social_merito, "c(88,99)=NA")
+
+datos_exp <- datos_exp %>% na.omit() %>% na.omit()
+caso4 <- datos_exp %>% dplyr::filter(c4_A=="3") %>% 
+  dplyr::select(social_esfuerzo, social_talento, social_merito) %>% 
+  plot_stackfrq(geom.size = 0.3) + theme(legend.position="right")+
+  labs(
+    x = NULL, # Elimina el título del eje x
+    y = NULL, # Elimina el título del eje y
+    fill = "Grado de acuerdo",
+    title = "Caso: Estudiante A 3 décimas y Estudiante B 2 décimas",
+    axis.labels = c("Esfuerzo", "Talento", "Merecimiento")
+  ) + theme_bw()
+
+caso4
+
+datos_exp <- datos_exp %>% na.omit()
+
+theme_set(theme_ggdist())
+colors <- RColorBrewer::brewer.pal(n = 4, name = "RdBu")
+
+merit_caso4 <- datos_exp %>% dplyr::filter(c4_A=="3") %>% 
+  dplyr::select(social_esfuerzo, social_talento, social_merito) %>% 
+  # Contar las frecuencias para cada categoría
+  plot_likert(geom.colors = colors,
+                      
+                      geom.size = 0.3,
+                      axis.labels = c("Esfuerzo", "Talento", "Merecimiento"),
+                      catcount = 4) + 
+  theme(legend.position="right")+
+  labs(
+    x = NULL, # Elimina el título del eje x
+    y = NULL, # Elimina el título del eje y
+    fill = "Grado de acuerdo",
+    title = "Caso 4: Estudiante A 3 décimas"
+  ) 
+
+merit_caso4
+```
+
+```{r, echo=FALSE}
+#dona
+caso4_esfuerzo <- datos_exp %>% dplyr::filter(c4_A=="3") %>% 
+  dplyr::select(social_esfuerzo) #se filtran valores para esa categoría del curso
+
+caso4_esfuerzo = round(prop.table(table(categorias=caso4_esfuerzo$social_esfuerzo)),2)
+caso4_esfuerzo = as.data.frame(caso4_esfuerzo)
+caso4_esfuerzo$categorias <- factor(caso4_esfuerzo$categorias, levels = c(1, 2, 3, 4), labels = c("Muy en desacuerdo", "Desacuerdo", "De acuerdo", "Muy de acuerdo"))
+plot_caso4_esfuerzo<-ggplot(caso4_esfuerzo,aes(x=2,y=-Freq, fill=categorias))+
+  geom_bar(stat = "identity", 
+           color="white")+
+    geom_text(aes(label = scales::percent(Freq)),
+              position=position_stack(vjust=0.5),color="black",size=4.5)+
+  coord_polar(theta = "y")+
+  scale_fill_brewer(palette = "Blues")+
+    theme_void()+
+  theme(legend.title = element_blank(),
+    plot.title = element_text(size=12, face="bold", hjust=0.5))+
+  xlim(0.5,2.5) +
+  labs(title="Esfuerzo" )
+
+
+#dona
+caso4_talento <- datos_exp %>% dplyr::filter(c4_A=="3") %>% 
+  dplyr::select(social_talento) #se filtran valores para esa categoría del curso
+
+caso4_talento = round(prop.table(table(categorias=caso4_talento$social_talento)),2)
+caso4_talento = as.data.frame(caso4_talento)
+caso4_talento$categorias <- factor(caso4_talento$categorias, levels = c(1, 2, 3, 4), labels = c("Muy en desacuerdo", "Desacuerdo", "De acuerdo", "Muy de acuerdo"))
+plot_caso4_talento<-ggplot(caso4_talento,aes(x=2,y=-Freq, fill=categorias))+
+  geom_bar(stat = "identity", 
+           color="white")+
+    geom_text(aes(label = scales::percent(Freq)),
+              position=position_stack(vjust=0.5),color="black",size=4.5)+
+  coord_polar(theta = "y")+
+  scale_fill_brewer(palette = "Blues")+
+    theme_void()+
+  theme(legend.title = element_blank(),
+    plot.title = element_text(size=12, face="bold", hjust=0.5))+
+  xlim(0.5,2.5) +
+  labs(title="Talento" )
+
+#dona
+caso4_merit <- datos_exp %>% dplyr::filter(c4_A=="3") %>% 
+  dplyr::select(social_merito) #se filtran valores para esa categoría del curso
+
+caso4_merit = round(prop.table(table(categorias=caso4_merit$social_merito)),2)
+caso4_merit = as.data.frame(caso4_merit)
+caso4_merit$categorias <- factor(caso4_merit$categorias, levels = c(1, 2, 3, 4), labels = c("Muy en desacuerdo", "Desacuerdo", "De acuerdo", "Muy de acuerdo"))
+plot_caso4_merit<-ggplot(caso4_merit,aes(x=2,y=-Freq, fill=categorias))+
+  geom_bar(stat = "identity", 
+           color="white")+
+    geom_text(aes(label = scales::percent(Freq)),
+              position=position_stack(vjust=0.5),color="black",size=4.5)+
+  coord_polar(theta = "y")+
+  scale_fill_brewer(palette = "Blues")+
+    theme_void()+
+  theme(legend.title = element_blank(),
+    plot.title = element_text(size=12, face="bold", hjust=0.5))+
+  xlim(0.5,2.5) +
+  labs(title="Merecimiento" )
+
+#dona
+caso4_oportunidades <- datos_exp %>% dplyr::filter(c4_A=="3") %>% 
+  dplyr::select(igual_oportunidades) #se filtran valores para esa categoría del curso
+
+caso4_oportunidades = round(prop.table(table(categorias=caso4_oportunidades$igual_oportunidades)),2)
+caso4_oportunidades = as.data.frame(caso4_oportunidades)
+caso4_oportunidades$categorias <- factor(caso4_oportunidades$categorias, levels = c(1, 2, 3, 4), labels = c("Muy en desacuerdo", "Desacuerdo", "De acuerdo", "Muy de acuerdo"))
+plot_caso4_oportunidades<-ggplot(caso4_oportunidades,aes(x=2,y=-Freq, fill=categorias))+
+  geom_bar(stat = "identity", 
+           color="white")+
+    geom_text(aes(label = scales::percent(Freq)),
+              position=position_stack(vjust=0.5),color="black",size=4.5)+
+  coord_polar(theta = "y")+
+  scale_fill_brewer(palette = "Blues")+
+    theme_void()+
+  theme(legend.title = element_blank(),
+    plot.title = element_text(size=12, face="bold", hjust=0.5))+
+  xlim(0.5,2.5) +
+  labs(title="Igualdad de oportunidades" )
+
+# grafico esfuerzo en la sociedad
+library( ggtext)
+library(ggpubr)
+# Combinar los gráficos
+merit_socialpercep4 <- ggarrange(
+  plot_caso4_esfuerzo, 
+  plot_caso4_talento,
+  common.legend = TRUE, 
+  ncol = 2, 
+  legend = "bottom")
+
+# Agregar una etiqueta global centrada
+plot_merit_percep4 <- annotate_figure(
+  merit_socialpercep4,
+  top = text_grob(
+    "Percepción de mérito social",
+    size = 12, 
+    face = "italic", 
+    color = "black",
+    hjust = 0.5))
+
+
+plot_merit_percep4
+```
+
+```{r, echo=FALSE}
+# Combinar los gráficos
+percep4 <- ggarrange(
+  plot_caso4_merit, 
+  plot_caso4_oportunidades,
+  common.legend = TRUE, 
+  ncol = 2, 
+  legend = "bottom")
+
+# Agregar una etiqueta global centrada
+plot_mpercep4 <- annotate_figure(
+  percep4,
+  top = text_grob(
+    "Percepción...",
+    size = 12, 
+    face = "italic", 
+    color = "black",
+    hjust = 0.5))
+
+
+plot_mpercep4
+```
+
+Escuela
+
+```{r, echo=FALSE}
+datos_exp$school_esfuerzo <- set_label(x = datos_exp$school_esfuerzo,label =  "Esfuerzo")
+
+datos_exp$school_talento <- set_label(x = datos_exp$school_talento,label =  "Talento")
+datos_exp$school_merito <- set_label(x = datos_exp$school_merito,label =  "Merecimiento")
+
+datos_exp <- datos_exp %>% na.omit() %>% na.omit()
+schoolcaso4 <- datos_exp %>% dplyr::filter(c4_A=="3") %>% 
+  dplyr::select(school_esfuerzo, school_talento, school_merito) %>% 
+  plot_stackfrq(geom.size = 0.3) + theme(legend.position="right")+
+  labs(
+    x = NULL, # Elimina el título del eje x
+    y = NULL, # Elimina el título del eje y
+    fill = "Grado de acuerdo",
+    title = "Caso 4: Estudiante A 3 décimas",
+    axis.labels = c("Esfuerzo", "Talento", "Merecimiento")
+  ) + theme_bw()
+
+schoolcaso4
+```
+
+## Justicia en las notas
+
+```{r, echo=FALSE}
+datos_exp <- datos_exp %>% na.omit()
+
+datos_exp$justicia_nota_ch <- set_label(x = datos_exp$justicia_nota_ch,label =  "Juasticia en la nota")
+
+
+just_caso4 <- datos_exp %>% dplyr::filter(c4_A=="3") %>% 
+  dplyr::select(justicia_nota_ch) %>% 
+  plot_stackfrq(geom.size = 0.2) + theme(legend.position="right")+
+  labs(
+    x = NULL, # Elimina el título del eje x
+    y = NULL, # Elimina el título del eje y
+    fill = "Sensación de (in)justicia",
+    title = 
+    "Caso 4: Estudiante A 3 décimas",
+    #axis.labels = c("Esfuerzo", "Talento", "Merecimiento")
+  ) + theme_bw() 
+
+just_caso4
+
+
 ```
