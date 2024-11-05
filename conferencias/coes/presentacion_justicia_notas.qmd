@@ -1,0 +1,282 @@
+---
+pagetitle: "Justicia en las notas"
+Author: Equipo EDUMER
+#bibliography: "../input/bib/refs.bib"
+csl: "../input/bib/apa6.csl"
+lang: es
+
+knitr:
+  opts_chunk:
+    collapse: true
+    comment: "#>"
+    R.options:
+      knitr.graphics.auto_pdf: true
+      
+format:
+  revealjs:
+    #logo: images/edumer.png
+    slide-number: true
+    theme: "edumer.scss"
+    auto-stretch: false
+    title-slide-attributes:
+      visibility: false
+    transition: fade
+    transition-speed: slow
+# data-background-image: images/cover.jpg
+# data-background-size: cover
+    auto-play-media: true
+  pdf:
+    format: beamer 
+    keep-tex: true  # Debug LaTeX output if needed
+---
+
+```{r}
+#| label: setup
+#| include: false
+library(knitr)
+knitr::opts_chunk$set(echo = F,
+                      warning = F,
+                      error = F, 
+                      message = F) 
+```
+
+```{r}
+#| label: packages
+#| include: false
+
+if (! require("pacman")) install.packages("pacman")
+
+pacman::p_load(tidyverse, 
+               sjmisc, 
+               sjPlot, 
+               sjlabelled, 
+               here,
+               kableExtra,
+               ggdist,
+               summarytools)
+
+options(scipen=999)
+rm(list = ls())
+```
+
+
+```{r}
+#| label: data
+#| include: false
+
+#load(url("https://github.com/educacion-meritocracia/market-justice-preferences-school/raw/refs/heads/main/input/data/mlm_models.RData"))
+#load(url("https://github.com/educacion-meritocracia/market-justice-preferences-school/raw/refs/heads/main/input/data/dependientes.RData"))
+
+```
+
+
+::: columns
+::: {.column width="20%"}
+
+![](images/coes.png)
+
+
+
+![](images/edumer.png)
+
+::: {.red2 .medium}
+
+FONDECYT No. 1210847 "Meritocracia en la escuela"
+
+:::
+
+:::
+
+::: {.column .column-right width="80%"}  
+<br>
+
+## **Percepciones de Justicia en la Evaluación Escolar: Un Estudio Exploratorio en Estudiantes Chilenos**
+
+------------------------------------------------------------------------
+
+**Juan Carlos Castillo, María Fernanda Núñez, <br> Kevin Carrasco, Jesús Díaz, Javiera González y  Andreas Laffert**
+
+##### [Departamento de Sociología, Universidad de Chile - COES]{.gray}
+
+
+[**XI Conferencia Internacional COES**]{.gray}
+
+[7-8 Noviembre 2024, Chile]{.gray}
+
+:::
+:::
+
+::: {.notes}
+Aquí mis notas
+:::
+
+
+# Contexto y motivación {data-background-color="#5f5758"}
+
+- Observar la manera en que estudiantes operan sus **criterios de justicia** al momento de [***distribuir recompensas en el contexto escolar***]{.black}. 
+- Contexto educativo chileno caracterizado por una alta segregación y desigualdad
+
+- Recompensa a distribuir: <span style="background:#D91A2A">[***décimas***]{.white}</span> 
+
+
+## [**Antecedentes**]{.black}
+
+::: {.incremental .highlight-last style="font-size: 100%;"}
+
+- **Justicia de recompensas**: (@castillo_cual_2009)
+
+
+- **Justicia en las notas**:  (@jassoExploringSenseJustice2002)
+
+:::
+
+## [**Antecedentes**]{.black}
+
+::: {.incremental .highlight-last style="font-size: 100%;"}
+
+::::: columns
+::: {.column width="50%" }
+
+#### [**Sensaciones de <br> justicia en las notas**]{.red2}
+
+- Estratificada (@resh_sense_2010)
+
+:::
+
+::: {.column width="50%" }
+
+#### [**Rol de la meritocracia en el <br> principio de justicia**]{.red2} 
+
+- Responde al **principio de equidad** en la distribución de las notas (@resh_sense_2010), el cual se entiende como **justo** para dicha asignación (@mijs_unfulfillable_2016) 
+
+:::
+:::::
+
+:::
+
+## **Pregunta e Hipótesis**{data-background-color="#5f5758"}
+
+::: {.incremental .highlight-last style="font-size: 100%;"}
+
+::::: columns
+::: {.column width="50%"}
+
+#### [**Pregunta**]{.black}
+- [¿Cómo operan  estudiantes sus [***criterios de justicia***]{.black} al momento de***distribuir décimas** a otros estudiantes según características que aludan al <span style="background:#D91A2A">mérito y sus oportunidades*</span>?]{.white}
+
+:::
+::: {.column width="50%"}
+
+#### [**Hipótesis**]{.black} 
+
+- [principio meritocratico]{.white} 
+
+:::
+::::: 
+
+:::
+
+# Experimento distribución de recompensas: <br> *décimas* {data-background-color="#D91A2A"}
+
+## **Caso 1**
+
+![](images/caso 1 exp.png)
+
+## **Caso con primera característica**
+
+![](images/caso 2 exp.png)
+
+## **Caso** 
+![](images/caso 3 exp.png)
+
+## **Caso: distribuir 10 décimas** 
+
+![](images/caso 4 exp.png)
+
+# Datos y variables {data-background-color="#5f5758"}
+
+## [**Datos**]{.black}
+
+::: {.incremental .highlight-last style="font-size: 100%;"}
+-   Encuesta EDUMER Ola 2
+:::
+
+
+## [**Variables**]{.black}
+
+```{r}
+#| label: tbl-desc-dependientes
+#| tbl-cap: "Variables dependientes"
+#| results: asis
+#| echo: false
+
+#df<-dfSummary(dependientes,
+#               plain.ascii = FALSE,
+ #              style = "multiline",
+  #             tmp.img.dir = "/tmp",
+   #            headings = F,  # encabezado
+    #           varnumbers = F, # num variable
+     #          labels.col = T, # etiquetas
+      #         na.col = F,    # missing
+       #        graph.col = F, # plot
+        #       valid.col = T) # n valido
+
+#df$Variable <- NULL # delete variable column
+
+#print(df)
+```
+
+
+
+
+
+# Resultados {data-background-color="#5f5758"}
+
+
+## [**Caso 1**]{.gray} 
+::: {style="font-size: 100%;"}
+
+```{r}
+#| label: fig-lineal-reg
+#| fig-cap: "Linear mixed-effects models for meritocracy perception and market justice preferences"
+#| fig-cap-location: top
+#| fig-align: center
+#| out-width: '80%'
+#| echo: false
+#| warning: false
+#| message: false
+#| results: asis
+
+#theme_set(theme_ggdist())
+
+#sjPlot::plot_model(model = reg1_bienestar, show.values = T, show.p = T)
+
+```
+
+:::
+## [**Caso 2**: mérito]{.gray} 
+
+## [**Caso 3**: mérito y oportunidades]{.gray} 
+
+## [**Caso 4**: mérito y oportunidades]{.gray} 
+
+
+
+# Discusión y conclusiones {data-background-color="#5f5758"}
+
+
+# Discusión y conclusiones {data-background-color="#5f5758"}
+
+::: { .incremental .highlight-last2 style="font-size: 100%;"}
+
+- Discusión 
+
+  - Conclusión
+:::
+
+
+# Gracias por su atención! 
+
+-   **Github del proyecto:** <https://github.com/educacion-meritocracia>
+
+## Referencias
