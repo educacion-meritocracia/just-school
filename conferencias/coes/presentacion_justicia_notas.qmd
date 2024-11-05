@@ -113,7 +113,7 @@ Aquí mis notas
 
 # Contexto y motivación {data-background-color="#5f5758"}
 
-- Observar la manera en que estudiantes operan sus **criterios de justicia** al momento de [***distribuir recompensas en el contexto escolar***]{.black}. 
+- Observar la manera en que estudiantes operan sus **criterios de justicia** al momento de [***distribuir recompensas en el contexto escolar***]{.black} 
 - Contexto educativo chileno caracterizado por una alta segregación y desigualdad
 
 - Recompensa a distribuir: <span style="background:#D91A2A">[***décimas***]{.white}</span> 
@@ -169,29 +169,42 @@ Aquí mis notas
 
 #### [**Hipótesis**]{.black} 
 
-- [principio meritocratico]{.white} 
+- [principio meritocrático]{.white} 
 
 :::
 ::::: 
 
 :::
 
-# Experimento distribución de recompensas: <br> *décimas* {data-background-color="#D91A2A"}
+# [Experimento de]{.black} <br> *distribución de recompensas* <br> [(*décimas*)]{.black} {data-background-color="#D91A2A"}
 
 ## **Caso 1**
 
-![](images/caso 1 exp.png)
+- Distribuir 5 décimas 
 
-## **Caso con primera característica**
+![](images/caso 1 exp.png)
+ 
+
+## **Caso 2**: mérito
+
+- Distribuir 5 décimas 
 
 ![](images/caso 2 exp.png)
 
-## **Caso** 
+
+## **Caso 3**:  mérito y oportunidades
+
+- Distribuir 5 décimas 
+
 ![](images/caso 3 exp.png)
 
-## **Caso: distribuir 10 décimas** 
+
+## **Caso 4**:  mérito y oportunidades 
+
+- Distribuir 10 décimas
 
 ![](images/caso 4 exp.png)
+
 
 # Datos y variables {data-background-color="#5f5758"}
 
@@ -254,11 +267,11 @@ Aquí mis notas
 ```
 
 :::
-## [**Caso 2**: mérito]{.gray} 
+## [**Caso 2**]{.gray} 
 
-## [**Caso 3**: mérito y oportunidades]{.gray} 
+## [**Caso 3**]{.gray} 
 
-## [**Caso 4**: mérito y oportunidades]{.gray} 
+## [**Caso 4**]{.gray} 
 
 
 
