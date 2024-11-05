@@ -119,6 +119,21 @@ test_ej2
 gginference::ggttest(test_ej2)
 ```
 
+```{r, echo=FALSE}
+
+basica_caso1 <- datos_exp %>% dplyr::filter(curso=="Básica") %>% 
+  dplyr::select(c1_A, c1_B) %>% 
+  plot_stackfrq() + theme(legend.position="right")+
+  labs(
+    x = NULL, # Elimina el título del eje x
+    y = NULL, # Elimina el título del eje y
+    fill = "Décimas",
+    title = "Distribución de Décimas según Curso: Básica"
+  )
+
+basica_caso1
+```
+
 ## Composición socioeconómica del hogar
 
 ```{r, echo=FALSE}
@@ -395,7 +410,7 @@ mujer_caso2 <- datos_exp %>% dplyr::filter(c2_A=="3") %>%
 mujer_caso2
 ```
 
-## Justicia en las notas 
+## Justicia en las notas
 
 ```{r, echo=FALSE}
 datos_exp <- datos_exp %>% na.omit()
