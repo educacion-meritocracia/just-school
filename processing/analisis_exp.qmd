@@ -400,7 +400,7 @@ mujer_caso2
 ```{r, echo=FALSE}
 datos_exp <- datos_exp %>% na.omit()
 
-datos_exp$justicia_nota_ch <- set_label(x = datos_exp$justicia_nota_ch,label =  "Juasticia en la nota")
+datos_exp$justicia_nota_ch <- set_label(x = datos_exp$justicia_nota_ch,label =  "Justicia en la nota")
 
 
 just_caso2 <- datos_exp %>% dplyr::filter(c2_A=="3") %>% 
