@@ -55,7 +55,7 @@ mujer_caso1 <- datos_exp %>% dplyr::filter(genero=="Mujer") %>%
     y = NULL, # Elimina el título del eje y
     fill = "Décimas",
     title = "Mujer"
-  )
+  ) + theme_bw()
 
 mujer_caso1
 ```
@@ -597,8 +597,8 @@ plot_caso4 <- datos_exp %>% select(c4_A:c4_D) %>%
     x = NULL, # Elimina el título del eje x
     y = NULL, # Elimina el título del eje y
     fill = "Décimas",
-    title = "Caso 4 (esfuerzo y condiciones hogar)"
-  )
+    title = "Caso 4 (esfuerzo y oportunidades)"
+  ) + theme_bw()
 
 plot_caso4
 ```
@@ -730,6 +730,7 @@ caso4
 datos_exp <- datos_exp %>% na.omit()
 
 theme_set(theme_ggdist())
+
 colors <- RColorBrewer::brewer.pal(n = 4, name = "RdBu")
 
 merit_caso4 <- datos_exp %>% dplyr::filter(c4_A=="3") %>% 
@@ -746,7 +747,7 @@ merit_caso4 <- datos_exp %>% dplyr::filter(c4_A=="3") %>%
     y = NULL, # Elimina el título del eje y
     fill = "Grado de acuerdo",
     title = "Caso 4: Estudiante A 3 décimas"
-  ) 
+  )
 
 merit_caso4
 ```
@@ -848,7 +849,7 @@ merit_socialpercep4 <- ggarrange(
 plot_merit_percep4 <- annotate_figure(
   merit_socialpercep4,
   top = text_grob(
-    "Percepción de mérito social",
+    "Percepción de mérito social: se le entregan 3 décimas al Estudiante A",
     size = 12, 
     face = "italic", 
     color = "black",
@@ -871,7 +872,7 @@ percep4 <- ggarrange(
 plot_mpercep4 <- annotate_figure(
   percep4,
   top = text_grob(
-    "Percepción...",
+    "",
     size = 12, 
     face = "italic", 
     color = "black",
@@ -909,7 +910,7 @@ schoolcaso4
 ```{r, echo=FALSE}
 datos_exp <- datos_exp %>% na.omit()
 
-datos_exp$justicia_nota_ch <- set_label(x = datos_exp$justicia_nota_ch,label =  "Juasticia en la nota")
+datos_exp$justicia_nota_ch <- set_label(x = datos_exp$justicia_nota_ch,label =  "Justicia en la nota")
 
 
 just_caso4 <- datos_exp %>% dplyr::filter(c4_A=="3") %>% 
@@ -926,5 +927,9 @@ just_caso4 <- datos_exp %>% dplyr::filter(c4_A=="3") %>%
 
 just_caso4
 
+
+```
+
+```{r, echo=FALSE}
 
 ```
