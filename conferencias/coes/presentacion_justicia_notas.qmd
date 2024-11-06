@@ -94,10 +94,6 @@ load(here::here("input/data/proc/ola2.RData"))
 :::
 :::
 
-::: {.notes}
-Aquí mis notas
-:::
-
 
 # Contexto y motivación 
 
@@ -111,7 +107,7 @@ Aquí mis notas
 
 ::: {.column width="80%"}
 ::: {.incremental .highlight-last style="font-size: 100%;"}
-- ANID/FONDECYT N°1210847 2021-2024 - Meritocracia en la esucela: Fundamentos morales de los mercados educativos e implicanciones para la educación ciudadana
+- ANID/FONDECYT N°1210847 2021-2024 - Meritocracia en la esucela: Fundamentos morales del mercado educativo y sus implicancias para la formación ciudadana en Chile.
 
 - Primera etapa:
   * Estudio cualitativo
@@ -129,7 +125,7 @@ Aquí mis notas
 
 ## **Escuela, desigualdad y recompensas** 
 ::: {.incremental .highlight-last style="font-size: 100%;"}
-- Contexto escolar chileno caracterizado por amplias desigualdad, privatización y comodificación [@bellei_estudio_2013]
+- Contexto escolar chileno caracterizado por amplia desigualdad, privatización y comodificación [@bellei_estudio_2013]
 
 - Falta de estudios sobre los criterios de justicia en la asignación de recompensas en el sistema educativo chileno por parte de las comunidades escolares
 
@@ -186,49 +182,49 @@ Aquí mis notas
 - Experimento de distribución de recompensas en el contexto escolar
 - Carácter **exploratorio** 
 - Recuadros que describen tipologías de estudiantes a partir de dos características: 
-  - [**Mérito**]{.red2} (esfuerzo) 
-  - [**Oportunidades**]{.red2} (condiciones del hogar)
-- Secuencial en 4 casos
-- Se espera que distribuyan décimas en las combinaciones de casos [*recompensando justamente*]{.red2} a cuatro tipo de estudiantes según las características presentadas 
+  - [**Esfuerzo**]{.red2} 
+  - [**Condiciones del hogar**]{.red2}
+
 - A partir de la nota, pueden ***aprobar** y/o **desaprobar*** a algún estudiante 
 
 :::
 
+## Planteamiento del experimento
+
+Ahora viene una pregunta un poco diferente, donde tú puedes decidir si le subes la nota a estudiantes de tu curso. 
+
+- Instrucciones:
+
+  * el profesor entrega las notas de una prueba,
+  * hay estudiantes de tu curso que sacaron un 3.7 y que necesitan un 4.0 para aprobar. 
+  * el profesor te dice que tú tienes la posibilidad de subir notas, para lo cual te ofrece algunas  décimas que puedes repartir 
+
 
 ## **Caso 1**
 
-- Menú desplegable de décimas a regalar desde 0.0 a 0.5 
-
-
-
+Por ejemplo, veamos el siguiente caso con dos estudiantes que obtuvieron nota 3.7, y tú tienes 5 décimas para repartir como tú decidas. Para ello presiona en décimas a regalar y elige. Recuerda que no puedes repartir más de 0.5 en total, o si no aparecerá un mensaje de error.
 
 ![](images/caso 1 exp.png)
 
-## **Caso 2**: mérito
+## **Caso 2**: Esfuerzo
 
-- Menú desplegable de décimas a regalar desde 0.0 a 0.5
-
+En el siguiente caso la tarea es la misma, debes repartir 5 décimas en dos estudiantes que obtuvieron 3.7, pero vamos a contarte algunas diferencias entre estudiantes. Por ejemplo, hay estudiantes que se esfuerzan más para estudiar, y otros que se esfuerzan menos. ¿Cómo repartirías las décimas en este caso?
 
 ![](images/caso 2 exp.png)
 
 
-## **Caso 3**:  mérito y oportunidades
+## **Caso 3**:  Esfuerzo y condiciones del hogar
 
-
-- Menú desplegable de décimas a regalar desde 0.0 a 0.5
-
-
+En el siguiente caso, para cada estudiante también vamos a contarte sobre cómo es su casa y si puede estudiar bien en ella. ¿Cómo repartirías las 5 décimas?
 
 ![](images/caso 3 exp.png){width=45%}
 
 
-## **Caso 4**:  mérito y oportunidades 
+## **Caso 4**:  Esfuerzo y condiciones del hogar 
 
-- Menú desplegable de décimas a regalar desde 0.0 a 1.0
+Y finalmente, ahora tienes que repartir 10 décimas entre 4 estudiantes diferentes, ¿Cómo las repartirías?
 
 ![](images/caso 4 exp.png)
-
-
 
 # Resultados {data-background-color="#5f5758"}
 
@@ -510,22 +506,17 @@ ggarrange(plot_hombre, plot_mujer, common.legend = TRUE, nrow=2, legend = c("bot
 :::
 :::
 
-
-
-
-# Discusión y conclusiones {data-background-color="#5f5758"}
-
-
 ## **Discusión y conclusiones**
 
 ::: {.incremental .highlight-last style="font-size: 100%;"}
 
-- Estudiantes tienden a aprobar a quién se **esfuerza más**, *independientemente* de sus oportunidades de origen
+- Estudiantes tienden a aprobar a quien se **esfuerza más**, *independientemente* de sus condiciones del hogar.
 
-- Se *legitiman las diferencias en sus condiciones de origen* a partir del **mérito** de los estudiantes para obtener buenas notas [@mijs_unfulfillable_2016]   
+- De todas formas, cuando los estudiantes se **esfuerzan menos** se tiende a recompensar más a quien tiene peores condiciones en su hogar.
 
-- *Agenda de investigación en justicia escolar*: posible implicancia que estos criterios de distribución pueden tener en sus
-***evaluaciones de justicia en sus notas**
+- Estudiantes de educación media recompenzan aún más a quienes se esfuerzan, en comparación con estudiantes de educación básica. No se observan diferencias por el sexo de los estudiantes.
+
+- *Agenda de investigación en justicia escolar*: posibles implicancias que estos criterios de distribución pueden tener en sus propios resultados educativos y en la asignación de recompensas en la vida en general.
 
 :::
 
