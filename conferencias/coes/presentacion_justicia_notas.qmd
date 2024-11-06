@@ -127,7 +127,7 @@ Aquí mis notas
 :::
 :::
 
-## **Escuela, desigualdad y recompensas** {data-background-color="#5f5758"}
+## **Escuela, desigualdad y recompensas** 
 ::: {.incremental .highlight-last style="font-size: 100%;"}
 - Contexto escolar chileno caracterizado por amplias desigualdad, privatización y comodificación [@bellei_estudio_2013]
 
@@ -135,11 +135,11 @@ Aquí mis notas
 
 - Observar la manera en que estudiantes operan sus **criterios de justicia** al momento de [***distribuir recompensas en el contexto escolar***]{.black} 
 
-- Recompensa a distribuir: <span style="background:#D91A2A">[***décimas***]{.white}</span> 
+- Recompensa a distribuir: [***décimas***]{.red2} 
 
 :::
 
-## **Meritocracia** {data-background-color="#5f5758"}
+## **Meritocracia** 
 
 ::: {.incremental .highlight-last style="font-size: 100%;"}
 
@@ -147,18 +147,18 @@ Aquí mis notas
 
 - Asociado a justificación de desigualdad al legitimar diferencias muchas veces asociadas a oportunidades [@mijs_unfulfillable_2016]
 
-- [**Rol de la meritocracia en el principio de justicia**]{.white} 
+- [**Rol de la meritocracia en el principio de justicia**]{.black} 
 
   * Responde al **principio de equidad** en la distribución de las notas [@resh_sense_2010], el cual se entiende como **justo** para dicha asignación cuando responde a criterios como el esfuerzo y el talento
 
 :::
 
-#  Pregunta de investigación  {data-background-color="#5f5758"}
+#  Pregunta de investigación  
 
 
 ::: {.xlarge}
 
-[¿Cuáles son los [***criterios de justicia***]{.black} que operan en los/as estudiantes al momento de **distribuir décimas** a otros estudiantes según características que aludan al <span style="background:#D91A2A">mérito y sus condiciones de origen</span>?]{.white} 
+¿Cuáles son los [***criterios de justicia***]{.black} que operan en los/as estudiantes al momento de **distribuir décimas** a otros estudiantes según características que aludan al mérito y sus condiciones de origen?
 
 :::
 
@@ -178,7 +178,7 @@ Aquí mis notas
 - 51.5% hombres y 48.5% Mujeres
 :::
 
-# [Experimento de]{.black} <br> *distribución de recompensas* <br> [(*décimas*)]{.black} {data-background-color="#D91A2A"}
+# Experimento de <br> *distribución de recompensas* <br> (*décimas*) {data-background-color="#5f5758"}
 
 ## **Sobre el experimento**
 ::: {.incremental .highlight-last style="font-size: 100%;"}
@@ -194,30 +194,37 @@ Aquí mis notas
 
 :::
 
+
 ## **Caso 1**
 
-- Distribuir 5 décimas 
+- Menú desplegable de décimas a regalar desde 0.0 a 0.5 
+
+
+
 
 ![](images/caso 1 exp.png)
- 
 
 ## **Caso 2**: mérito
 
-- Distribuir 5 décimas 
+- Menú desplegable de décimas a regalar desde 0.0 a 0.5
+
 
 ![](images/caso 2 exp.png)
 
 
 ## **Caso 3**:  mérito y oportunidades
 
-- Distribuir 5 décimas 
+
+- Menú desplegable de décimas a regalar desde 0.0 a 0.5
+
+
 
 ![](images/caso 3 exp.png){width=45%}
 
 
 ## **Caso 4**:  mérito y oportunidades 
 
-- Distribuir 10 décimas
+- Menú desplegable de décimas a regalar desde 0.0 a 1.0
 
 ![](images/caso 4 exp.png)
 
@@ -504,108 +511,22 @@ ggarrange(plot_hombre, plot_mujer, common.legend = TRUE, nrow=2, legend = c("bot
 :::
 
 
-## 
 
-```{r}
-datos_exp$school_esfuerzo <- as.factor(datos_exp$school_esfuerzo)
-
-plot_esfuerzo <- datos_exp %>% filter(school_esfuerzo == "4") %>% dplyr::select(c4_D_rec:c4_A_rec) %>%
-  plot_stackfrq(show.total=FALSE,
-                axis.labels=rev(c("A.", "B.", "C.", "D.")),
-    geom.colors = c("#E74C3C", "#2E86C1"
-    )) +
-  theme_bw()+
-  theme(legend.position="bottom",
-        text=element_text(size=16))+
-  labs(
-    fill = "Cantidad décimas",
-    title = "Creencia en el esfuerzo para obtener buenas notas"
-  )
-```
-
-```{r}
-datos_exp$school_talento <- as.factor(datos_exp$school_talento)
-
-plot_talento <- datos_exp %>% filter(school_talento == "4") %>% dplyr::select(c4_D_rec:c4_A_rec) %>%
-  plot_stackfrq(show.total=FALSE,
-                axis.labels=rev(c("A.", "B.", "C.", "D.")),
-    geom.colors = c("#E74C3C", "#2E86C1"
-    )) +
-  theme_bw()+
-  theme(legend.position="bottom",
-        text=element_text(size=16))+
-  labs(
-    fill = "Cantidad décimas",
-    title = "Creencia en el talento para obtener buenas notas"
-  )
-```
-::: {.columns}
-
-::: {.column width="20%"}
-
-![](images/caso4.png)
-
-:::
-::: {.column width="80%"}
-
-<br>
-
-```{r}
-#| fig-width: 8
-#| fig-height: 5
-#| out-width: '95%'
-
-ggarrange(plot_esfuerzo, plot_talento, common.legend = TRUE, nrow=2, legend = c("bottom", "right"))
-
-```
-
-:::
-:::
-
-##
-
-::: {.columns}
-
-::: {.column width="20%"}
-
-![](images/caso4.png)
-
-:::
-::: {.column width="80%"}
-
-<br>
-
-```{r}
-datos_exp$igual_oportunidades <- as.factor(datos_exp$igual_oportunidades)
-
-plot_op <- datos_exp %>% filter(igual_oportunidades == "4") %>% dplyr::select(c4_D_rec:c4_A_rec) %>%
-  plot_stackfrq(show.total=FALSE,
-                axis.labels=rev(c("A.", "B.", "C.", "D.")),
-    geom.colors = c("#E74C3C", "#2E86C1"
-    )) +
-  theme_bw()+
-  theme(legend.position="bottom",
-        text=element_text(size=16))+
-  labs(
-    fill = "Cantidad décimas",
-    title = "Creencia en la igualdad de oportunidades en la sociedad "
-  )
-
-plot_op
-```
-:::
-:::
 
 # Discusión y conclusiones {data-background-color="#5f5758"}
 
 
-## **Discusión y conclusiones** {data-background-color="#5f5758"}
+## **Discusión y conclusiones**
 
-::: { .incremental .highlight-last2 style="font-size: 100%;"}
-- Estudiantes que creen en la meritocracia en la escuela tienden a aprobar a quién se <span style="background:#D91A2A">**esfuerza más**</span> , *independientemente* de sus oportunidades de origen 
+::: {.incremental .highlight-last style="font-size: 100%;"}
+
+- Estudiantes tienden a aprobar a quién se **esfuerza más**, *independientemente* de sus oportunidades de origen
+
 - Se *legitiman las diferencias en sus condiciones de origen* a partir del **mérito** de los estudiantes para obtener buenas notas [@mijs_unfulfillable_2016]   
+
 - *Agenda de investigación en justicia escolar*: posible implicancia que estos criterios de distribución pueden tener en sus
-***evaluaciones de justicia en sus notas***
+***evaluaciones de justicia en sus notas**
+
 :::
 
 
