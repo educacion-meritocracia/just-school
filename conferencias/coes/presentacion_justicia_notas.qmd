@@ -1,8 +1,8 @@
 ---
 pagetitle: "Justicia en las notas"
 Author: Equipo EDUMER
-#bibliography: "../input/bib/refs.bib"
-csl: "../input/bib/apa6.csl"
+bibliography: "input/bib/just-school.bib"
+csl: "input/bib/apa6.csl"
 lang: es
 
 knitr:
@@ -46,14 +46,7 @@ knitr::opts_chunk$set(echo = F,
 
 if (! require("pacman")) install.packages("pacman")
 
-pacman::p_load(tidyverse, 
-               sjmisc, 
-               sjPlot, 
-               sjlabelled, 
-               here,
-               kableExtra,
-               ggdist,
-               summarytools)
+pacman::p_load(tidyverse, dplyr, sjmisc, car, sjlabelled, stargazer, haven, sjPlot, ggplot2, tidyr, stringr, corrplot, summarytools, ggdist, ggpubr)
 
 options(scipen=999)
 rm(list = ls())
@@ -64,8 +57,7 @@ rm(list = ls())
 #| label: data
 #| include: false
 
-#load(url("https://github.com/educacion-meritocracia/market-justice-preferences-school/raw/refs/heads/main/input/data/mlm_models.RData"))
-#load(url("https://github.com/educacion-meritocracia/market-justice-preferences-school/raw/refs/heads/main/input/data/dependientes.RData"))
+load(here::here("input/data/proc/ola2.RData"))
 
 ```
 
@@ -75,22 +67,18 @@ rm(list = ls())
 
 ![](images/coes.png)
 
-
-
 ![](images/edumer.png)
 
-::: {.red2 .medium}
+![](images/qr.png)
 
-FONDECYT No. 1210847 "Meritocracia en la escuela"
 
-:::
 
 :::
 
 ::: {.column .column-right width="80%"}  
 <br>
 
-## **Percepciones de Justicia en la Evaluación Escolar: Un Estudio Exploratorio en Estudiantes Chilenos**
+## **Criterios de Justicia en la Evaluación Escolar: Un Estudio Exploratorio en Estudiantes Chilenos**
 
 ------------------------------------------------------------------------
 
@@ -111,69 +99,77 @@ Aquí mis notas
 :::
 
 
-# Contexto y motivación {data-background-color="#5f5758"}
+# Contexto y motivación
+
+::: {.columns}
+
+::: {.column width="20%"}
+
+![](images/edumer.png)
+
+:::
+
+::: {.column width="80%"}
+::: {.incremental .highlight-last style="font-size: 100%;"}
+- ANID/FONDECYT N°1210847 2021-2024 - Meritocracia en la esucela: Fundamentos morales de los mercados educativos e implicanciones para la educación ciudadana
+
+- Primera etapa:
+  * Estudio cualitativo
+  * Análisis de datos secundarios
+ 
+- Segunda etapa:
+  * Panel de estudio
+  * Experimentos de encuestas
+  
+- Más información: [jc-castillo.com/project/fondecyt-edumer/](jc-castillo.com/project/fondecyt-edumer/)
+
+:::
+:::
+:::
+
+## Escuela, desigualdad y recompensas
+::: {.incremental .highlight-last style="font-size: 100%;"}
+- Contexto escolar chileno caracterizado por amplias desigualdad, privatización y comodificación [@bellei_estudio_2013]
+
+- Falta de estudios sobre los criterios de justicia en la asignación de recompensas en el sistema educativo chileno por parte de las comunidades escolares.
 
 - Observar la manera en que estudiantes operan sus **criterios de justicia** al momento de [***distribuir recompensas en el contexto escolar***]{.black} 
-- Contexto educativo chileno caracterizado por una alta segregación y desigualdad
 
 - Recompensa a distribuir: <span style="background:#D91A2A">[***décimas***]{.white}</span> 
 
+:::
 
-## [**Antecedentes**]{.black}
+## Meritocracia
 
 ::: {.incremental .highlight-last style="font-size: 100%;"}
 
-- **Justicia de recompensas**: (@castillo_cual_2009)
+- Merito = esfuerzo + talento [@young_rise_1958]
 
+- Asociado a justificación de desigualdad al legitimar diferencias muchas veces asociadas a oportunidades [@mijs_unfulfillable_2016]
 
-- **Justicia en las notas**:  (@jassoExploringSenseJustice2002)
+- [**Rol de la meritocracia en el principio de justicia**]{.red2} 
+
+  * Responde al **principio de equidad** en la distribución de las notas [@resh_sense_2010], el cual se entiende como **justo** para dicha asignación cuando responde a criterios como el esfuerzo y el talento
 
 :::
 
-## [**Antecedentes**]{.black}
+## **Pregunta de investigación**{data-background-color="#5f5758"}
+
+
+- [¿Cuáles son los [***criterios de justicia***]{.black} que operan en los/as estudiantes al momento de **distribuir décimas** a otros estudiantes según características que aludan al <span style="background:#D91A2A">mérito y sus condiciones de origen</span>?]{.white}
+
+## **Datos**
 
 ::: {.incremental .highlight-last style="font-size: 100%;"}
+- Encuesta panel en estudiantes 2023-2024
 
-::::: columns
-::: {.column width="50%" }
+- Ola 2 N=637
 
-#### [**Sensaciones de <br> justicia en las notas**]{.red2}
+- 7 escuelas de la región metropolitana
 
-- Estratificada (@resh_sense_2010)
+- 49.1% estudiantes de 7° básico y 50.9% estudiantes de 2° medio
 
-:::
-
-::: {.column width="50%" }
-
-#### [**Rol de la meritocracia en el <br> principio de justicia**]{.red2} 
-
-- Responde al **principio de equidad** en la distribución de las notas (@resh_sense_2010), el cual se entiende como **justo** para dicha asignación (@mijs_unfulfillable_2016) 
-
-:::
-:::::
-
-:::
-
-## **Pregunta e Hipótesis**{data-background-color="#5f5758"}
-
-::: {.incremental .highlight-last style="font-size: 100%;"}
-
-::::: columns
-::: {.column width="50%"}
-
-#### [**Pregunta**]{.black}
-- [¿Cómo operan  estudiantes sus [***criterios de justicia***]{.black} al momento de***distribuir décimas** a otros estudiantes según características que aludan al <span style="background:#D91A2A">mérito y sus oportunidades*</span>?]{.white}
-
-:::
-::: {.column width="50%"}
-
-#### [**Hipótesis**]{.black} 
-
-- [principio meritocrático]{.white} 
-
-:::
-::::: 
-
+- 51.5% hombres y 48.5% Mujeres
 :::
 
 # [Experimento de]{.black} <br> *distribución de recompensas* <br> [(*décimas*)]{.black} {data-background-color="#D91A2A"}
@@ -196,7 +192,7 @@ Aquí mis notas
 
 - Distribuir 5 décimas 
 
-![](images/caso 3 exp.png)
+![](images/caso 3 exp.png){width=45%}
 
 
 ## **Caso 4**:  mérito y oportunidades 
@@ -206,68 +202,286 @@ Aquí mis notas
 ![](images/caso 4 exp.png)
 
 
-# Datos y variables {data-background-color="#5f5758"}
-
-## [**Datos**]{.black}
-
-::: {.incremental .highlight-last style="font-size: 100%;"}
--   Encuesta EDUMER Ola 2
-:::
-
-
-## [**Variables**]{.black}
-
-```{r}
-#| label: tbl-desc-dependientes
-#| tbl-cap: "Variables dependientes"
-#| results: asis
-#| echo: false
-
-#df<-dfSummary(dependientes,
-#               plain.ascii = FALSE,
- #              style = "multiline",
-  #             tmp.img.dir = "/tmp",
-   #            headings = F,  # encabezado
-    #           varnumbers = F, # num variable
-     #          labels.col = T, # etiquetas
-      #         na.col = F,    # missing
-       #        graph.col = F, # plot
-        #       valid.col = T) # n valido
-
-#df$Variable <- NULL # delete variable column
-
-#print(df)
-```
-
-
-
-
 
 # Resultados {data-background-color="#5f5758"}
 
+##
 
-## [**Caso 1**]{.gray} 
+::: {.columns}
 
-![](https://educacion-meritocracia.github.io/just-school/processing/analisis_exp_files/figure-html/unnamed-chunk-3-1.png)
+::: {.column width="20%"}
 
+![](images/caso1.png)
 
 :::
 
-## [**Caso 2**]{.gray} 
+::: {.column width="80%"}
 
-![](https://educacion-meritocracia.github.io/just-school/processing/analisis_exp_files/figure-html/unnamed-chunk-21-1.png)
+```{r}
+#| fig-width: 8
+#| fig-height: 5
+#| out-width: '95%'
 
-## [**Caso 2**]{.gray} 
+datos_exp %>% select(c1_A, c1_B) %>% 
+  plot_stackfrq(vjust=rep(c("top", "bottom"),6),
+                sort.frq="first.desc",
+                axis.labels = c("A.", "B."),
+                show.total=FALSE,
+                geom.colors = c("#F08080", "#E74C3C", "#C0392B", "#3498DB", "#2980B9", "#1F618D")) +
+  theme_bw()+
+  theme(legend.position="bottom",
+        text=element_text(size=16))+
+  labs(
+    fill = "Cantidad décimas",
+    title = "Caso 1 (sin características)"
+  )
+```
 
-![](https://educacion-meritocracia.github.io/just-school/processing/analisis_exp_files/figure-html/unnamed-chunk-23-1.png)
+:::
+:::
 
-## [**Caso 4**]{.gray} 
-![](https://educacion-meritocracia.github.io/just-school/processing/analisis_exp_files/figure-html/unnamed-chunk-35-1.png)
+##
+
+::: {.columns}
+
+::: {.column width="20%"}
+
+![](images/caso2.png)
+
+:::
+
+::: {.column width="80%"}
+
+```{r}
+#| fig-width: 8
+#| fig-height: 5
+#| out-width: '95%'
+
+datos_exp %>% select(c2_A, c2_B) %>% 
+  plot_stackfrq(vjust=rep(c("top", "bottom"),6),
+                sort.frq="first.desc",
+                show.total=FALSE,
+                axis.labels=c("A.",
+                              "B."),
+                geom.colors = c("#F08080", "#E74C3C", "#C0392B", "#3498DB", "#2980B9", "#1F618D")) +
+  theme_bw()+
+  theme(legend.position="bottom",
+        text=element_text(size=16))+
+  labs(
+    fill = "Cantidad décimas",
+    title = "Caso 2 (esfuerzo)"
+  )
+```
+
+:::
+:::
+
+##
+
+::: {.columns}
+
+::: {.column width="20%"}
+
+![](images/caso3.png)
+
+:::
+
+::: {.column width="80%"}
 
 
 
-## [**Caso 4**]{.gray} 
-![](https://educacion-meritocracia.github.io/just-school/processing/analisis_exp_files/figure-html/unnamed-chunk-42-1.png)
+```{r}
+#| fig-width: 8
+#| fig-height: 5
+#| out-width: '95%'
+
+
+datos_exp %>% select(c3_B, c3_A) %>% 
+  plot_stackfrq(vjust=rep(c("top", "bottom"),5),
+                show.total=FALSE,
+                axis.labels=rev(c("A.",
+                              "B.")),
+                geom.colors = c("#F08080", "#E74C3C", "#C0392B", "#3498DB", "#2980B9", "#1F618D")) +
+  theme_bw()+
+  theme(legend.position="bottom",
+        text=element_text(size=16))+
+  labs(
+    fill = "Cantidad décimas",
+    title = "Caso 3 (esfuerzo y condiciones del hogar)"
+  )
+```
+
+:::
+:::
+
+##
+
+::: {.columns}
+
+::: {.column width="20%"}
+
+![](images/caso4.png)
+
+:::
+
+::: {.column width="80%"}
+
+<br>
+
+```{r}
+#| fig-width: 8
+#| fig-height: 5
+#| out-width: '95%'
+
+
+datos_exp %>% select(c4_D:c4_A) %>% 
+  plot_stackfrq(vjust=rep(c("top", "bottom"),15),
+                show.total=FALSE,
+                axis.labels=rev(c("A.", "B.", "C.", "D.")),
+    geom.colors = c(
+      "#F08080", "#E74C3C", "#C0392B", 
+      "#B0C4DE", "#87CEEB", "#5DADE2", 
+      "#3498DB", "#2E86C1", "#2874A6", 
+      "#21618C", "#1B4F72"
+    )) +
+  theme_bw()+
+  theme(legend.position="bottom",
+        text=element_text(size=16))+
+  labs(
+    fill = "Cantidad décimas",
+    title = "Caso 4 (esfuerzo y condiciones del hogar)"
+  )
+```
+
+:::
+:::
+
+##
+
+```{r}
+datos_exp$c4_A_rec <- car::recode(datos_exp$c4_A, "c(0,1,2)='No aprueba'; else='Aprueba'",
+                                                  as.factor=TRUE,
+                                                  levels = c("No aprueba", "Aprueba"))
+datos_exp$c4_B_rec <- car::recode(datos_exp$c4_B, "c(0,1,2)='No aprueba'; else='Aprueba'",
+                                                  as.factor=TRUE,
+                                                  levels = c("No aprueba", "Aprueba"))
+datos_exp$c4_C_rec <- car::recode(datos_exp$c4_C, "c(0,1,2)='No aprueba'; else='Aprueba'",
+                                                  as.factor=TRUE,
+                                                  levels = c("No aprueba", "Aprueba"))
+datos_exp$c4_D_rec <- car::recode(datos_exp$c4_D, "c(0,1,2)='No aprueba'; else='Aprueba'",
+                                                  as.factor=TRUE,
+                                                  levels = c("No aprueba", "Aprueba"))
+```
+
+```{r}
+plot_basica <- datos_exp %>% filter(curso=="Básica") %>% 
+  dplyr::select(c4_D_rec:c4_A_rec) %>%
+  plot_stackfrq(show.total=FALSE,
+                axis.labels=rev(c("A.", "B.", "C.", "D.")),
+    geom.colors = c("#E74C3C", "#2E86C1"
+    )) +
+  theme_bw()+
+  theme(legend.position="bottom",
+        text=element_text(size=16))+
+  labs(
+    fill = "Cantidad décimas",
+    title = "Basica"
+  )
+
+plot_media <- datos_exp %>% filter(curso=="Media") %>% 
+  dplyr::select(c4_D_rec:c4_A_rec) %>%
+  plot_stackfrq(show.total=FALSE,
+                axis.labels=rev(c("A.", "B.", "C.", "D.")),
+    geom.colors = c("#E74C3C", "#2E86C1"
+    )) +
+  theme_bw()+
+  theme(legend.position="bottom",
+        text=element_text(size=16))+
+  labs(
+    fill = "Cantidad décimas",
+    title = "Media"
+  )
+```
+
+::: {.columns}
+
+::: {.column width="20%"}
+
+![](images/caso4.png)
+
+:::
+
+::: {.column width="80%"}
+
+<br>
+
+```{r}
+#| fig-width: 8
+#| fig-height: 5
+#| out-width: '95%'
+
+ggarrange(plot_basica, plot_media, common.legend = TRUE, nrow=2, legend = c("bottom", "right"))
+
+```
+
+:::
+:::
+
+##
+
+```{r}
+plot_hombre <- datos_exp %>% filter(genero=="Hombre") %>% 
+  dplyr::select(c4_D_rec:c4_A_rec) %>%
+  plot_stackfrq(show.total=FALSE,
+                axis.labels=rev(c("A.", "B.", "C.", "D.")),
+    geom.colors = c("#E74C3C", "#2E86C1"
+    )) +
+  theme_bw()+
+  theme(legend.position="bottom",
+        text=element_text(size=16))+
+  labs(
+    fill = "Cantidad décimas",
+    title = "Hombres"
+  )
+
+plot_mujer <- datos_exp %>% filter(genero=="Mujer") %>% 
+  dplyr::select(c4_D_rec:c4_A_rec) %>%
+  plot_stackfrq(show.total=FALSE,
+                axis.labels=rev(c("A.", "B.", "C.", "D.")),
+    geom.colors = c("#E74C3C", "#2E86C1"
+    )) +
+  theme_bw()+
+  theme(legend.position="bottom",
+        text=element_text(size=16))+
+  labs(
+    fill = "Cantidad décimas",
+    title = "Mujeres"
+  )
+```
+
+::: {.columns}
+
+::: {.column width="20%"}
+
+![](images/caso4.png)
+
+:::
+
+::: {.column width="80%"}
+
+<br>
+
+```{r}
+#| fig-width: 8
+#| fig-height: 5
+#| out-width: '95%'
+
+ggarrange(plot_hombre, plot_mujer, common.legend = TRUE, nrow=2, legend = c("bottom", "right"))
+
+```
+
+:::
+:::
 
 # Discusión y conclusiones {data-background-color="#5f5758"}
 

@@ -17,7 +17,7 @@ datos_exp <- datos %>% select(T_pex_1_1_o2, T_pex_1_2_o2,  T_pex_2_1_o2, T_pex_2
                               T_pex_3_1_o2, T_pex_3_2_o2, T_pex_4_1_o2, T_pex_4_2_o2, 
                               T_pex_4_3_o2, T_pex_4_4_o2, p14_o2, d3_def_o1, p3_o2,
                               p4_o2, p5_o2,p6_o2, p7_o2, p17_o2, p18_o2, p19_o2, p1_1_o2,
-                              p1_2_o2, p1_9_o2, p1_10_o2, p2_1_o2, p2_2_o2, p2_3_o2) %>% na.omit()
+                              p1_2_o2, p1_9_o2, p1_10_o2, p2_1_o2, p2_2_o2, p2_3_o2) 
 
 #renombrar 
 datos_exp <- datos_exp %>% rename(c1_A = T_pex_1_1_o2,
@@ -96,13 +96,17 @@ datos_exp$genero <- factor(datos_exp$genero,
 datos_exp$ne_madre <- recode(datos_exp$ne_madre, "c(88,99)=NA")
 datos_exp$ne_padre <- recode(datos_exp$ne_padre, "c(88,99)=NA")
 
-datos_exp <- datos_exp %>%
-  dplyr::mutate(educ_max = case_when(
-    !is.na(ne_madre) & is.na(ne_padre) ~ ne_madre,
-    is.na(ne_madre) & !is.na(ne_padre) ~ ne_padre,
-    !is.na(ne_madre) & !is.na(ne_padre) ~ pmax(ne_madre, ne_padre, na.rm = TRUE),
-    TRUE ~ NA_real_
-  ))
+datos_exp <- datos_exp %>% 
+  dplyr::mutate(
+    ne_madre = haven::zap_labels(ne_madre),
+    ne_padre = haven::zap_labels(ne_padre),
+    educ_max = case_when(
+      !is.na(ne_madre) & is.na(ne_padre) ~ ne_madre,
+      is.na(ne_madre) & !is.na(ne_padre) ~ ne_padre,
+      !is.na(ne_madre) & !is.na(ne_padre) ~ pmax(ne_madre, ne_padre, na.rm = TRUE),
+      TRUE ~ NA_real_
+    )
+  )
 
 frq(datos_exp$educ_max)
 
