@@ -78,7 +78,7 @@ load(here::here("input/data/proc/ola2.RData"))
 ::: {.column .column-right width="80%"}  
 <br>
 
-## **Criterios de Justicia en la Evaluación Escolar: Un Estudio Exploratorio en Estudiantes Chilenos**
+## **Justicia en la Evaluación Escolar: Un experimento de encuesta**
 
 ------------------------------------------------------------------------
 
@@ -107,14 +107,14 @@ load(here::here("input/data/proc/ola2.RData"))
 
 ::: {.column width="80%"}
 ::: {.incremental .highlight-last style="font-size: 100%;"}
-- ANID/FONDECYT N°1210847 2021-2024 - Meritocracia en la esucela: Fundamentos morales del mercado educativo y sus implicancias para la formación ciudadana en Chile.
+- ANID/FONDECYT N°1210847 2021-2024 - Meritocracia en la escuela: Fundamentos morales del mercado educativo y sus implicancias para la formación ciudadana en Chile.
 
 - Primera etapa:
   * Estudio cualitativo
   * Análisis de datos secundarios
  
 - Segunda etapa:
-  * Panel de estudio
+  * Encuesta panel: dos olas estudiantes y apoderados
   * Experimentos de encuestas
   
 - Más información: [jc-castillo.com/project/fondecyt-edumer/](jc-castillo.com/project/fondecyt-edumer/)
@@ -132,6 +132,8 @@ load(here::here("input/data/proc/ola2.RData"))
 - Observar la manera en que estudiantes operan sus **criterios de justicia** al momento de [***distribuir recompensas en el contexto escolar***]{.black} 
 
 - Recompensa a distribuir: [***décimas***]{.red2} 
+
+- Experimento distribucional de encuestas [@gilgen_distributional_2020]
 
 :::
 
@@ -215,10 +217,20 @@ En el siguiente caso la tarea es la misma, debes repartir 5 décimas en dos estu
 
 ## **Caso 3**:  Esfuerzo y condiciones del hogar
 
+::: {.columns}
+
+::: {.column width="40%}
+
 En el siguiente caso, para cada estudiante también vamos a contarte sobre cómo es su casa y si puede estudiar bien en ella. ¿Cómo repartirías las 5 décimas?
 
-![](images/caso 3 exp.png){width=45%}
+:::
 
+::: {.column width="60%}
+
+![](images/caso 3 exp.png){width=100%}
+
+:::
+:::
 
 ## **Caso 4**:  Esfuerzo y condiciones del hogar 
 
