@@ -57,7 +57,7 @@ lang: es
 citeproc: true
 ---
 
-# Percepciones de Justicia en la Evaluación Escolar: Un Estudio Exploratorio en Estudiantes Chilenos
+# Justicia en la Evaluación Escolar: Un experimento de encuesta 
 
 
 Juan Carlos Castillo [^1]
