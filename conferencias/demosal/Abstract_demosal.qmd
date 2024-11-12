@@ -1,0 +1,96 @@
+---
+format: 
+  html: 
+    code-fold: true
+    html-math-method: katex
+    self-contained: true
+  pdf: 
+    geometry: 
+      - top=30mm
+      - left=20mm
+    template-partials: 
+      - title.tex
+    include-in-header:
+      text: |
+        \usepackage[noblocks]{authblk}
+        \renewcommand*{\Authsep}{, }
+        \renewcommand*{\Authand}{, }
+        \renewcommand*{\Authands}{, }
+        \renewcommand\Affilfont{\small}
+editor: source
+bibliography: "C:/Users/LENOVO/Documents/GitHub/just-school/input/bib/just-school.bib"
+link-citations: true
+author:
+  - name: Juan Carlos Castillo
+    corresponding: true
+    orcid: 0000-0003-1265-7854
+    email: juancastillov@uchile.cl
+    affiliations:
+      - ref: 1
+      - ref: 2
+      - ref: 3
+  - name: María Fernanda Núñez
+    orcid: 0009-0004-7559-9959
+    email: maria.nunez.2@ug.uchile.cl
+    affiliations:
+      - ref: 1
+  - name: Kevin Carrasco
+    orcid: 0000-0002-9348-8361
+    email: kevin.carrasco@ug.uchile.cl
+    affiliations:
+      - ref: 2
+  - name: Andreas Laffert
+    orcid: 0000-0002-9008-2454
+    email: alaffertt@estudiante.uc.cl
+    affiliations:
+      - ref: 4
+affiliations: 
+  - id: 1
+    name: Universidad de Chile
+  - id: 2
+    name: Centro de estudios del conflicto y cohesión social (COES)
+  - id: 3
+    name: Núcleo milenio de desigualdades y oportunidades digitales (NUDOS)
+  - id: 4
+    name: Pontificia Universidad Católica de Chile
+lang: es
+citeproc: true
+---
+
+# Percepciones de Justicia en la Evaluación Escolar: Un Estudio Exploratorio en Estudiantes Chilenos
+
+
+Juan Carlos Castillo [^1]
+
+[^1]: Universidad de Chile, Centro de estudios del conflicto y cohesión social (COES), Núcleo milenio de desigualdades y oportunidades digitales (NUDOS)
+
+María Fernanda Núñez [^2]
+
+[^2]:Universidad de Chile 
+
+Kevin Carrasco [^3]
+
+[^3]: Centro de estudios del conflicto y cohesión social (COES)
+
+Andreas Laffert[^4]
+
+[^4]:Pontificia Universidad Católica de Chile
+
+ 
+En Chile, el sistema educativo se caracteriza por ser un espacio que legitima la desigualdad y reproduce el ideal meritocrático en sus estudiantes. Con una fuerte configuración de mercado coexisten prácticas como la privatización y comodificación, tratandose de un espacio altamente segregador y con amplias desigualdades  [@belleiEstudioSegregacionSocioeconomica2013;@corvalanEducacionMercadoChile2015]. En el plano normativo, dicho contexto promueve la competencia, una alta valoración de los logros individuales y el esfuerzo [@darnon_where_2018]. Dicha valoración del mérito ha sido vinculada con la justificación de la desigualdad, funcionando como legitimador de las diferencias muchas veces asociadas a las oportunidades [@mijs_unfulfillable_2016; @wiederkehr_belief_2015; @castillo_legitimacy_2011; @wilsonRoleMeritPrinciple2003] y en la escuela se ha demostrado que el mérito no disminuye la desigualdad social [@sabbaghUnfoldingJusticeResearch2016; @batruchBeliefSchoolMeritocracy2023].
+
+
+En el contexto escolar, el rol de la meritocracia es central como principio de justicia, donde la equidad es considerada como justa al momento de asignar notas al responder a criterios como el talento y el esfuerzo [@resh_sense_2010; @wilsonRoleMeritPrinciple2003]. En el contexto distributivo, la noción de merecimiento (asociada al mérito como principio de distribución) tiene que ver con la idea de que se produce una recompensa (dinero o notas) proprcional al mérito dentro de una situación competitiva [@gilgenDistributionalSurveyExperiment2020]. Esto ha sido ampliamente estudiado en población adulta en el caso chileno. @castillo_cual_2009 observa las percepciones de justicia realtiva a los salarios y la manera en que se produce la legitimación de la desigualdad [@castillo_legitimacy_2011]. Recientemente, @salgadoAdolescentsJusticeEvaluations2020 ha vinculado las percepciones de desigualdad salarial en estudiantes chilenos, recalcando que dichas percepciones median la relación entre el estatus social de los estudiantes y sus propias evaluaciones de justicia. Dentro del contexto experimental e internacional, @gilgenDistributionalSurveyExperiment2020 propone el experimento distribucional de encuesta (DSE) para estudiar las percepciones de justicia distributiva en los salarios en población adulta.
+
+Bajo un contexto escolar altamente competitivo y segregador, en donde las notas ocupan un rol central dentro de la dinámica escolar, junto a la escasa evidencia nacional del estudio de la justicia en el contexto escolar, surge la siguiente pregunta: ¿cuáles son los criterios de justicia que operan en los/as estudiantes al momento de distribuir décimas a otros estudiantes según características que aludan al mérito y sus condiciones de origen?
+
+A partir de esa motivación, este trabajo se propone utilizar el experimento distribucional de encuesta (DSE) como un acercamiento al estudio de la justicia distributiva escolar que nos permitirá explorar cómo se producen las evaluaciones de justicia de los/as estudiantes. La recompensa a distribuir ha sido adaptada a las notas en lugar de los salarios, enmarcándonos en la subesfera de las notas en el ámbito de la justicia distributiva en la educación [@sabbaghUnfoldingJusticeResearch2016].
+
+El experimento distribucional de encuesta (DSE) combina elementos de los experimentos de elección discreta (DCE),  de encuesta factorial (FSE) y el análisis conjunto (CJA), añadiendo la tarea de la distribución de una recompensa específicia que permita captar los procesos evaluativos que intervienen en las consideraciones de justicia al momento de valorar las viñetas presentadas [@gilgenDistributionalSurveyExperiment2020]. En la encuesta "Educación y Meritocracia - EDUMER", el experimento consta de viñetas que presentan cuatro tipos de estudiantes, caracterizados por dos elementos y compuestos por la cambinación de ambos: el esfuerzo que realizan en su estudio y las condiciones de su hogar. Adicionalmente, se les informa que estos cuatro perfiles de estudiantes tienen una nota 3.7, cercana a aprobar. El estudiante distribuidor de la recompensa tiene la posibilidad de aprobar y/o desprobar a alguno de estos perfiles. Así, adoptando la lógica de los juegos de distribución [@gilgenDistributionalSurveyExperiment2020], los estudiantes tienen la posibilidad de distribuir diez décimas a esos cuatro estudiantes ficiticios. 
+
+Los resultados preliminares indican una aparición del principio meritocrático en la distribución de recompensas en edades tempranas. Se observa una proporcionalidad entre la asignación y el mérito en la distribución de las décimas. Preliminarmente, aparece un orden de priorización en las características que los estudiantes tienen en cuenta al momento de la asignación: primero se recompensa a los estudiantes más meritorios, posteriormente y ante la ausencia del mérito, se recompensa a quien tiene condiciones menos favorecedoras en su hogar. A la luz de estos resultados, utilizando los datos de la Ola 2 de la encuesta "Educación y Meritocracia - EDUMER" (N=637), se realizarán análisis descriptivos y bivariados con características sociodemográficas de los encuestados. 
+
+
+
+
+
