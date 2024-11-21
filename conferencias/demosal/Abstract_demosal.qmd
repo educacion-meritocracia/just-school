@@ -62,7 +62,7 @@ citeproc: true
 
 Juan Carlos Castillo [^1]
 
-[^1]: Universidad de Chile, Centro de estudios del conflicto y cohesión social (COES), Núcleo milenio de desigualdades y oportunidades digitales (NUDOS)
+[^1]: Universidad de Chile, Centro de Estudios de Conflicto y Cohesión Social (COES), Núcleo Milenio de Desigualdades y Oportunidades Digitales (NUDOS)
 
 María Fernanda Núñez [^2]
 
@@ -70,15 +70,15 @@ María Fernanda Núñez [^2]
 
 Kevin Carrasco [^3]
 
-[^3]: Centro de estudios del conflicto y cohesión social (COES)
+[^3]: Centro de Estudios de Conflicto y Cohesión Social (COES)
 
 Andreas Laffert[^4]
 
 [^4]:Pontificia Universidad Católica de Chile
 
- 
-En Chile, el sistema educativo se caracteriza por ser un espacio que legitima la desigualdad y reproduce el ideal meritocrático en sus estudiantes. Con una fuerte configuración de mercado coexisten prácticas como la privatización y comodificación, tratándose de un espacio altamente segregador y con amplias desigualdades  [@belleiEstudioSegregacionSocioeconomica2013;@corvalanEducacionMercadoChile2015]. En el plano normativo, dicho contexto promueve la competencia, una alta valoración de los logros individuales y el esfuerzo [@darnon_where_2018]. Dicha valoración del mérito ha sido vinculada con la justificación de la desigualdad, funcionando como legitimador de las diferencias muchas veces asociadas a las oportunidades [@mijs_unfulfillable_2016; @wiederkehr_belief_2015; @castillo_legitimacy_2011; @wilsonRoleMeritPrinciple2003] y en la escuela se ha demostrado que el mérito no disminuye la desigualdad social [@sabbaghUnfoldingJusticeResearch2016; @batruchBeliefSchoolMeritocracy2023].
+Las escuelas se caracterizan por ser un espacio donde se enfatiza y se premia el buen rendimiento basado en esfuerzos y talentos individuales, usualmente vinculado al concepto de meritocracia. En el caso Chileno, el sistema educativo posee un alto nivel de privatización, generando segregación y reproduciendo las desigualdades de origen  [@belleiEstudioSegregacionSocioeconomica2013;@corvalanEducacionMercadoChile2015]. En el plano normativo, dicho contexto promueve la competencia, una alta valoración de los logros individuales y el esfuerzo [@darnon_where_2018]. Dicha valoración del mérito ha sido vinculada con la justificación de la desigualdad, funcionando como legitimador de las diferencias muchas veces asociadas a las oportunidades [@mijs_unfulfillable_2016; @wiederkehr_belief_2015; @castillo_legitimacy_2011; @wilsonRoleMeritPrinciple2003].
 
+Falta corregir mucho desde acá hacia abajo >
 
 En el contexto escolar, el rol de la meritocracia es central como principio de justicia, donde la equidad es considerada como justa al momento de asignar notas al responder a criterios como el talento y el esfuerzo [@resh_sense_2010; @wilsonRoleMeritPrinciple2003]. Aquello alude a la noción de merecimiento dentro del estudio de la justicia distributiva, referente a la asignación de una recompensa proporcional al mérito dentro de una situación competitiva [@gilgenDistributionalSurveyExperiment2020]. Esto ha sido ampliamente estudiado en población adulta en el caso chileno y en la distribución de salarios [@castillo_cual_2009], y su efecto en la percepción de legitimidad de la desigualdad [@castillo_legitimacy_2011]. Recientemente, @salgadoAdolescentsJusticeEvaluations2020 ha vinculado aquello con el contexto escolar, observando que las percepciones de desigualdad salarial de los estudiantes median la relación entre su estatus social y sus propias evaluaciones de justicia. Dentro del contexto experimental e internacional, @gilgenDistributionalSurveyExperiment2020 propone el experimento distribucional de encuesta (DSE) para estudiar las percepciones de justicia distributiva en los salarios en población adulta.
 
