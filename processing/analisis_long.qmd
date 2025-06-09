@@ -1,0 +1,491 @@
+---
+title: "Análisis longitudinal: RI-CLPM"
+
+author: Equipo EDUMER
+subtitle: SoJ
+fontsize: 12pt
+#bibliography: "../input/mini-proyecto.bib"
+#csl: "input/bib/apa6.csl"
+format:
+  html:
+    toc: true
+    toc-location: right
+    toc-depth: 6
+    toc-expand: 6
+    toc-title: Contenidos
+    number-sections: false
+    number-depth: 6
+    theme: 
+    - edumer.scss
+    - sandstone
+    title-block-banner: true
+editor: visual
+lang: es
+---
+
+
+```{r,data,  echo=FALSE}
+pacman::p_load(dplyr, sjmisc, car, sjlabelled, stargazer, haven, sjPlot, ggplot2, tidyr, stringr, corrplot, lavaan, data.table)
+
+load("../input/data/proc/edumer_students_long.RData")
+setDT(edumer_students_long)
+#edumer_students_long <- edumer_students_long[muestra==1,]
+
+```
+
+```{r, preparacion, echo=FALSE}
+
+# recodificar na 
+edumer_students_long <- edumer_students_long[, lapply(.SD, function(x) replace(x, which(x %in% c(88,99)), NA))]
+
+# indice de justicia 
+# nota preferida 
+edumer_students_long <- edumer_students_long %>%
+  mutate(nota_just = case_when(
+    is.na(p6) & p5 == 2 ~ p4 ,  # Imputar el valor de 'notas_merit' (2) cuando 'nota_pref' es NA
+    TRUE ~ p6  # Mantener los valores existentes de 'nota_pref' cuando no son NA
+  ))
+
+edumer_students_long <- edumer_students_long %>% mutate(just_school = log(p4/nota_just))
+                                    
+#summary(edumer_students_long$just_school)
+
+# long to wide
+datos <- dcast(edumer_students_long, id_estudiante~ola,
+               value.var = c("just_school", "p1_1", "p1_2", "p1_3", "p2_1", "p2_2", "p2_3", "p30", "p26", "p27", "d3_def", "p20" ))
+
+# seleccionar variables
+old <- c("id_estudiante", paste0("just_school_", 1:2), paste0("p1_1_", 1:2), paste0("p1_2_", 1:2), paste0("p1_3_", 1:2), paste0("p2_1_", 1:2), paste0("p2_2_", 1:2), paste0("p2_3_", 1:2), "p30_1", "p26_1", "p27_1", "d3_def_1", "p20_1")
+new <- c("id", paste0("just_school", 1:2), paste0("merit_se", 1:2),paste0("merit_st", 1:2),paste0("merit_soc", 1:2), paste0("merit_sce", 1:2),paste0("merit_sct", 1:2),paste0("merit_school", 1:2),"libros_hogar", "ne_madre", "ne_padre", "curso", "genero")
+setnames(datos,old,new)
+datos <- datos[, ..new]
+
+# cleanning workspace 
+datos <- as.data.frame(datos)
+
+```
+
+# Modelo Básico 
+
+```{r}
+
+```
+
+# Ambos (Extensión RI-CLPM con predictores)
+
+Solo con las variables de percepción de meritocracia
+
+## Paso 1: Modelo configuracional
+
+```{r, echo=FALSE}
+RICLPM1.ext3 <- '
+  
+  ################
+  # BETWEEN PART #
+  ################
+  
+  # Create between factors (random intercepts) for each indicator separately
+  
+  RIX1 =~ 1*merit_se1 + 1*merit_se2 
+  RIX2 =~ 1*merit_st1 + 1*merit_st2
+  RIX3 =~ 1*merit_soc1 + 1*merit_soc2
+  
+  RIY1 =~ 1*merit_sce1 + 1*merit_sce2 
+  RIY2 =~ 1*merit_sct1 + 1*merit_sct2
+  RIY3 =~ 1*merit_school1 + 1*merit_school2
+  
+  
+  ##################################
+  # WITHIN PART: MEASUREMENT MODEL #
+  ##################################
+  
+  # Factor models for Y at 5 waves
+  WFX1 =~ merit_se1 + merit_st1 + merit_soc1
+  WFX2 =~ merit_se2 + merit_st2 + merit_soc2
+
+  # Factor models for Z at 5 waves
+  WFY1 =~ merit_sce1 + merit_sct1 + merit_school1
+  WFY2 =~ merit_sce2 + merit_sct2 + merit_school2
+  
+  #########################
+  # WITHIN PART: DYNAMICS #
+  #########################
+  
+  # Specify lagged effects between within-person centered latent variables
+  WFX2 + WFY2 ~ WFX1 + WFY1
+  
+  # Estimate correlations within same wave
+  WFX1 ~~ WFY1
+  WFX2 ~~ WFY2
+  
+  ##########################
+  # ADDITIONAL CONSTRAINTS #
+  ##########################
+  
+  # Constrain covariance of between factors and exogenous within factors to 0 
+  RIX1 + RIX2 + RIX3 + RIY1 + RIY2 + RIY3 ~~ 0*WFY1 + 0*WFX1
+'
+RICLPM1.ext3.fit <- cfa(RICLPM1.ext3, 
+  data = datos, 
+  missing = 'ML',
+  meanstructure = TRUE
+)
+summary(RICLPM1.ext3.fit, standardized = T)
+```
+
+## Paso 2: Invarianza factorial débil
+
+```{r, echo=FALSE}
+RICLPM2.ext3 <- '
+  
+  ################
+  # BETWEEN PART #
+  ################
+  
+  # Create between factors (random intercepts) for each indicator separately
+  RIX1 =~ 1*merit_se1 + 1*merit_se2 
+  RIX2 =~ 1*merit_st1 + 1*merit_st2
+  RIX3 =~ 1*merit_soc1 + 1*merit_soc2
+  
+  RIY1 =~ 1*merit_sce1 + 1*merit_sce2 
+  RIY2 =~ 1*merit_sct1 + 1*merit_sct2
+  RIY3 =~ 1*merit_school1 + 1*merit_school2
+  
+  ##################################
+  # WITHIN PART: MEASUREMENT MODEL #
+  ##################################
+  
+  # Factor models for X at 2 waves (constrained)
+  WFX1 =~ a*merit_se1 + b*merit_st1 + c*merit_soc1
+  WFX2 =~ a*merit_se2 + b*merit_st2 + c*merit_soc2
+ 
+  # Factor models for Y at 2 waves (constrained)
+  WFY1 =~ d*merit_sce1 + e*merit_sct1 + f*merit_school1
+  WFY2 =~ d*merit_sce2 + e*merit_sct2 + f*merit_school2
+ 
+  
+  #########################
+  # WITHIN PART: DYNAMICS #
+  #########################
+  
+  # Specify lagged effects between within-person centered latent variables
+  WFX2 + WFY2 ~ WFX1 + WFY1
+  
+  # Estimate correlations within same wave
+  WFX1 ~~ WFY1
+  WFX2 ~~ WFY2
+  
+  ##########################
+  # ADDITIONAL CONSTRAINTS #
+  ##########################
+  
+  # Constrain covariance of between factors and exogenous within factors to 0
+  RIX1 + RIX2 + RIX3 + RIY1 + RIY2 + RIY3 ~~ 0*WFY1 + 0*WFX1
+'
+RICLPM2.ext3.fit <- cfa(RICLPM2.ext3, 
+  data = datos, 
+  missing = 'ML'
+)
+summary(RICLPM2.ext3.fit, standardized = T)
+```
+
+## Paso 3: Fuerte invarianza factorial
+
+```{r, echo=FALSE}
+RICLPM3.ext3 <- '
+  
+  ################
+  # BETWEEN PART #
+  ################
+  
+  # Create between factors (random intercepts) for each indicator separately
+  RIX1 =~ 1*merit_se1 + 1*merit_se2 
+  RIX2 =~ 1*merit_st1 + 1*merit_st2
+  RIX3 =~ 1*merit_soc1 + 1*merit_soc2
+  
+  RIY1 =~ 1*merit_sce1 + 1*merit_sce2 
+  RIY2 =~ 1*merit_sct1 + 1*merit_sct2
+  RIY3 =~ 1*merit_school1 + 1*merit_school2
+  
+  ##################################
+  # WITHIN PART: MEASUREMENT MODEL #
+  ##################################
+  
+  # Factor models for X at 2 waves (constrained)
+  WFX1 =~ a*merit_se1 + b*merit_st1 + c*merit_soc1
+  WFX2 =~ a*merit_se2 + b*merit_st2 + c*merit_soc2
+ 
+  # Factor models for Y at 2 waves (constrained)
+  WFY1 =~ d*merit_sce1 + e*merit_sct1 + f*merit_school1
+  WFY2 =~ d*merit_sce2 + e*merit_sct2 + f*merit_school2
+  
+  
+  # Constrained intercepts over time (necessary for strong factorial 
+  # invariance; without these contraints we have week factorial invariance) 
+  merit_se1 + merit_se2 ~ g*1
+  merit_st1 + merit_st2 ~ h*1
+  merit_soc1 + merit_soc2 ~ i*1
+  merit_sce1 + merit_sce2 ~ j*1
+  merit_sct1 + merit_sct1 ~ k*1
+  merit_school1 + merit_school2 ~ l*1
+  
+  # Free latent means from t = 2 onward (only do this in combination with  
+  # constraints on intercepts; without these, this would not be specified)
+  WFX2 + WFY2 ~ 1
+  
+  #########################
+  # WITHIN PART: DYNAMICS #
+  #########################
+  
+  # Specify lagged effects between within-person centered latent variables
+  WFX2 + WFY2 ~ WFX1 + WFY1
+  
+  # Estimate correlations within same wave
+  WFX1 ~~ WFY1
+  WFX2 ~~ WFY2
+  
+  ##########################
+  # ADDITIONAL CONSTRAINTS #
+  ##########################
+  
+  # Constrain covariance of between factors and exogenous within factors to 0
+  RIX1 + RIX2 + RIX3 + RIY1 + RIY2 + RIY3 ~~ 0*WFY1 + 0*WFX1
+'
+RICLPM3.ext3.fit <- cfa(RICLPM3.ext3, 
+  data = datos, 
+  missing = 'ML'
+)
+summary(RICLPM3.ext3.fit, standardized = T)
+```
+
+## Extra: Fuerte invarianza factorial con cargas factoriales iguales a las cargas factoriales dentro de la persona
+
+```{r, echo=FALSE}
+RICLPM4.ext3 <- '
+  
+  ################
+  # BETWEEN PART #
+  ################
+  
+  # Create between factors (random intercepts) for each indicator separately
+  RIX1 =~ 1*merit_se1 + 1*merit_se2 
+  RIX2 =~ 1*merit_st1 + 1*merit_st2
+  RIX3 =~ 1*merit_soc1 + 1*merit_soc2
+  
+  RIY1 =~ 1*merit_sce1 + 1*merit_sce2 
+  RIY2 =~ 1*merit_sct1 + 1*merit_sct2
+  RIY3 =~ 1*merit_school1 + 1*merit_school2
+  
+  # Create a single random intercept for all X variables, and another for all 
+  # Y variables and constrain the factor loadings to be identical to
+  # within-person factor loadings
+  
+  RIX =~ a*RIX1 + b*RIX2 + c*RIX3
+  RIY =~ d*RIY1 + e*RIY2 + f*RIY3
+  
+  # Add (co)variance between two higher-order random intercepts
+  RIX ~~ RIY
+  RIX ~~ RIX
+  RIY ~~ RIY
+  
+  # Constrain measurement error variances of the second order factor model to 0 
+  RIX1 ~~ 0*RIX1
+  RIX2 ~~ 0*RIX2
+  RIX3 ~~ 0*RIX3
+  RIY1 ~~ 0*RIY1
+  RIY2 ~~ 0*RIY2
+  RIY3 ~~ 0*RIY3
+  
+  ##################################
+  # WITHIN PART: MEASUREMENT MODEL #
+  ##################################
+  
+ # Factor models for X at 2 waves (constrained)
+  WFX1 =~ a*merit_se1 + b*merit_st1 + c*merit_soc1
+  WFX2 =~ a*merit_se2 + b*merit_st2 + c*merit_soc2
+ 
+  # Factor models for Y at 2 waves (constrained)
+  WFY1 =~ d*merit_sce1 + e*merit_sct1 + f*merit_school1
+  WFY2 =~ d*merit_sce2 + e*merit_sct2 + f*merit_school2
+  
+  # Constrained intercepts over time (necessary for strong factorial invariance; 
+  # without these contraints we have week factorial invariance)
+ merit_se1 + merit_se2 ~ g*1
+  merit_st1 + merit_st2 ~ h*1
+  merit_soc1 + merit_soc2 ~ i*1
+  merit_sce1 + merit_sce2 ~ j*1
+  merit_sct1 + merit_sct1 ~ k*1
+  merit_school1 + merit_school2 ~ l*1
+  
+  # Free latent means from t = 2 onward (only do this in combination with  
+  # constraints on intercepts; without these, this would not be identified)
+  WFX2 + WFY2 ~ 1
+  
+  #########################
+  # WITHIN PART: DYNAMICS #
+  #########################
+  
+  # Specify lagged effects between within-person centered latent variables
+  WFX2 + WFY2 ~ WFX1 + WFY1
+  
+  # Estimate correlations within same wave
+  WFX1 ~~ WFY1
+  WFX2 ~~ WFY2
+  
+  ##########################
+  # ADDITIONAL CONSTRAINTS #
+  ##########################
+  
+  # Constrain covariance of between factors and exogenous within factors to 0 
+  RIX + RIY + RIX1 + RIX2 + RIX3 + RIY1 + RIY2 + RIY3 ~~ 0*WFY1 + 0*WFX1
+'
+RICLPM4.ext3.fit <- cfa(RICLPM4.ext3, 
+  data = datos, 
+  missing = 'ML'
+)
+summary(RICLPM4.ext3.fit, standardized = T)
+```
+
+## Paso 4: RI-CLPM latente
+
+```{r, echo=FALSE}
+RICLPM5.ext3 <- '
+  
+  #####################
+  # MEASUREMENT MODEL #
+  #####################
+  
+ # Factor models for X at 2 waves (constrained)
+  FX1 =~ a*merit_se1 + b*merit_st1 + c*merit_soc1
+  FX2 =~ a*merit_se2 + b*merit_st2 + c*merit_soc2
+ 
+  # Factor models for Y at 2 waves (constrained)
+  FY1 =~ d*merit_sce1 + e*merit_sct1 + f*merit_school1
+  FY2 =~ d*merit_sce2 + e*merit_sct2 + f*merit_school2
+  
+  # Constrained intercepts over time (this is necessary for strong factorial 
+  # invariance; without these contraints we have week factorial invariance)
+ merit_se1 + merit_se2 ~ g*1
+  merit_st1 + merit_st2 ~ h*1
+  merit_soc1 + merit_soc2 ~ i*1
+  merit_sce1 + merit_sce2 ~ j*1
+  merit_sct1 + merit_sct1 ~ k*1
+  merit_school1 + merit_school2 ~ l*1
+  
+  # Free latent means from t = 2 onward (only do this in combination with 
+  # constraints on intercepts; without these, this would not be identified)
+  FX2 + FY2 ~ 1
+  
+  ################
+  # BETWEEN PART #
+  ################
+  
+  # Create between factors (random intercepts)
+  RIX =~ 1*FX1 + 1*FX2 
+  RIY =~ 1*FY1 + 1*FY2 
+  
+  # Set residual variances of all FX and FY variables to 0
+  FX1 ~~ 0*FX1
+  FX2 ~~ 0*FX2
+  FY1 ~~ 0*FY1
+  FY2 ~~ 0*FY2
+  
+  ###############
+  # WITHIN PART #
+  ###############
+ 
+  # Create within-components
+  WFX1 =~ 1*FX1
+  WFX2 =~ 1*FX2
+  
+  WFY1 =~ 1*FY1
+  WFY2 =~ 1*FY2
+  
+  # Specify lagged effects between within-person centered latent variables
+  WFX2 + WFY2 ~ WFX1 + WFY1
+  
+  # Estimate correlations within same wave
+  WFX2 ~~ WFY2
+  
+  ##########################
+  # ADDITIONAL CONSTRAINTS #
+  ##########################
+  
+  # Set correlations between between-factors (random intercepts) and within-
+  # factors at wave 1 at 0
+  RIX + RIY ~~ 0*WFX1 + 0*WFY1
+'
+RICLPM5.ext3.fit <- cfa(RICLPM5.ext3,
+  data = datos, 
+  missing = 'ML'
+)
+summary(RICLPM5.ext3.fit, standardized = T)
+```
+
+# Ambos (Extensión RI-CLPM con controles)
+
+```{r, echo=FALSE}
+RICLPM.ext1 <- '
+  # Create between components (random intercepts)
+  
+  RIx =~ 1*just_school1 + 1*just_school2 
+   
+  RIy =~ 1*merit_soc1 + 1*merit_soc2 
+    
+  RIz =~ 1*merit_school1 + 1*merit_school2 
+  
+  # Create within-person centered variables
+  wx1 =~ 1*just_school1
+  wx2 =~ 1*just_school2
+  wy1 =~ 1*merit_soc1
+  wy2 =~ 1*merit_soc2
+  wz1 =~ 1*merit_school1
+  wz2 =~ 1*merit_school2
+  
+  # Regression of observed variables on z1 (constrained)
+  just_school1 + just_school2 ~ s1*genero # Constrained over time. 
+  merit_soc1 + merit_soc2 ~ s2*genero # Constrained over time. 
+  merit_school1 + merit_school2 ~ s3*genero
+  
+
+  # Estimate lagged effects between within-person centered variables
+  wx2 + wy2 ~ wx1 + wy1
+  wx2 + wz2 ~ wx1 + wz1
+  wz2 + wy2 ~ wz1 + wy1
+  
+  # Estimate covariance between within-person centered variables at first wave
+  wx1 ~~ wy1 # Covariance
+  wx1 ~~ wz1
+  wy1 ~~ wz1
+  
+  # Estimate covariances between residuals of within-person centered variables
+  # (i.e., innovations)
+  wx2 ~~ wy2
+  wx2 ~~ wz2
+  wy2 ~~ wz2
+ 
+  
+  # Estimate variance and covariance of random intercepts
+  RIx ~~ RIx
+  RIy ~~ RIy
+  RIz ~~ RIz
+  RIx ~~ RIy
+  RIz ~~ RIx
+  RIz ~~ RIy
+  
+  # Estimate (residual) variance of within-person centered variables
+  wx1 ~~ wx1 # Variances
+  wy1 ~~ wy1 
+  wx2 ~~ wx2 # Residual variances
+  wy2 ~~ wy2 
+  wz1 ~~ wz1
+  wz2 ~~ wz2
+'
+RICLPM.ext1.fit <- lavaan(RICLPM.ext1, 
+  data = datos, 
+  missing = 'ML', 
+  meanstructure = T, 
+  int.ov.free = T
+) 
+summary(RICLPM.ext1.fit, standardized = T)
+```

@@ -38,6 +38,8 @@ proc_datos <- proc_datos %>% mutate(justicia_nota = log(rendimiento/nota_pref))
 summary(proc_datos$justicia_nota)
 
 
+
+
 ## justicia categorica
 
 # prueba con pregunta que añade tiempo 

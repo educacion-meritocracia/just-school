@@ -1,0 +1,1451 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.554">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Equipo EDUMER">
+
+<title>Análisis longitudinal: RI-CLPM</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="analisis_long_files/libs/clipboard/clipboard.min.js"></script>
+<script src="analisis_long_files/libs/quarto-html/quarto.js"></script>
+<script src="analisis_long_files/libs/quarto-html/popper.min.js"></script>
+<script src="analisis_long_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="analisis_long_files/libs/quarto-html/anchor.min.js"></script>
+<link href="analisis_long_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="analisis_long_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="analisis_long_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="analisis_long_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="analisis_long_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body>
+
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Análisis longitudinal: RI-CLPM</h1>
+            <p class="subtitle lead">SoJ</p>
+                      </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Autor/a</div>
+      <div class="quarto-title-meta-contents">
+               <p>Equipo EDUMER </p>
+            </div>
+    </div>
+      
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="6">
+    <h2 id="toc-title">Contenidos</h2>
+   
+  <ul>
+  <li><a href="#modelo-básico" id="toc-modelo-básico" class="nav-link active" data-scroll-target="#modelo-básico">Modelo Básico</a></li>
+  <li><a href="#ambos-extensión-ri-clpm-con-predictores" id="toc-ambos-extensión-ri-clpm-con-predictores" class="nav-link" data-scroll-target="#ambos-extensión-ri-clpm-con-predictores">Ambos (Extensión RI-CLPM con predictores)</a>
+  <ul>
+  <li><a href="#paso-1-modelo-configuracional" id="toc-paso-1-modelo-configuracional" class="nav-link" data-scroll-target="#paso-1-modelo-configuracional">Paso 1: Modelo configuracional</a></li>
+  <li><a href="#paso-2-invarianza-factorial-débil" id="toc-paso-2-invarianza-factorial-débil" class="nav-link" data-scroll-target="#paso-2-invarianza-factorial-débil">Paso 2: Invarianza factorial débil</a></li>
+  <li><a href="#paso-3-fuerte-invarianza-factorial" id="toc-paso-3-fuerte-invarianza-factorial" class="nav-link" data-scroll-target="#paso-3-fuerte-invarianza-factorial">Paso 3: Fuerte invarianza factorial</a></li>
+  <li><a href="#extra-fuerte-invarianza-factorial-con-cargas-factoriales-iguales-a-las-cargas-factoriales-dentro-de-la-persona" id="toc-extra-fuerte-invarianza-factorial-con-cargas-factoriales-iguales-a-las-cargas-factoriales-dentro-de-la-persona" class="nav-link" data-scroll-target="#extra-fuerte-invarianza-factorial-con-cargas-factoriales-iguales-a-las-cargas-factoriales-dentro-de-la-persona">Extra: Fuerte invarianza factorial con cargas factoriales iguales a las cargas factoriales dentro de la persona</a></li>
+  <li><a href="#paso-4-ri-clpm-latente" id="toc-paso-4-ri-clpm-latente" class="nav-link" data-scroll-target="#paso-4-ri-clpm-latente">Paso 4: RI-CLPM latente</a></li>
+  </ul></li>
+  <li><a href="#ambos-extensión-ri-clpm-con-controles" id="toc-ambos-extensión-ri-clpm-con-controles" class="nav-link" data-scroll-target="#ambos-extensión-ri-clpm-con-controles">Ambos (Extensión RI-CLPM con controles)</a></li>
+  </ul>
+</nav>
+</div>
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+<section id="modelo-básico" class="level1">
+<h1>Modelo Básico</h1>
+</section>
+<section id="ambos-extensión-ri-clpm-con-predictores" class="level1">
+<h1>Ambos (Extensión RI-CLPM con predictores)</h1>
+<p>Solo con las variables de percepción de meritocracia</p>
+<section id="paso-1-modelo-configuracional" class="level2">
+<h2 class="anchored" data-anchor-id="paso-1-modelo-configuracional">Paso 1: Modelo configuracional</h2>
+<div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: lavaan-&gt;lav_object_post_check():  
+   some estimated lv variances are negative</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>lavaan 0.6-19 ended normally after 212 iterations
+
+  Estimator                                         ML
+  Optimization method                           NLMINB
+  Number of model parameters                        63
+
+  Number of observations                           937
+  Number of missing patterns                        21
+
+Model Test User Model:
+                                                      
+  Test statistic                                51.539
+  Degrees of freedom                                27
+  P-value (Chi-square)                           0.003
+
+Parameter Estimates:
+
+  Standard errors                             Standard
+  Information                                 Observed
+  Observed information based on                Hessian
+
+Latent Variables:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+  RIX1 =~                                                               
+    merit_se1         1.000                               0.446    0.573
+    merit_se2         1.000                               0.446    0.529
+  RIX2 =~                                                               
+    merit_st1         1.000                               0.516    0.682
+    merit_st2         1.000                               0.516    0.658
+  RIX3 =~                                                               
+    merit_soc1        1.000                               0.616    0.647
+    merit_soc2        1.000                               0.616    0.638
+  RIY1 =~                                                               
+    merit_sce1        1.000                               0.409    0.526
+    merit_sce2        1.000                               0.409    0.524
+  RIY2 =~                                                               
+    merit_sct1        1.000                               0.376    0.511
+    merit_sct2        1.000                               0.376    0.548
+  RIY3 =~                                                               
+    merit_school1     1.000                               0.393    0.517
+    merit_school2     1.000                               0.393    0.526
+  WFX1 =~                                                               
+    merit_se1         1.000                               0.166    0.213
+    merit_st1         1.643    0.607    2.708    0.007    0.272    0.360
+    merit_soc1        0.424    0.261    1.624    0.104    0.070    0.074
+  WFX2 =~                                                               
+    merit_se2         1.000                               0.280    0.332
+    merit_st2         1.685    0.702    2.401    0.016    0.471    0.600
+    merit_soc2       -0.560    0.172   -3.260    0.001   -0.156   -0.162
+  WFY1 =~                                                               
+    merit_sce1        1.000                               0.232    0.298
+    merit_sct1        2.055    0.582    3.530    0.000    0.476    0.647
+    merit_school1     1.153    0.243    4.747    0.000    0.267    0.351
+  WFY2 =~                                                               
+    merit_sce2        1.000                               0.201    0.257
+    merit_sct2        0.784    0.335    2.342    0.019    0.157    0.229
+    merit_school2     1.956    0.997    1.962    0.050    0.392    0.526
+
+Regressions:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+  WFX2 ~                                                                
+    WFX1             -2.387    2.299   -1.038    0.299   -1.415   -1.415
+    WFY1              0.619    0.763    0.812    0.417    0.513    0.513
+  WFY2 ~                                                                
+    WFX1             -0.454    0.489   -0.929    0.353   -0.375   -0.375
+    WFY1             -0.031    0.250   -0.125    0.901   -0.036   -0.036
+
+Covariances:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+  WFX1 ~~                                                               
+    WFY1              0.014    0.009    1.606    0.108    0.378    0.378
+ .WFX2 ~~                                                               
+   .WFY2             -0.015    0.034   -0.439    0.661   -0.345   -0.345
+  RIX1 ~~                                                               
+    WFY1              0.000                               0.000    0.000
+    WFX1              0.000                               0.000    0.000
+  RIX2 ~~                                                               
+    WFY1              0.000                               0.000    0.000
+    WFX1              0.000                               0.000    0.000
+  RIX3 ~~                                                               
+    WFY1              0.000                               0.000    0.000
+    WFX1              0.000                               0.000    0.000
+  RIY1 ~~                                                               
+    WFY1              0.000                               0.000    0.000
+    WFX1              0.000                               0.000    0.000
+  RIY2 ~~                                                               
+    WFY1              0.000                               0.000    0.000
+    WFX1              0.000                               0.000    0.000
+  RIY3 ~~                                                               
+    WFY1              0.000                               0.000    0.000
+    WFX1              0.000                               0.000    0.000
+  RIX1 ~~                                                               
+    RIX2              0.203    0.030    6.794    0.000    0.883    0.883
+    RIX3             -0.102    0.019   -5.468    0.000   -0.373   -0.373
+    RIY1              0.081    0.016    5.198    0.000    0.447    0.447
+    RIY2              0.046    0.016    2.819    0.005    0.272    0.272
+    RIY3              0.062    0.017    3.723    0.000    0.357    0.357
+  RIX2 ~~                                                               
+    RIX3             -0.034    0.018   -1.870    0.061   -0.106   -0.106
+    RIY1              0.064    0.017    3.902    0.000    0.305    0.305
+    RIY2              0.044    0.019    2.308    0.021    0.225    0.225
+    RIY3              0.072    0.020    3.623    0.000    0.356    0.356
+  RIX3 ~~                                                               
+    RIY1              0.002    0.018    0.099    0.921    0.007    0.007
+    RIY2              0.062    0.017    3.746    0.000    0.269    0.269
+    RIY3             -0.010    0.017   -0.569    0.569   -0.041   -0.041
+  RIY1 ~~                                                               
+    RIY2              0.080    0.020    4.009    0.000    0.520    0.520
+    RIY3              0.096    0.021    4.661    0.000    0.595    0.595
+  RIY2 ~~                                                               
+    RIY3              0.040    0.026    1.515    0.130    0.270    0.270
+
+Intercepts:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+   .merit_se1         2.764    0.026  106.815    0.000    2.764    3.555
+   .merit_se2         2.673    0.032   83.226    0.000    2.673    3.172
+   .merit_st1         2.839    0.025  112.286    0.000    2.839    3.751
+   .merit_st2         2.818    0.030   93.797    0.000    2.818    3.590
+   .merit_soc1        2.994    0.032   94.091    0.000    2.994    3.141
+   .merit_soc2        3.010    0.036   82.785    0.000    3.010    3.117
+   .merit_sce1        3.197    0.026  123.333    0.000    3.197    4.111
+   .merit_sce2        3.128    0.030  105.043    0.000    3.128    4.007
+   .merit_sct1        3.172    0.025  129.416    0.000    3.172    4.312
+   .merit_sct2        3.151    0.026  120.509    0.000    3.151    4.599
+   .merit_school1     2.905    0.025  114.510    0.000    2.905    3.822
+   .merit_school2     2.933    0.029  102.819    0.000    2.933    3.931
+
+Variances:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+   .merit_se1         0.379    0.042    9.080    0.000    0.379    0.626
+   .merit_se2         0.433    0.060    7.255    0.000    0.433    0.610
+   .merit_st1         0.232    0.084    2.749    0.006    0.232    0.405
+   .merit_st2         0.128    0.148    0.865    0.387    0.128    0.207
+   .merit_soc1        0.524    0.041   12.754    0.000    0.524    0.576
+   .merit_soc2        0.528    0.044   12.128    0.000    0.528    0.566
+   .merit_sce1        0.384    0.030   12.851    0.000    0.384    0.634
+   .merit_sce2        0.402    0.036   11.104    0.000    0.402    0.659
+   .merit_sct1        0.173    0.069    2.506    0.012    0.173    0.320
+   .merit_sct2        0.304    0.028   10.729    0.000    0.304    0.647
+   .merit_school1     0.352    0.034   10.456    0.000    0.352    0.610
+   .merit_school2     0.249    0.086    2.890    0.004    0.249    0.447
+    RIX1              0.199    0.032    6.126    0.000    1.000    1.000
+    RIX2              0.266    0.083    3.223    0.001    1.000    1.000
+    RIX3              0.380    0.037   10.138    0.000    1.000    1.000
+    RIY1              0.167    0.025    6.616    0.000    1.000    1.000
+    RIY2              0.141    0.026    5.397    0.000    1.000    1.000
+    RIY3              0.154    0.029    5.365    0.000    1.000    1.000
+    WFX1              0.027    0.023    1.182    0.237    1.000    1.000
+   .WFX2             -0.056    0.169   -0.332    0.740   -0.718   -0.718
+    WFY1              0.054    0.022    2.392    0.017    1.000    1.000
+   .WFY2              0.034    0.022    1.524    0.128    0.847    0.847</code></pre>
+</div>
+</div>
+</section>
+<section id="paso-2-invarianza-factorial-débil" class="level2">
+<h2 class="anchored" data-anchor-id="paso-2-invarianza-factorial-débil">Paso 2: Invarianza factorial débil</h2>
+<div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: lavaan-&gt;lav_model_vcov():  
+   The variance-covariance matrix of the estimated parameters (vcov) does not 
+   appear to be positive definite! The smallest eigenvalue (= -5.004817e-12) 
+   is smaller than zero. This may be a symptom that the model is not 
+   identified.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>lavaan 0.6-19 ended normally after 92 iterations
+
+  Estimator                                         ML
+  Optimization method                           NLMINB
+  Number of model parameters                        63
+  Number of equality constraints                     4
+
+  Number of observations                           937
+  Number of missing patterns                        21
+
+Model Test User Model:
+                                                      
+  Test statistic                                68.570
+  Degrees of freedom                                31
+  P-value (Chi-square)                           0.000
+
+Parameter Estimates:
+
+  Standard errors                             Standard
+  Information                                 Observed
+  Observed information based on                Hessian
+
+Latent Variables:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+  RIX1 =~                                                               
+    merit_se1         1.000                               0.367    0.471
+    merit_se2         1.000                               0.367    0.439
+  RIX2 =~                                                               
+    merit_st1         1.000                               0.320    0.422
+    merit_st2         1.000                               0.320    0.409
+  RIX3 =~                                                               
+    merit_soc1        1.000                               0.624    0.654
+    merit_soc2        1.000                               0.624    0.648
+  RIY1 =~                                                               
+    merit_sce1        1.000                               0.402    0.515
+    merit_sce2        1.000                               0.402    0.517
+  RIY2 =~                                                               
+    merit_sct1        1.000                               0.356    0.489
+    merit_sct2        1.000                               0.356    0.513
+  RIY3 =~                                                               
+    mert_schl1        1.000                               0.367    0.478
+    mert_schl2        1.000                               0.367    0.498
+  WFX1 =~                                                               
+    merit_se1  (a)    1.000                               0.359    0.460
+    merit_st1  (b)    1.167    0.372    3.139    0.002    0.419    0.553
+    merit_soc1 (c)   -0.178    0.099   -1.803    0.071   -0.064   -0.067
+  WFX2 =~                                                               
+    merit_se2  (a)    1.000                               0.441    0.527
+    merit_st2  (b)    1.167    0.372    3.139    0.002    0.515    0.658
+    merit_soc2 (c)   -0.178    0.099   -1.803    0.071   -0.079   -0.082
+  WFY1 =~                                                               
+    merit_sce1 (d)    1.000                               0.273    0.350
+    merit_sct1 (e)    1.441    0.282    5.108    0.000    0.394    0.541
+    mert_schl1 (f)    1.331    0.271    4.910    0.000    0.364    0.474
+  WFY2 =~                                                               
+    merit_sce2 (d)    1.000                               0.207    0.266
+    merit_sct2 (e)    1.441    0.282    5.108    0.000    0.298    0.429
+    mert_schl2 (f)    1.331    0.271    4.910    0.000    0.275    0.374
+
+Regressions:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+  WFX2 ~                                                                
+    WFX1              0.017  185.914    0.000    1.000    0.014    0.014
+    WFY1              0.060  340.845    0.000    1.000    0.037    0.037
+  WFY2 ~                                                                
+    WFX1             -0.061  148.952   -0.000    1.000   -0.105   -0.105
+    WFY1              0.019       NA                      0.025    0.025
+
+Covariances:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+  WFX1 ~~                                                               
+    WFY1              0.031   23.983    0.001    0.999    0.320    0.320
+ .WFX2 ~~                                                               
+   .WFY2              0.024   22.559    0.001    0.999    0.264    0.264
+  RIX1 ~~                                                               
+    WFY1              0.000                               0.000    0.000
+    WFX1              0.000                               0.000    0.000
+  RIX2 ~~                                                               
+    WFY1              0.000                               0.000    0.000
+    WFX1              0.000                               0.000    0.000
+  RIX3 ~~                                                               
+    WFY1              0.000                               0.000    0.000
+    WFX1              0.000                               0.000    0.000
+  RIY1 ~~                                                               
+    WFY1              0.000                               0.000    0.000
+    WFX1              0.000                               0.000    0.000
+  RIY2 ~~                                                               
+    WFY1              0.000                               0.000    0.000
+    WFX1              0.000                               0.000    0.000
+  RIY3 ~~                                                               
+    WFY1              0.000                               0.000    0.000
+    WFX1              0.000                               0.000    0.000
+  RIX1 ~~                                                               
+    RIX2              0.101   24.265    0.004    0.997    0.861    0.861
+    RIX3             -0.086    3.707   -0.023    0.981   -0.376   -0.376
+    RIY1              0.069   23.983    0.003    0.998    0.469    0.469
+    RIY2              0.032   34.569    0.001    0.999    0.245    0.245
+    RIY3              0.046   31.912    0.001    0.999    0.345    0.345
+  RIX2 ~~                                                               
+    RIX3             -0.021    4.325   -0.005    0.996   -0.104   -0.104
+    RIY1              0.053   27.985    0.002    0.998    0.410    0.410
+    RIY2              0.032   40.338    0.001    0.999    0.284    0.284
+    RIY3              0.055   37.238    0.001    0.999    0.470    0.470
+  RIX3 ~~                                                               
+    RIY1              0.004    4.275    0.001    0.999    0.017    0.017
+    RIY2              0.068    6.162    0.011    0.991    0.306    0.306
+    RIY3             -0.005    5.688   -0.001    0.999   -0.022   -0.022
+  RIY1 ~~                                                               
+    RIY2              0.069       NA                      0.483    0.483
+    RIY3              0.083       NA                      0.565    0.565
+  RIY2 ~~                                                               
+    RIY3              0.022       NA                      0.170    0.170
+
+Intercepts:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+   .merit_se1         2.765    0.026  106.459    0.000    2.765    3.543
+   .merit_se2         2.673    0.032   83.559    0.000    2.673    3.192
+   .merit_st1         2.840    0.025  112.258    0.000    2.840    3.749
+   .merit_st2         2.817    0.030   93.903    0.000    2.817    3.599
+   .merit_soc1        2.994    0.032   94.017    0.000    2.994    3.139
+   .merit_soc2        3.010    0.036   83.037    0.000    3.010    3.127
+   .merit_sce1        3.197    0.026  122.880    0.000    3.197    4.095
+   .merit_sce2        3.128    0.030  105.535    0.000    3.128    4.026
+   .merit_sct1        3.172    0.024  130.668    0.000    3.172    4.354
+   .merit_sct2        3.151    0.026  118.953    0.000    3.151    4.539
+   .merit_school1     2.905    0.026  113.378    0.000    2.905    3.784
+   .merit_school2     2.932    0.028  104.165    0.000    2.932    3.984
+
+Variances:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+   .merit_se1         0.345    0.047    7.365    0.000    0.345    0.567
+   .merit_se2         0.372    0.067    5.534    0.000    0.372    0.530
+   .merit_st1         0.296    0.059    5.008    0.000    0.296    0.516
+   .merit_st2         0.245    0.086    2.852    0.004    0.245    0.400
+   .merit_soc1        0.516    0.040   12.907    0.000    0.516    0.568
+   .merit_soc2        0.532    0.043   12.264    0.000    0.532    0.574
+   .merit_sce1        0.373    0.030   12.505    0.000    0.373    0.612
+   .merit_sce2        0.399    0.032   12.303    0.000    0.399    0.662
+   .merit_sct1        0.248    0.040    6.261    0.000    0.248    0.468
+   .merit_sct2        0.266    0.030    8.954    0.000    0.266    0.552
+   .merit_school1     0.323    0.036    8.878    0.000    0.323    0.548
+   .merit_school2     0.332    0.034    9.738    0.000    0.332    0.612
+    RIX1              0.135   20.795    0.006    0.995    1.000    1.000
+    RIX2              0.102   28.314    0.004    0.997    1.000    1.000
+    RIX3              0.389    0.662    0.588    0.557    1.000    1.000
+    RIY1              0.162       NA                      1.000    1.000
+    RIY2              0.127       NA                      1.000    1.000
+    RIY3              0.134       NA                      1.000    1.000
+    WFX1              0.129   20.795    0.006    0.995    1.000    1.000
+   .WFX2              0.194   19.820    0.010    0.992    0.998    0.998
+    WFY1              0.075       NA                      1.000    1.000
+   .WFY2              0.042    6.027    0.007    0.994    0.990    0.990</code></pre>
+</div>
+</div>
+</section>
+<section id="paso-3-fuerte-invarianza-factorial" class="level2">
+<h2 class="anchored" data-anchor-id="paso-3-fuerte-invarianza-factorial">Paso 3: Fuerte invarianza factorial</h2>
+<div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: lavaan-&gt;ldw_parse_model_string():  
+   modifier label specified multiple times, overwritten at line 34, pos 29
+  merit_sct1 + merit_sct1 ~ k*1
+                            ^</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>lavaan 0.6-19 ended normally after 69 iterations
+
+  Estimator                                         ML
+  Optimization method                           NLMINB
+  Number of model parameters                        65
+  Number of equality constraints                     9
+
+  Number of observations                           937
+  Number of missing patterns                        21
+
+Model Test User Model:
+                                                      
+  Test statistic                                76.766
+  Degrees of freedom                                34
+  P-value (Chi-square)                           0.000
+
+Parameter Estimates:
+
+  Standard errors                             Standard
+  Information                                 Observed
+  Observed information based on                Hessian
+
+Latent Variables:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+  RIX1 =~                                                               
+    merit_se1         1.000                               0.366    0.469
+    merit_se2         1.000                               0.366    0.437
+  RIX2 =~                                                               
+    merit_st1         1.000                               0.326    0.431
+    merit_st2         1.000                               0.326    0.417
+  RIX3 =~                                                               
+    merit_soc1        1.000                               0.624    0.654
+    merit_soc2        1.000                               0.624    0.647
+  RIY1 =~                                                               
+    merit_sce1        1.000                               0.401    0.513
+    merit_sce2        1.000                               0.401    0.516
+  RIY2 =~                                                               
+    merit_sct1        1.000                               0.356    0.489
+    merit_sct2        1.000                               0.356    0.513
+  RIY3 =~                                                               
+    mert_schl1        1.000                               0.368    0.479
+    mert_schl2        1.000                               0.368    0.499
+  WFX1 =~                                                               
+    merit_se1  (a)    1.000                               0.400    0.512
+    merit_st1  (b)    0.921    0.288    3.202    0.001    0.368    0.487
+    merit_soc1 (c)   -0.162    0.091   -1.786    0.074   -0.065   -0.068
+  WFX2 =~                                                               
+    merit_se2  (a)    1.000                               0.495    0.590
+    merit_st2  (b)    0.921    0.288    3.202    0.001    0.456    0.582
+    merit_soc2 (c)   -0.162    0.091   -1.786    0.074   -0.080   -0.083
+  WFY1 =~                                                               
+    merit_sce1 (d)    1.000                               0.280    0.358
+    merit_sct1 (e)    1.424    0.282    5.045    0.000    0.398    0.546
+    mert_schl1 (f)    1.266    0.266    4.759    0.000    0.354    0.461
+  WFY2 =~                                                               
+    merit_sce2 (d)    1.000                               0.210    0.270
+    merit_sct2 (e)    1.424    0.282    5.045    0.000    0.299    0.431
+    mert_schl2 (f)    1.266    0.266    4.759    0.000    0.266    0.361
+
+Regressions:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+  WFX2 ~                                                                
+    WFX1              0.006   72.602    0.000    1.000    0.004    0.004
+    WFY1              0.068       NA                      0.038    0.038
+  WFY2 ~                                                                
+    WFX1             -0.066   54.221   -0.001    0.999   -0.125   -0.125
+    WFY1              0.021       NA                      0.028    0.028
+
+Covariances:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+  WFX1 ~~                                                               
+    WFY1              0.034    8.029    0.004    0.997    0.305    0.305
+ .WFX2 ~~                                                               
+   .WFY2              0.027    9.588    0.003    0.998    0.261    0.261
+  RIX1 ~~                                                               
+    WFY1              0.000                               0.000    0.000
+    WFX1              0.000                               0.000    0.000
+  RIX2 ~~                                                               
+    WFY1              0.000                               0.000    0.000
+    WFX1              0.000                               0.000    0.000
+  RIX3 ~~                                                               
+    WFY1              0.000                               0.000    0.000
+    WFX1              0.000                               0.000    0.000
+  RIY1 ~~                                                               
+    WFY1              0.000                               0.000    0.000
+    WFX1              0.000                               0.000    0.000
+  RIY2 ~~                                                               
+    WFY1              0.000                               0.000    0.000
+    WFX1              0.000                               0.000    0.000
+  RIY3 ~~                                                               
+    WFY1              0.000                               0.000    0.000
+    WFX1              0.000                               0.000    0.000
+  RIX1 ~~                                                               
+    RIX2              0.104   17.356    0.006    0.995    0.866    0.866
+    RIX3             -0.084    3.059   -0.027    0.978   -0.367   -0.367
+    RIY1              0.068    8.029    0.008    0.993    0.464    0.464
+    RIY2              0.031   11.431    0.003    0.998    0.235    0.235
+    RIY3              0.046   10.161    0.005    0.996    0.344    0.344
+  RIX2 ~~                                                               
+    RIX3             -0.023    2.818   -0.008    0.994   -0.112   -0.112
+    RIY1              0.055    7.396    0.007    0.994    0.421    0.421
+    RIY2              0.037   10.529    0.003    0.997    0.316    0.316
+    RIY3              0.060    9.359    0.006    0.995    0.500    0.500
+  RIX3 ~~                                                               
+    RIY1              0.004    1.304    0.003    0.997    0.018    0.018
+    RIY2              0.068    1.856    0.037    0.971    0.307    0.307
+    RIY3             -0.005    1.650   -0.003    0.998   -0.022   -0.022
+  RIY1 ~~                                                               
+    RIY2              0.067       NA                      0.473    0.473
+    RIY3              0.084       NA                      0.568    0.568
+  RIY2 ~~                                                               
+    RIY3              0.024       NA                      0.183    0.183
+
+Intercepts:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+   .merit_se1  (g)    2.752    0.026  106.498    0.000    2.752    3.524
+   .merit_se2  (g)    2.752    0.026  106.498    0.000    2.752    3.283
+   .merit_st1  (h)    2.855    0.023  121.799    0.000    2.855    3.774
+   .merit_st2  (h)    2.855    0.023  121.799    0.000    2.855    3.645
+   .merit_soc1 (i)    2.997    0.028  107.156    0.000    2.997    3.143
+   .merit_soc2 (i)    2.997    0.028  107.156    0.000    2.997    3.111
+   .merit_sce1 (j)    3.173    0.024  131.720    0.000    3.173    4.060
+   .merit_sce2 (j)    3.173    0.024  131.720    0.000    3.173    4.083
+   .merit_sct1 (k)    3.172    0.024  130.608    0.000    3.172    4.352
+   .mert_schl1 (l)    2.921    0.025  118.137    0.000    2.921    3.808
+   .mert_schl2 (l)    2.921    0.025  118.137    0.000    2.921    3.964
+   .WFX2             -0.061    0.038   -1.596    0.110   -0.122   -0.122
+   .WFY2             -0.010    0.024   -0.399    0.690   -0.046   -0.046
+   .merit_sct2        3.165    0.040   79.408    0.000    3.165    4.563
+
+Variances:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+   .merit_se1         0.316    0.055    5.760    0.000    0.316    0.518
+   .merit_se2         0.323    0.081    3.993    0.000    0.323    0.460
+   .merit_st1         0.330    0.049    6.788    0.000    0.330    0.577
+   .merit_st2         0.299    0.069    4.334    0.000    0.299    0.488
+   .merit_soc1        0.516    0.040   12.895    0.000    0.516    0.567
+   .merit_soc2        0.533    0.043   12.276    0.000    0.533    0.574
+   .merit_sce1        0.372    0.030   12.270    0.000    0.372    0.609
+   .merit_sce2        0.399    0.033   12.152    0.000    0.399    0.661
+   .merit_sct1        0.246    0.040    6.097    0.000    0.246    0.463
+   .merit_sct2        0.265    0.030    8.874    0.000    0.265    0.551
+   .merit_school1     0.328    0.036    9.087    0.000    0.328    0.558
+   .merit_school2     0.337    0.034    9.955    0.000    0.337    0.621
+    RIX1              0.134   18.843    0.007    0.994    1.000    1.000
+    RIX2              0.107   15.986    0.007    0.995    1.000    1.000
+    RIX3              0.389    0.498    0.781    0.435    1.000    1.000
+    RIY1              0.161       NA                      1.000    1.000
+    RIY2              0.127       NA                      1.000    1.000
+    RIY3              0.135       NA                      1.000    1.000
+    WFX1              0.160   18.843    0.008    0.993    1.000    1.000
+   .WFX2              0.244   16.690    0.015    0.988    0.998    0.998
+    WFY1              0.078       NA                      1.000    1.000
+   .WFY2              0.044       NA                      0.986    0.986</code></pre>
+</div>
+</div>
+</section>
+<section id="extra-fuerte-invarianza-factorial-con-cargas-factoriales-iguales-a-las-cargas-factoriales-dentro-de-la-persona" class="level2">
+<h2 class="anchored" data-anchor-id="extra-fuerte-invarianza-factorial-con-cargas-factoriales-iguales-a-las-cargas-factoriales-dentro-de-la-persona">Extra: Fuerte invarianza factorial con cargas factoriales iguales a las cargas factoriales dentro de la persona</h2>
+<div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: lavaan-&gt;ldw_parse_model_string():  
+   modifier label specified multiple times, overwritten at line 53, pos 29
+  merit_sct1 + merit_sct1 ~ k*1
+                            ^</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>lavaan 0.6-19 ended normally after 52 iterations
+
+  Estimator                                         ML
+  Optimization method                           NLMINB
+  Number of model parameters                        51
+  Number of equality constraints                    13
+
+  Number of observations                           937
+  Number of missing patterns                        21
+
+Model Test User Model:
+                                                      
+  Test statistic                               300.859
+  Degrees of freedom                                52
+  P-value (Chi-square)                           0.000
+
+Parameter Estimates:
+
+  Standard errors                             Standard
+  Information                                 Observed
+  Observed information based on                Hessian
+
+Latent Variables:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+  RIX1 =~                                                               
+    merit_se1         1.000                               0.387    0.497
+    merit_se2         1.000                               0.387    0.460
+  RIX2 =~                                                               
+    merit_st1         1.000                               0.314    0.415
+    merit_st2         1.000                               0.314    0.400
+  RIX3 =~                                                               
+    merit_soc1        1.000                               0.108    0.114
+    merit_soc2        1.000                               0.108    0.112
+  RIY1 =~                                                               
+    merit_sce1        1.000                               0.344    0.442
+    merit_sce2        1.000                               0.344    0.442
+  RIY2 =~                                                               
+    merit_sct1        1.000                               0.271    0.373
+    merit_sct2        1.000                               0.271    0.389
+  RIY3 =~                                                               
+    mert_schl1        1.000                               0.290    0.381
+    mert_schl2        1.000                               0.290    0.390
+  RIX =~                                                                
+    RIX1       (a)    1.000                               1.000    1.000
+    RIX2       (b)    0.811    0.081    9.947    0.000    1.000    1.000
+    RIX3       (c)   -0.280    0.052   -5.412    0.000   -1.000   -1.000
+  RIY =~                                                                
+    RIY1       (d)    1.000                               1.000    1.000
+    RIY2       (e)    0.787    0.079    9.944    0.000    1.000    1.000
+    RIY3       (f)    0.842    0.086    9.769    0.000    1.000    1.000
+  WFX1 =~                                                               
+    merit_se1  (a)    1.000                               0.393    0.505
+    merit_st1  (b)    0.811    0.081    9.947    0.000    0.319    0.421
+    merit_soc1 (c)   -0.280    0.052   -5.412    0.000   -0.110   -0.116
+  WFX2 =~                                                               
+    merit_se2  (a)    1.000                               0.512    0.609
+    merit_st2  (b)    0.811    0.081    9.947    0.000    0.415    0.530
+    merit_soc2 (c)   -0.280    0.052   -5.412    0.000   -0.144   -0.148
+  WFY1 =~                                                               
+    merit_sce1 (d)    1.000                               0.318    0.408
+    merit_sct1 (e)    0.787    0.079    9.944    0.000    0.250    0.344
+    mert_schl1 (f)    0.842    0.086    9.769    0.000    0.268    0.351
+  WFY2 =~                                                               
+    merit_sce2 (d)    1.000                               0.231    0.297
+    merit_sct2 (e)    0.787    0.079    9.944    0.000    0.182    0.262
+    mert_schl2 (f)    0.842    0.086    9.769    0.000    0.195    0.262
+
+Regressions:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+  WFX2 ~                                                                
+    WFX1             -0.042  161.024   -0.000    1.000   -0.032   -0.032
+    WFY1              0.008  163.979    0.000    1.000    0.005    0.005
+  WFY2 ~                                                                
+    WFX1             -0.071  112.271   -0.001    0.999   -0.121   -0.121
+    WFY1             -0.035  194.873   -0.000    1.000   -0.047   -0.047
+
+Covariances:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+  RIX ~~                                                                
+    RIY               0.059   13.681    0.004    0.997    0.446    0.446
+  WFX1 ~~                                                               
+    WFY1              0.044   13.681    0.003    0.997    0.351    0.351
+ .WFX2 ~~                                                               
+   .WFY2              0.045   15.087    0.003    0.998    0.388    0.388
+  RIX ~~                                                                
+    WFY1              0.000                               0.000    0.000
+    WFX1              0.000                               0.000    0.000
+  RIY ~~                                                                
+    WFY1              0.000                               0.000    0.000
+    WFX1              0.000                               0.000    0.000
+ .RIX1 ~~                                                               
+    WFY1              0.000                                 NaN      NaN
+    WFX1              0.000                                 NaN      NaN
+ .RIX2 ~~                                                               
+    WFY1              0.000                                 NaN      NaN
+    WFX1              0.000                                 NaN      NaN
+ .RIX3 ~~                                                               
+    WFY1              0.000                                 NaN      NaN
+    WFX1              0.000                                 NaN      NaN
+ .RIY1 ~~                                                               
+    WFY1              0.000                                 NaN      NaN
+    WFX1              0.000                                 NaN      NaN
+ .RIY2 ~~                                                               
+    WFY1              0.000                                 NaN      NaN
+    WFX1              0.000                                 NaN      NaN
+ .RIY3 ~~                                                               
+    WFY1              0.000                                 NaN      NaN
+    WFX1              0.000                                 NaN      NaN
+
+Intercepts:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+   .merit_se1  (g)    2.754    0.025  110.267    0.000    2.754    3.539
+   .merit_se2  (g)    2.754    0.025  110.267    0.000    2.754    3.272
+   .merit_st1  (h)    2.855    0.023  125.663    0.000    2.855    3.777
+   .merit_st2  (h)    2.855    0.023  125.663    0.000    2.855    3.644
+   .merit_soc1 (i)    2.999    0.025  121.795    0.000    2.999    3.153
+   .merit_soc2 (i)    2.999    0.025  121.795    0.000    2.999    3.100
+   .merit_sce1 (j)    3.182    0.025  128.865    0.000    3.182    4.081
+   .merit_sce2 (j)    3.182    0.025  128.865    0.000    3.182    4.086
+   .merit_sct1 (k)    3.172    0.024  130.864    0.000    3.172    4.363
+   .mert_schl1 (l)    2.927    0.023  127.263    0.000    2.927    3.842
+   .mert_schl2 (l)    2.927    0.023  127.263    0.000    2.927    3.935
+   .WFX2             -0.069    0.034   -2.033    0.042   -0.135   -0.135
+   .WFY2             -0.030    0.030   -0.981    0.327   -0.128   -0.128
+   .merit_sct2        3.176    0.033   94.943    0.000    3.176    4.562
+
+Variances:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+    RIX               0.150   21.126    0.007    0.994    1.000    1.000
+    RIY               0.119   16.768    0.007    0.994    1.000    1.000
+   .RIX1              0.000                               0.000    0.000
+   .RIX2              0.000                               0.000    0.000
+   .RIX3              0.000                               0.000    0.000
+   .RIY1              0.000                               0.000    0.000
+   .RIY2              0.000                               0.000    0.000
+   .RIY3              0.000                               0.000    0.000
+   .merit_se1         0.301    0.036    8.323    0.000    0.301    0.498
+   .merit_se2         0.296    0.046    6.407    0.000    0.296    0.418
+   .merit_st1         0.372    0.028   13.160    0.000    0.372    0.650
+   .merit_st2         0.343    0.034   10.081    0.000    0.343    0.559
+   .merit_soc1        0.881    0.042   20.841    0.000    0.881    0.974
+   .merit_soc2        0.903    0.050   17.994    0.000    0.903    0.965
+   .merit_sce1        0.388    0.029   13.284    0.000    0.388    0.638
+   .merit_sce2        0.434    0.033   13.024    0.000    0.434    0.716
+   .merit_sct1        0.392    0.025   15.908    0.000    0.392    0.743
+   .merit_sct2        0.378    0.025   15.182    0.000    0.378    0.780
+   .merit_school1     0.424    0.027   15.839    0.000    0.424    0.731
+   .merit_school2     0.431    0.030   14.591    0.000    0.431    0.779
+    WFX1              0.154   21.126    0.007    0.994    1.000    1.000
+   .WFX2              0.262   22.912    0.011    0.991    0.999    0.999
+    WFY1              0.101   16.768    0.006    0.995    1.000    1.000
+   .WFY2              0.052   18.282    0.003    0.998    0.979    0.979</code></pre>
+</div>
+</div>
+</section>
+<section id="paso-4-ri-clpm-latente" class="level2">
+<h2 class="anchored" data-anchor-id="paso-4-ri-clpm-latente">Paso 4: RI-CLPM latente</h2>
+<div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: lavaan-&gt;ldw_parse_model_string():  
+   modifier label specified multiple times, overwritten at line 20, pos 29
+  merit_sct1 + merit_sct1 ~ k*1
+                            ^</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>lavaan 0.6-19 ended normally after 47 iterations
+
+  Estimator                                         ML
+  Optimization method                           NLMINB
+  Number of model parameters                        47
+  Number of equality constraints                     9
+
+  Number of observations                           937
+  Number of missing patterns                        21
+
+Model Test User Model:
+                                                      
+  Test statistic                               300.859
+  Degrees of freedom                                52
+  P-value (Chi-square)                           0.000
+
+Parameter Estimates:
+
+  Standard errors                             Standard
+  Information                                 Observed
+  Observed information based on                Hessian
+
+Latent Variables:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+  FX1 =~                                                                
+    merit_se1  (a)    1.000                               0.552    0.709
+    merit_st1  (b)    0.811    0.081    9.947    0.000    0.447    0.591
+    merit_soc1 (c)   -0.280    0.052   -5.412    0.000   -0.155   -0.163
+  FX2 =~                                                                
+    merit_se2  (a)    1.000                               0.642    0.763
+    merit_st2  (b)    0.811    0.081    9.947    0.000    0.520    0.664
+    merit_soc2 (c)   -0.280    0.052   -5.412    0.000   -0.180   -0.186
+  FY1 =~                                                                
+    merit_sce1 (d)    1.000                               0.469    0.601
+    merit_sct1 (e)    0.787    0.079    9.944    0.000    0.369    0.507
+    mert_schl1 (f)    0.842    0.086    9.769    0.000    0.395    0.518
+  FY2 =~                                                                
+    merit_sce2 (d)    1.000                               0.415    0.533
+    merit_sct2 (e)    0.787    0.079    9.944    0.000    0.327    0.469
+    mert_schl2 (f)    0.842    0.086    9.769    0.000    0.349    0.470
+  RIX =~                                                                
+    FX1               1.000                               0.693    0.693
+    FX2               1.000                               0.595    0.595
+  RIY =~                                                                
+    FY1               1.000                               0.725    0.725
+    FY2               1.000                               0.819    0.819
+  WFX1 =~                                                               
+    FX1               1.000                               0.721    0.721
+  WFX2 =~                                                               
+    FX2               1.000                               0.803    0.803
+  WFY1 =~                                                               
+    FY1               1.000                               0.689    0.689
+  WFY2 =~                                                               
+    FY2               1.000                               0.574    0.574
+
+Regressions:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+  WFX2 ~                                                                
+    WFX1             -0.025  264.397   -0.000    1.000   -0.019   -0.019
+    WFY1              0.029  428.590    0.000    1.000    0.018    0.018
+  WFY2 ~                                                                
+    WFX1             -0.058  240.757   -0.000    1.000   -0.098   -0.098
+    WFY1             -0.007  486.480   -0.000    1.000   -0.010   -0.010
+
+Covariances:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+ .WFX2 ~~                                                               
+   .WFY2              0.049   56.857    0.001    0.999    0.399    0.399
+  RIX ~~                                                                
+    WFX1              0.000                               0.000    0.000
+    WFY1              0.000                               0.000    0.000
+  RIY ~~                                                                
+    WFX1              0.000                               0.000    0.000
+    WFY1              0.000                               0.000    0.000
+  RIX ~~                                                                
+    RIY               0.056   53.625    0.001    0.999    0.435    0.435
+  WFX1 ~~                                                               
+    WFY1              0.047   53.625    0.001    0.999    0.365    0.365
+
+Intercepts:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+   .merit_se1  (g)    2.754    0.025  110.267    0.000    2.754    3.539
+   .merit_se2  (g)    2.754    0.025  110.267    0.000    2.754    3.272
+   .merit_st1  (h)    2.855    0.023  125.663    0.000    2.855    3.777
+   .merit_st2  (h)    2.855    0.023  125.663    0.000    2.855    3.644
+   .merit_soc1 (i)    2.999    0.025  121.795    0.000    2.999    3.153
+   .merit_soc2 (i)    2.999    0.025  121.795    0.000    2.999    3.100
+   .merit_sce1 (j)    3.182    0.025  128.865    0.000    3.182    4.081
+   .merit_sce2 (j)    3.182    0.025  128.865    0.000    3.182    4.086
+   .merit_sct1 (k)    3.172    0.024  130.864    0.000    3.172    4.363
+   .mert_schl1 (l)    2.927    0.023  127.263    0.000    2.927    3.842
+   .mert_schl2 (l)    2.927    0.023  127.263    0.000    2.927    3.935
+   .FX2              -0.069    0.034   -2.033    0.042   -0.108   -0.108
+   .FY2              -0.030    0.030   -0.981    0.327   -0.072   -0.072
+   .merit_sct2        3.176    0.033   94.943    0.000    3.176    4.562
+
+Variances:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+   .FX1               0.000                               0.000    0.000
+   .FX2               0.000                               0.000    0.000
+   .FY1               0.000                               0.000    0.000
+   .FY2               0.000                               0.000    0.000
+   .merit_se1         0.301    0.036    8.323    0.000    0.301    0.498
+   .merit_st1         0.372    0.028   13.160    0.000    0.372    0.650
+   .merit_soc1        0.881    0.042   20.842    0.000    0.881    0.974
+   .merit_se2         0.296    0.046    6.407    0.000    0.296    0.418
+   .merit_st2         0.343    0.034   10.081    0.000    0.343    0.559
+   .merit_soc2        0.903    0.050   17.994    0.000    0.903    0.965
+   .merit_sce1        0.388    0.029   13.284    0.000    0.388    0.638
+   .merit_sct1        0.392    0.025   15.908    0.000    0.392    0.743
+   .merit_school1     0.424    0.027   15.839    0.000    0.424    0.731
+   .merit_sce2        0.434    0.033   13.024    0.000    0.434    0.716
+   .merit_sct2        0.378    0.025   15.182    0.000    0.378    0.780
+   .merit_school2     0.431    0.030   14.591    0.000    0.431    0.779
+    RIX               0.146   56.732    0.003    0.998    1.000    1.000
+    RIY               0.116   56.219    0.002    0.998    1.000    1.000
+    WFX1              0.158   56.732    0.003    0.998    1.000    1.000
+   .WFX2              0.266   56.744    0.005    0.996    1.000    1.000
+    WFY1              0.104   56.219    0.002    0.999    1.000    1.000
+   .WFY2              0.056   63.162    0.001    0.999    0.990    0.990</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="ambos-extensión-ri-clpm-con-controles" class="level1">
+<h1>Ambos (Extensión RI-CLPM con controles)</h1>
+<div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: lavaan-&gt;lav_data_full():  
+   35 cases were deleted due to missing values in exogenous variable(s), 
+   while fixed.x = TRUE.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: lavaan-&gt;lav_model_vcov():  
+   The variance-covariance matrix of the estimated parameters (vcov) does not 
+   appear to be positive definite! The smallest eigenvalue (= -4.933831e-08) 
+   is smaller than zero. This may be a symptom that the model is not 
+   identified.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: lavaan-&gt;lav_object_post_check():  
+   some estimated lv variances are negative</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>lavaan 0.6-19 ended normally after 128 iterations
+
+  Estimator                                         ML
+  Optimization method                           NLMINB
+  Number of model parameters                        39
+  Number of equality constraints                     3
+
+                                                  Used       Total
+  Number of observations                           902         937
+  Number of missing patterns                        11            
+
+Model Test User Model:
+                                                      
+  Test statistic                                    NA
+  Degrees of freedom                                -3
+  P-value (Unknown)                                 NA
+
+Parameter Estimates:
+
+  Standard errors                             Standard
+  Information                                 Observed
+  Observed information based on                Hessian
+
+Latent Variables:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+  RIx =~                                                                
+    just_school1      1.000                                  NA       NA
+    just_school2      1.000                                  NA       NA
+  RIy =~                                                                
+    merit_soc1        1.000                               0.521    0.550
+    merit_soc2        1.000                               0.521    0.542
+  RIz =~                                                                
+    merit_school1     1.000                               0.418    0.551
+    merit_school2     1.000                               0.418    0.556
+  wx1 =~                                                                
+    just_school1      1.000                               0.100    1.009
+  wx2 =~                                                                
+    just_school2      1.000                               0.063    1.023
+  wy1 =~                                                                
+    merit_soc1        1.000                               0.791    0.835
+  wy2 =~                                                                
+    merit_soc2        1.000                               0.808    0.840
+  wz1 =~                                                                
+    merit_school1     1.000                               0.630    0.830
+  wz2 =~                                                                
+    merit_school2     1.000                               0.622    0.827
+
+Regressions:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+  just_school1 ~                                                        
+    genero    (s1)    0.002    0.004    0.478    0.633    0.002    0.010
+  just_school2 ~                                                        
+    genero    (s1)    0.002    0.004    0.478    0.633    0.002    0.016
+  merit_soc1 ~                                                          
+    genero    (s2)    0.016    0.048    0.328    0.743    0.016    0.010
+  merit_soc2 ~                                                          
+    genero    (s2)    0.016    0.048    0.328    0.743    0.016    0.010
+  merit_school1 ~                                                       
+    genero    (s3)   -0.107    0.036   -2.980    0.003   -0.107   -0.083
+  merit_school2 ~                                                       
+    genero    (s3)   -0.107    0.036   -2.980    0.003   -0.107   -0.084
+  wx2 ~                                                                 
+    wx1               0.089       NA                      0.140    0.140
+    wy1              -0.020       NA                     -0.255   -0.255
+  wy2 ~                                                                 
+    wx1              -0.006       NA                     -0.001   -0.001
+    wy1               0.183       NA                      0.179    0.179
+  wx2 ~                                                                 
+    wz1               0.002       NA                      0.021    0.021
+  wz2 ~                                                                 
+    wx1              -0.003       NA                     -0.000   -0.000
+    wz1              -0.121       NA                     -0.123   -0.123
+    wy1              -0.037       NA                     -0.048   -0.048
+  wy2 ~                                                                 
+    wz1               0.032       NA                      0.025    0.025
+
+Covariances:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+  wx1 ~~                                                                
+    wy1              -0.007       NA                     -0.091   -0.091
+    wz1               0.003       NA                      0.047    0.047
+  wy1 ~~                                                                
+    wz1               0.007       NA                      0.013    0.013
+ .wx2 ~~                                                                
+   .wy2              -0.007       NA                     -0.154   -0.154
+   .wz2               0.002       NA                      0.054    0.054
+ .wy2 ~~                                                                
+   .wz2              -0.012       NA                     -0.025   -0.025
+  RIx ~~                                                                
+    RIy               0.010       NA                      1.390    1.390
+    RIz               0.002       NA                      0.377    0.377
+  RIy ~~                                                                
+    RIz              -0.005       NA                     -0.025   -0.025
+
+Intercepts:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+   .just_school1     -0.004    0.006   -0.582    0.561   -0.004   -0.038
+   .just_school2     -0.006    0.006   -1.035    0.301   -0.006   -0.102
+   .merit_soc1        2.976    0.081   36.618    0.000    2.976    3.141
+   .merit_soc2        3.014    0.084   36.063    0.000    3.014    3.135
+   .merit_school1     3.075    0.062   49.995    0.000    3.075    4.052
+   .merit_school2     3.099    0.063   48.866    0.000    3.099    4.120
+
+Variances:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+    RIx              -0.000       NA                         NA       NA
+    RIy               0.271       NA                      1.000    1.000
+    RIz               0.175       NA                      1.000    1.000
+    wx1               0.010       NA                      1.000    1.000
+    wy1               0.626       NA                      1.000    1.000
+   .wx2               0.004       NA                      0.908    0.908
+   .wy2               0.631       NA                      0.967    0.967
+    wz1               0.397       NA                      1.000    1.000
+   .wz2               0.380       NA                      0.983    0.983
+   .just_school1      0.000                               0.000    0.000
+   .just_school2      0.000                               0.000    0.000
+   .merit_soc1        0.000                               0.000    0.000
+   .merit_soc2        0.000                               0.000    0.000
+   .merit_school1     0.000                               0.000    0.000
+   .merit_school2     0.000                               0.000    0.000</code></pre>
+</div>
+</div>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copiado");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copiado");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

@@ -1,0 +1,86 @@
+---
+format: 
+  pdf:
+    geometry: 
+      - top=30mm
+      - left=20mm
+    template-partials: 
+      - title.tex
+    include-in-header:
+      text: |
+        \usepackage[noblocks]{authblk}
+        \renewcommand*{\Authsep}{, }
+        \renewcommand*{\Authand}{, }
+        \renewcommand*{\Authands}{, }
+        \renewcommand\Affilfont{\small}
+editor: source
+bibliography: "C:/Users/LENOVO/Documents/GitHub/just-school/input/bib/just-school.bib"
+link-citations: true
+author:
+  - name: Juan Carlos Castillo
+    corresponding: true
+    orcid: 0000-0003-1265-7854
+    email: juancastillov@uchile.cl
+    affiliations:
+      - ref: 1
+      - ref: 2
+      - ref: 3
+  - name: María Fernanda Núñez
+    orcid: 0009-0004-7559-9959
+    email: maria.nunez.2@ug.uchile.cl
+    affiliations:
+      - ref: 1
+  - name: Kevin Carrasco
+    orcid: 0000-0002-9348-8361
+    email: kevin.carrasco@ug.uchile.cl
+    affiliations:
+      - ref: 2
+  - name: Andreas Laffert
+    orcid: 0000-0002-9008-2454
+    email: alaffertt@estudiante.uc.cl
+    affiliations:
+      - ref: 4
+affiliations: 
+  - id: 1
+    name: Universidad de Chile
+  - id: 2
+    name: Centro de estudios del conflicto y cohesión social (COES)
+  - id: 3
+    name: Núcleo milenio de desigualdades y oportunidades digitales (NUDOS)
+  - id: 4
+    name: Pontificia Universidad Católica de Chile
+lang: es
+citeproc: true
+---
+
+# Justicia en la Evaluación Escolar: Un experimento de encuesta 
+
+
+Juan Carlos Castillo [^1]
+
+[^1]: Universidad de Chile, Centro de Estudios de Conflicto y Cohesión Social (COES), Núcleo Milenio de Desigualdades y Oportunidades Digitales (NUDOS)
+
+María Fernanda Núñez [^2]
+
+[^2]:Universidad de Chile 
+
+Kevin Carrasco [^3]
+
+[^3]: Centro de Estudios de Conflicto y Cohesión Social (COES)
+
+Andreas Laffert[^4]
+
+[^4]:Pontificia Universidad Católica de Chile
+
+Las escuelas se caracterizan por ser un espacio donde se enfatiza y se premia el buen rendimiento basado en esfuerzos y talentos individuales, usualmente vinculado al concepto de meritocracia. En el caso Chileno, el sistema educativo posee un alto nivel de privatización, generando segregación y reproduciendo las desigualdades de origen  [@belleiEstudioSegregacionSocioeconomica2013;@corvalanEducacionMercadoChile2015]. En el plano normativo, dicho contexto promueve la competencia, una alta valoración de los logros individuales y el esfuerzo [@darnon_where_2018]. Dicha valoración del mérito ha sido vinculada con la justificación de la desigualdad, funcionando como legitimador de las diferencias muchas veces asociadas a las oportunidades [@mijs_unfulfillable_2016; @wiederkehr_belief_2015; @castillo_legitimacy_2011; @wilsonRoleMeritPrinciple2003].
+
+En el contexto escolar, las calificaciones cumplen una función central como mecanismo de recompensa y evaluación, simbolizando el reconocimiento institucional del esfuerzo y el talento individual de los estudiantes. La asignación de notas se enmarca en principios meritocráticos, al considerarse que reflejan una correspondencia justa entre el rendimiento académico y los criterios de esfuerzo, dedicación y habilidades demostradas en un entorno competitivo. Desde esta perspectiva, la equidad es entendida como una correspondencia proporcional entre el mérito (expresado a través del esfuerzo o el talento) y la recompensa (representada por la nota obtenida) [@resh_sense_2010; @wilsonRoleMeritPrinciple2003]. Este vínculo entre las calificaciones y el mérito las convierte en un instrumento clave dentro de las dinámicas escolares, donde las notas no solo reflejan logros individuales, sino que también influyen en la percepción de justicia y la legitimidad de las diferencias académicas. En este sentido, las calificaciones constituyen una forma concreta y cotidiana de justicia distributiva, al operar como indicadores tangibles de reconocimiento dentro de una estructura que premia el mérito en función de estándares normativos y competitivos [@gilgenDistributionalSurveyExperiment2020]. Así, este estudio aborda la siguiente pregunta: ¿en qué medida los estudiantes consideran que las notas se asocian a desempeño (esfuerzo) individual, independiente de las oportunidades de origen?
+
+Esta investigación se propone utilizar un _experimento distribucional de encuesta_ (DSE) [@gilgenDistributionalSurveyExperiment2020] aplicado a la distribución de notas en el contexto escolar. Para ello, se utiliza un experimento  presentado a estudiantes de nivel básico (7°grado) y medio (10° grado), aplicado como parte de una encuesta sobre temas de educación y meritocracia en Chile (N=700). El experimento consiste en que los estudiantes distribuyan décimas de notas a casos ficticios que representan distintas combinaciones de esfuerzo y oportunidades. Mediante esta decisión de asignación de décimas, los casos ficticios podrían aprobar o reprobar la evaluación, por lo tanto la asignación de décimas tiene consecuencias en términos del desempeño. 
+
+Los resultados descriptivos preliminares indican la manifestación del principio meritocrático en la distribución de recompensas en edades tempranas. Se observa una proporcionalidad entre la asignación y el mérito en la distribución de las décimas, junto a un orden de priorización en las características que los estudiantes tienen en cuenta al momento de la asignación: primero se recompensa a los estudiantes más meritorios, posteriormente y ante la ausencia del mérito, se recompensa a quien tienen menos oportunidades. A la luz de estos resultados, se buscará identificar si las creencias meritocráticas de los/as estudiantes están relacionadas con dicha asignación.
+
+
+
+ 
+

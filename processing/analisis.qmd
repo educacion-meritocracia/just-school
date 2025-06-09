@@ -1,20 +1,25 @@
 ---
 title: "Análisis: Sensación de (in)justicia en las notas"
-fontsize: 14pt
+author: Equipo EDUMER
+subtitle: SoJ
+fontsize: 12pt
+#bibliography: "../input/mini-proyecto.bib"
+#csl: "input/bib/apa6.csl"
 format:
   html:
     toc: true
     toc-location: right
-    toc-depth: 2
-    toc-expand: 2
+    toc-depth: 6
+    toc-expand: 6
     toc-title: Contenidos
-    number-sections: true
-    number-depth: 3
-    theme:
-      - cosmo
-      
-   
+    number-sections: false
+    number-depth: 6
+    theme: 
+    - edumer.scss
+    - sandstone
+    title-block-banner: true
 editor: visual
+lang: es
 ---
 
 ```{r, data, echo=FALSE}
@@ -42,6 +47,8 @@ datos <- proc_datos %>% select(notas_esfuerzo, notas_merit,
 
 ```
 
+# Ola 1
+
 ## [Descriptivos univariados]{.black}
 
 ```{r, echo=FALSE}
@@ -52,372 +59,13 @@ print(summarytools::dfSummary(datos), method="render")
 
 ## Descriptivos bivariados
 
-### Sociodemográficos
-
-```{r, echo=FALSE}
-
-# Calcular las frecuencias originales
-frecuencias_originales <- datos %>%
-  pivot_longer(cols = c(genero_ES, curso_estudiante, educ_max, libros_hogar),
-               names_to = "variable",
-               values_to = "categoria") %>%
-  group_by(variable, categoria) %>%
-  summarise(Freq_Original = n(), .groups = 'drop')
-
-# Combinar las frecuencias originales con la base transformada
-proc_datos_largo <- proc_datos %>%
-  pivot_longer(cols = c(genero_ES, curso_estudiante, educ_max, libros_hogar),
-               names_to = "variable",
-               values_to = "categoria")
-
-frecuencias <- proc_datos_largo %>%
-  group_by(variable, categoria, justicia_nota_ch) %>%
-  summarise(Freq = n(), .groups = 'drop') %>%
-  left_join(frecuencias_originales, by = c("variable", "categoria")) %>%
-  mutate(Porcentaje = Freq / Freq_Original) %>%
-  ungroup() %>% 
-  na.omit()
-# nombre facet_wrap
-variable_names <- list("curso_estudiante" = "Curso",
-  "educ_max" = "Nivel educacional de los padres",
-  "genero_ES" = "Género",
-                       "libros_hogar" = "Cantidad de libros en el hogar")
-variable_labeller <- function(variable, value){return(variable_names[value])}
-
-# Ajustar las etiquetas largas
-frecuencias$categoria <- str_wrap(frecuencias$categoria, width = 10)
-
-# Crear la gráfica
-ggplot(frecuencias, aes(x = categoria, y = Porcentaje, fill = factor(justicia_nota_ch))) +
-  geom_bar(stat = "identity", position = "fill", color = "white") +
-  facet_wrap(~ variable, scales = "free_x", labeller = as_labeller(variable_labeller)) +
-  geom_text(aes(label = scales::percent(Porcentaje, accuracy = 1)), 
-            position = position_stack(vjust = 0.5), color = "black", size = 4.5) +
-  labs(
-    x = NULL, # Elimina el título del eje x
-    y = NULL, # Elimina el título del eje y
-   # fill = "Grado de acuerdo",
-    title = "Sensación de (in)justicia según características sociodemográficas "
-  ) +
-  theme_blank() +
-  theme(
-    axis.text.y = element_blank(),  # Ocultar etiquetas del eje y
-    axis.ticks.y = element_blank(), # Ocultar marcas del eje y
-    axis.title.x = element_blank(), # Ocultar título del eje x
-    axis.title.y = element_blank(), # Ocultar título del eje y
-    strip.text = element_text(size = 9, face = "bold"), # Ajustar tamaño y estilo del título de las facetas
-    axis.text.x = element_text(size = 9), # Ajustar el tamaño de las etiquetas del eje x
-    legend.position = "bottom",# Colocar la leyenda en la parte inferior
-     plot.title = element_text(size = 12, face = "italic", color = "black")
-  ) +
-  scale_fill_brewer(palette = "Blues", 
-                    labels = c("1" = "injusticia sub-recompensa", 
-                               "2" = "justicia perfecta", 
-                               "3" = "injusticia sobre-recompensa"),
-                    name = NULL)
-```
-
-**Género del estudiante**:
-
-```{r, echo=FALSE}
-tabla_cruzada_g <- sjt.xtab(datos$justicia_nota_ch, 
-                        datos$genero_ES, 
-                        show.summary = F, 
-                        emph.total = T, 
-                         show.col.prc = T, # porcentaje columna
-                         encoding= "UTF-8")
-tabla_cruzada_g
-```
-
-No se observan diferencias grandes de porcentajes entre hombres y mujeres:
-
--   Para la categoría "injusticia sobre-recompensa" se presenta que los hombres (7.5%) se sienten más sobre compensados que las mujeres (4.8%).
-
--   A pesar de que las estudiantes muejeres poseen menos n que los hombres, estás presentan mayor frecuencia en las categorías de "injusticia por sub-recompensa" y "justicia perfecta".
-
-<br/>
-
-Sensación de recompensa segun **tiempo** dedicado al estudio:
-
-```{r, echo=FALSE}
-tabla_cruzada_gt <- sjt.xtab(proc_datos$justicia_nota_tiempo_ch, 
-                        proc_datos$genero_ES, 
-                        show.summary = F, 
-                        emph.total = T, 
-                         show.col.prc = T, # porcentaje columna
-                         encoding= "UTF-8")
-tabla_cruzada_gt
-```
-
-<br/>
-
-**Cuso del estudiante**:
-
-```{r, echo=FALSE}
-tabla_cruzada_c <- sjt.xtab(datos$justicia_nota_ch, 
-                          datos$curso_estudiante, 
-                         show.summary = F, 
-                        emph.total = T, 
-                         show.col.prc = T, # porcentaje columna
-                         encoding= "UTF-8")
-tabla_cruzada_c
-```
-
-Si bien las diferencias por curso en cada categorías no son tan grandes (exceptuando la categoría "injusticia sub-recompensa"), se presenta más variación que al diferenciar por género:
-
--   Estudiantes de básica tienen a sentirse justamente recompensados y sobre-recompensados en comparación con estudiantes de media.
-
--   Solo en el caso de una sensación de sub-recompensa los estudiantes de media presentan mayor frecuencia que estudiantes de básica, doblando su proporción.
-
-    <br/>
-
-Sensación de recompensa segun **tiempo** dedicado al estudio:
-
-```{r, echo=FALSE}
-tabla_cruzada_ct <- sjt.xtab(proc_datos$justicia_nota_tiempo_ch, 
-                        proc_datos$curso_estudiante, 
-                        show.summary = F, 
-                        emph.total = T, 
-                         show.col.prc = T, # porcentaje columna
-                         encoding= "UTF-8")
-tabla_cruzada_ct
-```
-
-<br/>
-
-**Máximo nivel educacional alcanzado por los padres:**
-
-```{r, echo=FALSE}
-tabla_cruzada_n <- sjt.xtab(datos$justicia_nota_ch, 
-                          datos$educ_max, 
-                          show.summary = F, 
-                        emph.total = T, 
-                         show.col.prc = T, # porcentaje columna
-                         encoding= "UTF-8")
-tabla_cruzada_n
-```
-
-Se tiene como punto de partida que la cantidad de estudiantes con padres que presentan estudios superiores es el doble que estudiantes con padres que alcanzaron la enseñanza media o un curso menor. A pesar de esa diferencia, no se presentan porcentajes tan diferentes:
-
--   Para ambas sensaciones de injusticia, sobre-recompensa y sub-recompensa, estudiantes con padres que cuentan con estudios superiores la perciben más (aunque en una menor medida, un 1.4% y en 1%, respectivamente).
-
--   En el caso de la sensación de justicia perfecta, a pesar de que el n en dicha categoría es menor, los estudiantes con padres que alcanzaron la enseñanza media o menos la perciben más.
-
-    <br/ >
-
-Sensación de recompensa segun **tiempo** dedicado al estudio:
-
-```{r, echo=FALSE}
-tabla_cruzada_et <- sjt.xtab(proc_datos$justicia_nota_tiempo_ch, 
-                        proc_datos$educ_max, 
-                        show.summary = F, 
-                        emph.total = T, 
-                         show.col.prc = T, # porcentaje columna
-                         encoding= "UTF-8")
-tabla_cruzada_et
-
-
-```
-
-<br/>
-
-**Cantidad de libros en el hogar**:
-
-```{r, echo=FALSE}
-tabla_cruzada_l <- sjt.xtab(datos$justicia_nota_ch, 
-                          datos$libros_hogar, 
-                          show.summary = F, 
-                        emph.total = T, 
-                         show.col.prc = T, # porcentaje columna
-                         encoding= "UTF-8")
-tabla_cruzada_l
-```
-
-Se presenta que la categoría "Menos de 25 libros" es casi el doble que la categoría "Más de 25 libros":
-
--   A pesar de ello, en el caso de la sensación de injusticia por sub-recompensa, la percibieron más estudianes que cuentan con más de 25 libros en su hogar.
-
--   Para el caso de la sesnación de justicia perfecta, fue percibida en la misma frecuencia para ambos grupos.
-
--   Estudiantes con menos de 25 libros en su hogar sintierion injusticia por sobre-recompensa en mayor medida que estudiantiantes con más libros en su hogar.
-
-<br/>
-
-Sensación de recompensa segun **tiempo** dedicado al estudio:
-
-```{r, echo=FALSE}
-tabla_cruzada_lt <- sjt.xtab(proc_datos$justicia_nota_tiempo_ch, 
-                        proc_datos$libros_hogar, 
-                        show.summary = F, 
-                        emph.total = T, 
-                         show.col.prc = T, # porcentaje columna
-                         encoding= "UTF-8")
-tabla_cruzada_lt
-```
-
-### Meritocracia
-
-Percepción en la **sociedad**:
-
-```{r, echo=FALSE}
-
-# Calcular las frecuencias originales
-frecuencias_originales <- proc_datos %>%
-  pivot_longer(cols = c(merit_esfuerzo_percep_ES, merit_talento_percep_ES, social_merito_percep_ES),
-               names_to = "variable",
-               values_to = "categoria") %>%
-  group_by(variable, categoria) %>%
-  summarise(Freq_Original = n(), .groups = 'drop')
-
-# Combinar las frecuencias originales con la base transformada
-proc_datos_largo <- proc_datos %>%
-  pivot_longer(cols = c(merit_esfuerzo_percep_ES, merit_talento_percep_ES, social_merito_percep_ES),
-               names_to = "variable",
-               values_to = "categoria")
-
-frecuencias <- proc_datos_largo %>%
-  group_by(variable, categoria, justicia_nota_ch) %>%
-  summarise(Freq = n(), .groups = 'drop') %>%
-  left_join(frecuencias_originales, by = c("variable", "categoria")) %>%
-  mutate(Porcentaje = Freq / Freq_Original) %>%
-  ungroup() %>% 
-  na.omit()
-# nombre facet_wrap
-variable_names <- list("merit_esfuerzo_percep_ES" = "Esfuerzo",
-                       "merit_talento_percep_ES" = "Talento",
-                       "social_merito_percep_ES" = "Merecimiento")
-variable_labeller <- function(variable, value){return(variable_names[value])}
-
-# Ajustar las etiquetas largas
-frecuencias$categoria <- str_wrap(frecuencias$categoria, width = 10)
-
-# Crear la gráfica
-ggplot(frecuencias, aes(x = categoria, y = Porcentaje, fill = factor(justicia_nota_ch))) +
-  geom_bar(stat = "identity", position = "fill", color = "white") +
-  facet_wrap(~ variable, scales = "free_x", labeller = as_labeller(variable_labeller)) +
-  geom_text(aes(label = scales::percent(Porcentaje, accuracy = 1)), 
-            position = position_stack(vjust = 0.5), color = "black", size = 4.5) +
-  labs(
-    x = NULL, # Elimina el título del eje x
-    y = NULL, # Elimina el título del eje y
-   # fill = "Grado de acuerdo",
-    title = "Sensación de (in)justicia según creencias en la meritocracia social "
-  ) +
-  theme_blank() +
-  theme(
-    axis.text.y = element_blank(),  # Ocultar etiquetas del eje y
-    axis.ticks.y = element_blank(), # Ocultar marcas del eje y
-    axis.title.x = element_blank(), # Ocultar título del eje x
-    axis.title.y = element_blank(), # Ocultar título del eje y
-    strip.text = element_text(size = 9, face = "bold"), # Ajustar tamaño y estilo del título de las facetas
-    axis.text.x = element_text(size = 9), # Ajustar el tamaño de las etiquetas del eje x
-    legend.position = "bottom",# Colocar la leyenda en la parte inferior
-     plot.title = element_text(size = 12, face = "italic", color = "black")
-  ) +
-  scale_fill_brewer(palette = "Blues", 
-                    labels = c("1" = "injusticia sub-recompensa", 
-                               "2" = "justicia perfecta", 
-                               "3" = "injusticia sobre-recompensa"),
-                    name = NULL)
-```
-
-```{r, echo=FALSE}
-tabla_cruzada_mt <- sjt.xtab(datos$justicia_nota_ch, 
-                          datos$merit_talento_percep_ES, 
-                          show.col.prc = TRUE,
-                          show.summary = FALSE)
-tabla_cruzada_mt
-```
-
-```{r, echo=FALSE}
-tabla_cruzada_me <- sjt.xtab(datos$justicia_nota_ch, 
-                          datos$merit_esfuerzo_percep_ES, 
-                          show.col.prc = TRUE,
-                          show.summary = FALSE)
-tabla_cruzada_me
-```
-
-```{r, echo=FALSE}
-tabla_cruzada_r <- sjt.xtab(datos$justicia_nota_ch, 
-                          datos$social_merito_percep_ES, 
-                          show.col.prc = TRUE,
-                          show.summary = FALSE)
-tabla_cruzada_r
-```
-
-Percepción en la **escuela**:
-
-```{r, echo=FALSE}
-# Calcular las frecuencias originales
-frecuencias_originales <- proc_datos %>%
-  pivot_longer(cols = c(school_esfuerzo_ES, school_talento_ES, school_merito_ES),
-               names_to = "variable",
-               values_to = "categoria") %>%
-  group_by(variable, categoria) %>%
-  summarise(Freq_Original = n(), .groups = 'drop')
-
-# Combinar las frecuencias originales con la base transformada
-proc_datos_largo <- proc_datos %>%
-  pivot_longer(cols = c(school_esfuerzo_ES, school_talento_ES, school_merito_ES),
-               names_to = "variable",
-               values_to = "categoria")
-
-frecuencias <- proc_datos_largo %>%
-  group_by(variable, categoria, justicia_nota_ch) %>%
-  summarise(Freq = n(), .groups = 'drop') %>%
-  left_join(frecuencias_originales, by = c("variable", "categoria")) %>%
-  mutate(Porcentaje = Freq / Freq_Original) %>%
-  ungroup() %>% 
-  na.omit()
-# nombre facet_wrap
-variable_names <- list("school_esfuerzo_ES" = "Esfuerzo",
-                       "school_talento_ES" = "Talento",
-                       "school_merito_ES" = "Merecimiento")
-variable_labeller <- function(variable, value){return(variable_names[value])}
-
-# Ajustar las etiquetas largas
-frecuencias$categoria <- str_wrap(frecuencias$categoria, width = 10)
-
-# Crear la gráfica
-ggplot(frecuencias, aes(x = categoria, y = Porcentaje, fill = factor(justicia_nota_ch))) +
-  geom_bar(stat = "identity", position = "fill", color = "white") +
-  facet_wrap(~ variable, scales = "free_x", labeller = as_labeller(variable_labeller)) +
-  geom_text(aes(label = scales::percent(Porcentaje, accuracy = 1)), 
-            position = position_stack(vjust = 0.5), color = "black", size = 4.5) +
-  labs(
-    x = NULL, # Elimina el título del eje x
-    y = NULL, # Elimina el título del eje y
-   # fill = "Grado de acuerdo",
-    title = "Sensación de (in)justicia según creencias en la meritocracia escolar "
-  ) +
-  theme_blank() +
-  theme(
-    axis.text.y = element_blank(),  # Ocultar etiquetas del eje y
-    axis.ticks.y = element_blank(), # Ocultar marcas del eje y
-    axis.title.x = element_blank(), # Ocultar título del eje x
-    axis.title.y = element_blank(), # Ocultar título del eje y
-    strip.text = element_text(size = 9, face = "bold"), # Ajustar tamaño y estilo del título de las facetas
-    axis.text.x = element_text(size = 9), # Ajustar el tamaño de las etiquetas del eje x
-    legend.position = "bottom",# Colocar la leyenda en la parte inferior
-     plot.title = element_text(size = 12, face = "italic", color = "black")
-  ) +
-  scale_fill_brewer(palette = "Blues", 
-                    labels = c("1" = "injusticia sub-recompensa", 
-                               "2" = "justicia perfecta", 
-                               "3" = "injusticia sobre-recompensa"),
-                    name = NULL)
-```
-
-```{r, echo=FALSE}
-
-```
-
 ### Matriz
 
 ```{r, echo=FALSE}
-datos$notas_esfuerzo <- as.factor(datos$notas_esfuerzo)
+#datos$notas_esfuerzo <- as.factor(datos$notas_esfuerzo)
 datos$notas_merit <- as.factor(datos$notas_merit)
 datos$curso_estudiante <- as.factor(datos$curso_estudiante)
+datos$curso_estudiante <- as.numeric(datos$curso_estudiante)
 datos$school_esfuerzo_ES <- as.factor(datos$school_esfuerzo_ES)
 datos$school_talento_ES <- as.factor(datos$school_talento_ES)
 datos$school_merito_ES <- as.factor(datos$school_merito_ES)
@@ -429,7 +77,7 @@ datos$social_merito_percep_ES <- as.factor(datos$social_merito_percep_ES)
 proc_datos <- datos %>% select(justicia_nota, 
                            genero_ES,
                                libros_hogar,
-                           curso_estudiante,
+        curso_estudiante,
                                educ_max, 
                            school_esfuerzo_ES, 
                                school_talento_ES,
@@ -437,30 +85,49 @@ proc_datos <- datos %>% select(justicia_nota,
                                merit_esfuerzo_percep_ES, 
                                merit_talento_percep_ES,
                                social_merito_percep_ES, 
-                               rendimiento,
-                           notas_esfuerzo)  %>% na.omit() %>%
+                               rendimiento)  %>% na.omit() %>%
   mutate_all(~(as.numeric(.)))  
 
+
+
+#matriz
+sjPlot::tab_corr(proc_datos, 
+                 triangle = "lower")
+
+#grafico sociodem
 cormat <- proc_datos %>% select(justicia_nota, 
                            genero_ES,
                                libros_hogar,
                            curso_estudiante,
-                               educ_max,
-                            rendimiento,
-                           notas_esfuerzo) %>% cor(.)
+                               educ_max
+                           ) %>% cor(.)
 
 corrplot(cormat,
-method = 'number',
-  type = 'lower',
+method = 'color',
+  type = 'upper',
   #number.cex = 3,
   #tl.cex = 3,
-  diag = FALSE)
+  diag = FALSE,
+addCoef.col = "black",
+tl.col = "black")
 
-```
+# grafico merit
+cor_mat <- proc_datos %>% select(justicia_nota, 
+                           school_esfuerzo_ES, 
+                               school_talento_ES,
+                               school_merito_ES, 
+                               merit_esfuerzo_percep_ES, 
+                               merit_talento_percep_ES,
+                               social_merito_percep_ES) %>% cor(.)
 
-```{r, echo=FALSE}
-sjPlot::tab_corr(proc_datos, 
-                 triangle = "lower")
+corrplot(cor_mat,
+method = 'color',
+  type = 'upper',
+  #number.cex = 3,
+  #tl.cex = 3,
+  diag = FALSE,
+addCoef.col = "black",
+tl.col = "black")
 ```
 
 #### Diferencias por género
@@ -509,42 +176,114 @@ gginference::ggttest(test_just_e)
 
 ## Modelos
 
+### Modelos simples
+
+```{r}
+r1 <- lm(justicia_nota~ genero_ES , data = proc_datos)
+r2 <- lm(justicia_nota~ curso_estudiante , data = proc_datos)
+r3 <- lm(justicia_nota~ libros_hogar , data = proc_datos)
+r4 <- lm(justicia_nota~ educ_max , data = proc_datos)
+r5 <- lm(justicia_nota~ merit_esfuerzo_percep_ES , data = proc_datos)
+r6 <- lm(justicia_nota~ merit_talento_percep_ES , data = proc_datos)
+r7 <- lm(justicia_nota~ school_esfuerzo_ES , data = proc_datos)
+r8 <- lm(justicia_nota~ school_talento_ES , data = proc_datos)
+r9 <- lm(justicia_nota~ school_merito_ES , data = proc_datos)
+r10 <- lm(justicia_nota~ rendimiento , data = proc_datos)
+
+sjPlot::tab_model(list(r1, r2,r3, r4,r5, r6, r7, r8, r9, r10), show.ci=FALSE, p.style = "stars", dv.labels = c("Modelo 1", "Modelo 2", "Modelo 3", "Modelo 4", "Modelo 5", "Modelo 6", "Modelo 7", "Modelo 8", "Modelo 9", "Modelo 10" ),string.pred = "Predictores", string.est = "β")
+```
+
+
 ### Modelo regresión lineal múltiple
 
 ```{r, echo=FALSE}
-modelo1 <- lm(justicia_nota ~ genero_ES , data = proc_datos)
-modelo2 <- lm(justicia_nota ~ genero_ES + curso_estudiante, data = proc_datos)
-modelo3 <- lm(justicia_nota ~  genero_ES + curso_estudiante + educ_max , data = proc_datos)
-modelo4 <- lm(justicia_nota ~ genero_ES + curso_estudiante + educ_max + libros_hogar, data = proc_datos)
-modelo5 <- lm(justicia_nota ~ genero_ES + curso_estudiante + educ_max + libros_hogar + rendimiento, data = proc_datos)
-modelo6 <- lm(justicia_nota ~ genero_ES + curso_estudiante + educ_max + libros_hogar + rendimiento + notas_esfuerzo, data = proc_datos)
-modelo7 <- lm(justicia_nota ~ genero_ES + curso_estudiante + educ_max + libros_hogar + rendimiento + notas_esfuerzo + social_merito_percep_ES, data = proc_datos)
-modelo8 <- lm(justicia_nota ~ genero_ES + curso_estudiante + educ_max + libros_hogar + rendimiento + notas_esfuerzo + social_merito_percep_ES + merit_esfuerzo_percep_ES, data = proc_datos)
-modelo9 <- lm(justicia_nota ~ genero_ES + curso_estudiante + educ_max + libros_hogar + rendimiento + notas_esfuerzo + social_merito_percep_ES + merit_esfuerzo_percep_ES + merit_talento_percep_ES, data = proc_datos)
-modelo10 <- lm(justicia_nota ~ genero_ES + curso_estudiante + educ_max + libros_hogar + rendimiento + notas_esfuerzo + social_merito_percep_ES + merit_esfuerzo_percep_ES + merit_talento_percep_ES + school_merito_ES, data = proc_datos)
-modelo11 <- lm(justicia_nota ~ genero_ES + curso_estudiante + educ_max + libros_hogar + rendimiento + notas_esfuerzo + social_merito_percep_ES + merit_esfuerzo_percep_ES + merit_talento_percep_ES + school_merito_ES + school_esfuerzo_ES, data = proc_datos)
-modelo12 <- lm(justicia_nota ~ genero_ES + curso_estudiante + educ_max + libros_hogar + rendimiento + notas_esfuerzo + social_merito_percep_ES + merit_esfuerzo_percep_ES + merit_talento_percep_ES + school_merito_ES + school_esfuerzo_ES + school_talento_ES, data = proc_datos)
+modelo1 <- lm(justicia_nota ~ genero_ES + curso_estudiante, data = proc_datos)
+modelo2 <- lm(justicia_nota ~  genero_ES + curso_estudiante + educ_max , data = proc_datos)
+modelo3 <- lm(justicia_nota ~ genero_ES + curso_estudiante + educ_max + libros_hogar, data = proc_datos)
+modelo4 <- lm(justicia_nota ~ genero_ES + curso_estudiante + educ_max + libros_hogar + merit_esfuerzo_percep_ES, data = proc_datos)
+modelo5 <- lm(justicia_nota ~ genero_ES + curso_estudiante + educ_max + libros_hogar + merit_esfuerzo_percep_ES + merit_talento_percep_ES, data = proc_datos)
+modelo6 <- lm(justicia_nota ~ genero_ES + curso_estudiante + educ_max + libros_hogar + merit_esfuerzo_percep_ES + merit_talento_percep_ES + school_merito_ES, data = proc_datos)
+modelo7 <- lm(justicia_nota ~ genero_ES + curso_estudiante + educ_max + libros_hogar + merit_esfuerzo_percep_ES + merit_talento_percep_ES + school_merito_ES + school_esfuerzo_ES, data = proc_datos)
+modelo8 <- lm(justicia_nota ~ genero_ES + curso_estudiante + educ_max + libros_hogar + merit_esfuerzo_percep_ES + merit_talento_percep_ES + school_merito_ES + school_esfuerzo_ES + school_talento_ES, data = proc_datos)
+modelo9 <- lm(justicia_nota ~ genero_ES + curso_estudiante + educ_max + libros_hogar + merit_esfuerzo_percep_ES + merit_talento_percep_ES + school_merito_ES + school_esfuerzo_ES + school_talento_ES + rendimiento, data = proc_datos)
 
 
-sjPlot::tab_model(list(modelo1, modelo2,modelo3, modelo4,modelo5, modelo6, modelo7, modelo8, modelo9, modelo10, modelo11, modelo12), show.ci=FALSE, p.style = "stars", dv.labels = c("Modelo 1", "Modelo 2", "Modelo 3", "Modelo 4", "Modelo 5", "Modelo 6", "Modelo 7", "Modelo 8", "Modelo 9", "Modelo 10", "Modelo 11", "Modelo 12" ),string.pred = "Predictores", string.est = "β")
+sjPlot::tab_model(list(modelo1, modelo2,modelo3, modelo4,modelo5, modelo6, modelo7, modelo8, modelo9), show.ci=FALSE, p.style = "stars", dv.labels = c("Modelo 1", "Modelo 2", "Modelo 3", "Modelo 4", "Modelo 5", "Modelo 6", "Modelo 7", "Modelo 8", "Modelo 9" ),string.pred = "Predictores", string.est = "β")
 
 #plot(modelo5, which = 1)  # Residuals vs Fitted plot
 
-plot_model(modelo12, show.values = TRUE)+ theme_sjplot()
+plot_model(modelo9, show.values = TRUE)+ theme_sjplot()
+
 
 ```
 
-### Modelo regresión logistica ordinal
+# Ola 2
 
-```{r, echo=FALSE, warning=FALSE, message=FALSE}
-library(MASS)
-
-modelouno <- polr(justicia_nota_ch ~ genero_ES, data = datos, Hess = TRUE)
-modelodos <- polr(justicia_nota_ch ~ genero_ES + curso_estudiante, data = datos, Hess = TRUE)
-modelotres <- polr(justicia_nota_ch ~  genero_ES + curso_estudiante + educ_max, data = datos, Hess = TRUE)
-modelocuatro <- polr(justicia_nota_ch ~  genero_ES + curso_estudiante + educ_max + libros_hogar, data = datos, Hess = TRUE)
-modelocinco <- polr(justicia_nota_ch ~  genero_ES + curso_estudiante + educ_max + libros_hogar + rendimiento, data = datos, Hess = TRUE)
-model <- polr(justicia_nota_ch ~  genero_ES + curso_estudiante + educ_max + libros_hogar + rendimiento + social_merito_percep_ES, data = datos, Hess = TRUE)
-
-sjPlot::tab_model(list( modelouno, modelodos, modelotres, modelocuatro, modelocinco, model), show.ci=FALSE, p.style = "stars", dv.labels = c("Modelo 1", "Modelo 2", "Modelo 3", "Modelo 4", "Modelo 5", "Modelo 6"),string.pred = "Predictores", string.est = "β")
+```{r}
+load("../input/data/proc/proc_w02.RData")
 ```
+
+## Bivariados
+
+```{r}
+proc_datos_o2 <- datos %>% select(justicia_nota, 
+                           genero,
+                               libros_hogar,
+                           curso,
+                               educ_max, 
+                           school_esfuerzo, 
+                               school_talento,
+                               school_merecimiento, 
+                               merit_esfuerzo, 
+                               merit_talento,
+                                
+                               nota)  %>% na.omit() %>%
+  mutate_all(~(as.numeric(.)))  
+
+#matriz
+sjPlot::tab_corr(proc_datos_o2, 
+                 triangle = "lower")
+```
+
+### Modelos simples
+
+```{r}
+reg1 <- lm(justicia_nota~ genero , data = proc_datos_o2)
+reg2 <- lm(justicia_nota~ curso , data = proc_datos_o2)
+reg3 <- lm(justicia_nota~ libros_hogar , data = proc_datos_o2)
+reg4 <- lm(justicia_nota~ educ_max , data = proc_datos_o2)
+reg5 <- lm(justicia_nota~ merit_esfuerzo , data = proc_datos_o2)
+reg6 <- lm(justicia_nota~ merit_talento , data = proc_datos_o2)
+reg7 <- lm(justicia_nota~ school_esfuerzo , data = proc_datos_o2)
+reg8 <- lm(justicia_nota~ school_talento , data = proc_datos_o2)
+reg9 <- lm(justicia_nota~ school_merecimiento , data = proc_datos_o2)
+reg10 <- lm(justicia_nota~ nota , data = proc_datos_o2)
+
+sjPlot::tab_model(list(reg1, reg2,reg3, reg4,reg5, reg6, reg7, reg8, reg9, reg10), show.ci=FALSE, p.style = "stars", dv.labels = c("Modelo 1", "Modelo 2", "Modelo 3", "Modelo 4", "Modelo 5", "Modelo 6", "Modelo 7", "Modelo 8", "Modelo 9", "Modelo 10" ),string.pred = "Predictores", string.est = "β")
+```
+
+
+
+### Modelos múltiples
+```{r}
+modelo1 <- lm(justicia_nota ~ genero + curso, data = proc_datos_o2)
+modelo2 <- lm(justicia_nota ~  genero + curso + educ_max , data = proc_datos_o2)
+modelo3 <- lm(justicia_nota ~ genero + curso + educ_max + libros_hogar, data = proc_datos_o2)
+modelo4 <- lm(justicia_nota ~ genero + curso + educ_max + libros_hogar + merit_esfuerzo, data = proc_datos_o2)
+modelo5 <- lm(justicia_nota ~ genero + curso + educ_max + libros_hogar + merit_esfuerzo + merit_talento, data = proc_datos_o2)
+modelo6 <- lm(justicia_nota ~ genero + curso + educ_max + libros_hogar + merit_esfuerzo + merit_talento + school_merecimiento, data = proc_datos_o2)
+modelo7 <- lm(justicia_nota ~ genero + curso + educ_max + libros_hogar  + merit_esfuerzo + merit_talento + school_merecimiento + school_esfuerzo, data = proc_datos_o2)
+modelo8 <- lm(justicia_nota ~ genero + curso + educ_max + libros_hogar + merit_esfuerzo + merit_talento + school_merecimiento + school_esfuerzo + school_talento, data = proc_datos_o2)
+modelo9 <- lm(justicia_nota ~ genero + curso + educ_max + libros_hogar + merit_esfuerzo + merit_talento + school_merecimiento + school_esfuerzo + school_talento + nota, data = proc_datos_o2)
+
+
+sjPlot::tab_model(list(modelo1, modelo2,modelo3, modelo4,modelo5, modelo6, modelo7, modelo8, modelo9), show.ci=FALSE, p.style = "stars", dv.labels = c("Modelo 1", "Modelo 2", "Modelo 3", "Modelo 4", "Modelo 5", "Modelo 6", "Modelo 7", "Modelo 8", "Modelo 9" ),string.pred = "Predictores", string.est = "β")
+
+#plot(modelo5, which = 1)  # Residuals vs Fitted plot
+
+plot_model(modelo9, show.values = TRUE)+ theme_sjplot()
+
+
+
+```
+
